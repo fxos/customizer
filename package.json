@@ -1,6 +1,6 @@
 {
 	"name": "fxos-customizer",
-	"description": " An addon for FirefoxOS which builds customizes application interfaces. ",
+	"description": "An addon for FirefoxOS which builds customizes application interfaces.",
 	"version": "0.0.1",
 	"repository": {
 		"type": "git",

@@ -1,0 +1,12 @@
+{
+	"name": "fxos-customizer",
+	"description": "An addon for FirefoxOS which builds customizes application interfaces.",
+	"ignore": [
+		"**/.*",
+		"node_modules",
+		"app/componenets"
+	],
+	"dependencies": {
+		"fxos-mvc": "git@github.com:fxos/mvc.git"
+	}
+}
