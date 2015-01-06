@@ -1,0 +1,14 @@
+{
+	"name": "fxos-customizer",
+	"description": " An addon for FirefoxOS which builds customizes application interfaces. ",
+	"version": "0.0.1",
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:fxos/directory.git"
+	},
+	"license": "MPL",
+	"dependencies": {
+		"fxos-build": "0.3.x",
+		"gulp": "3.8.x"
+	}
+}
