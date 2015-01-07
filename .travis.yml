@@ -1,6 +1,6 @@
 before_install:
-	- travis_retry npm install
+  - travis_retry npm install
 script:
-	- gulp travis
+  - gulp travis
 notifications:
-	email: false
+  email: false
