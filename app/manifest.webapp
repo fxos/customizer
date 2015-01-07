@@ -2,9 +2,10 @@
 	"name": "FxOS Customizer",
 	"description": "An addon to create addons.",
 	"customizations": [{
-		"filter": "app://",
+		"filter": "app",
 		"css": ["style/app.css"],
 		"scripts": ["js/initapp.js"]
 	}],
-	"role": "addon"
+	"role": "addon",
+	"type": "certified"
 }
