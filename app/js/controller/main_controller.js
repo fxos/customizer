@@ -11,11 +11,14 @@ export default class MainController extends Controller {
 	}
 
 	main() {
-		window.alert('omg got main!!!');
+		// Add the listener for entering edit mode.
+		window.addEventListener('touchstart', () => {
+			window.alert('Got touch on: ' + location.href);
+		});
+
 		this.view.render();
 		window.addEventListener('hashchanged', this.route.bind(this));
 		this.route();
-		document.body.classList.remove('loading');
 	}
 
 	route() {
