@@ -4,7 +4,7 @@
 	"customizations": [{
 		"filter": "app://",
 		"css": ["style/app.css"],
-		"scripts": ["js/app.js"]
+		"scripts": ["js/initapp.js"]
 	}],
 	"role": "addon"
 }
