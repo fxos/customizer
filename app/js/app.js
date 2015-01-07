@@ -1,5 +1,4 @@
-import 'js/globals';
-import MainController from 'js/controller/main_controller';
+/* global MainController */
 
 var mainController = new MainController();
 mainController.main();

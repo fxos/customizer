@@ -1,0 +1,33 @@
+#! /usr/bin/env node --harmony
+
+/**
+ * Temporary build script to handle addon code.
+ * Addon code differs from a full app as it can not use the AMD loader.
+ * Instead we simply concat everything into a single file, and don't use AMD modules.
+ * This is only until we build this functionality into fxos-build.
+ */
+var gulp = require('gulp');
+
+var buildModules = __dirname + '/node_modules/fxos-build/node_modules/';
+var concat = require(buildModules + 'gulp-concat');
+var to5 = require(buildModules + 'gulp-6to5');
+
+const APP_ROOT = './app/';
+const DIST_APP_ROOT = './dist/app/';
+
+gulp.src([
+	APP_ROOT + 'js/polyfill.js',
+	APP_ROOT + 'components/fxos-mvc/mvc.js',
+	APP_ROOT + 'js/controller/**.js',
+	APP_ROOT + 'js/model/**.js',
+	APP_ROOT + 'js/view/**.js',
+	APP_ROOT + 'js/app.js'
+	])
+	.pipe(concat('addon-concat.js'))
+	.pipe(to5().on('error', function(e) {
+			console.log('error running 6to5', e);
+		}))
+	.pipe(gulp.dest(DIST_APP_ROOT + 'js'));
+
+
+console.log('all done.');

@@ -1,6 +1,5 @@
-import {Controller} from 'components/fxos-mvc/dist/mvc';
-import MainView from 'js/view/main_view';
-import EditController from 'js/controller/edit_controller';
+/* global EditController */
+/* global MainView */
 
 export default class MainController extends Controller {
 	constructor() {
@@ -12,6 +11,7 @@ export default class MainController extends Controller {
 	}
 
 	main() {
+		window.alert('omg got main!!!');
 		this.view.render();
 		window.addEventListener('hashchanged', this.route.bind(this));
 		this.route();

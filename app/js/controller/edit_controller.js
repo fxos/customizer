@@ -1,6 +1,4 @@
-import { Controller } from 'components/fxos-mvc/dist/mvc';
-
-import EditView from 'js/view/edit_view';
+/* global EditView */
 
 export default class EditController extends Controller {
 	constructor() {

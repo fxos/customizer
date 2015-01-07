@@ -4,7 +4,7 @@
 	"customizations": [{
 		"filter": "app",
 		"css": ["style/app.css"],
-		"scripts": ["js/initapp.js"]
+		"scripts": ["js/addon-concat.js"]
 	}],
 	"role": "addon",
 	"type": "certified"
