@@ -12,8 +12,8 @@ Want to hack? Read the [documentation](https://github.com/fxos/docs/wiki/Develop
 ```npm install && bower install```
 
 ## Build
-```gulp build && ./custombuild```
-Do *not* use the ```gulp``` watcher.
+```gulp build && ./custombuild```  
+Do *not* use the ```gulp``` watcher.  
 'custombuild' concatenates all JS into one file that ends up in
 ```dist/app/js/addon-concat.js```. This is needed because addons can only inject
 one JS file at a time without modifying the manifest.
