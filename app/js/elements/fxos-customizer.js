@@ -20,6 +20,10 @@ proto.createdCallback = function() {
   this.gaiaCssInspector = document.createElement('gaia-css-inspector');
   shadow.appendChild(this.gaiaCssInspector);
 
+  this.gaiaModal = document.createElement('gaia-modal');
+  this.gaiaModal.innerHTML = '<p>lorem ipsum...</p>';
+  shadow.appendChild(this.gaiaModal);
+
   var root = document.getElementById('root');
 
   this.gaiaDomTree.setRoot(root);

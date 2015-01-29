@@ -11,6 +11,10 @@
     "addon-generator": "fxos/addon-generator",
     "gaia-dom-tree": "gaia-components/gaia-dom-tree",
     "gaia-dialog": "gaia-components/gaia-dialog",
-    "gaia-css-inspector": "gaia-components/gaia-css-inspector"
+    "gaia-css-inspector": "gaia-components/gaia-css-inspector",
+    "gaia-modal": "gaia-components/gaia-modal"
+  },
+  "resolutions": {
+    "gaia-icons": "~0.7.4"
   }
 }
