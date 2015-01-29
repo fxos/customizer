@@ -1,15 +1,14 @@
-/* global EditController */
 /* global MainView */
+
+/* global ActionMenuController */
 
 /* global Controller */
 
 export default class MainController extends Controller {
   constructor() {
     this.view = new MainView({el: document.body});
-    this.controllers = {
-      'edit': new EditController()
-    };
-    this.activeController = null;
+
+    window.ActionMenuController = new ActionMenuController();
   }
 
   main() {

@@ -1,3 +1,5 @@
+/* globals ActionMenuController */
+
 (function(window) {
 'use strict';
 
@@ -44,7 +46,7 @@ proto._handleSelected = function(e) {
 };
 
 proto._handleLongPressed = function(e) {
-
+  ActionMenuController.main();
 };
 
 proto._handleClick = function(e) {

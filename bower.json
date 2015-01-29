@@ -10,6 +10,7 @@
     "fxos-mvc": "fxos/mvc",
     "addon-generator": "fxos/addon-generator",
     "gaia-dom-tree": "gaia-components/gaia-dom-tree",
+    "gaia-dialog": "gaia-components/gaia-dialog",
     "gaia-css-inspector": "gaia-components/gaia-css-inspector"
   }
 }
