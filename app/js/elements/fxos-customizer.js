@@ -12,14 +12,41 @@ var proto = Object.create(HTMLElement.prototype);
 proto.createdCallback = function() {
   var shadow = this.createShadowRoot();
 
-  var gaiaDomTree = document.createElement('gaia-dom-tree');
-  shadow.appendChild(gaiaDomTree);
+  this.gaiaDomTree = document.createElement('gaia-dom-tree');
+  shadow.appendChild(this.gaiaDomTree);
 
-  var gaiaCssInspector = document.createElement('gaia-css-inspector');
-  shadow.appendChild(gaiaCssInspector);
+  this.gaiaCssInspector = document.createElement('gaia-css-inspector');
+  shadow.appendChild(this.gaiaCssInspector);
 
-  gaiaDomTree.setRoot(document.getElementById('root'));
-  gaiaDomTree.render();
+  var root = document.getElementById('root');
+
+  this.gaiaDomTree.setRoot(root);
+  this.gaiaDomTree.render();
+
+  this.gaiaDomTree.addEventListener(
+    'selected', this._handleSelected.bind(this));
+  root.addEventListener('click', this._handleClick.bind(this));
+};
+
+proto._handleSelected = function(e) {
+  var prev = this._selected;
+  this._selected = this.gaiaDomTree.selectedNode;
+
+  if (prev) {
+    prev.classList.remove('selected');
+  }
+
+  if (this._selected.nodeType == 3) {
+    this._selected = this._selected.parentNode;
+  }
+};
+
+proto._handleClick = function(e) {
+  if (e.target === this.gaiaDomTree) {
+    return;
+  }
+
+  this.gaiaDomTree.select(e.target);
 };
 
 var FXOSCustomizer = document.registerElement('fxos-customizer', {
