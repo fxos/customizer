@@ -46,7 +46,8 @@ proto._handleSelected = function(e) {
 };
 
 proto._handleLongPressed = function(e) {
-  ActionMenuController.main();
+  this._handleSelected(e);
+  ActionMenuController.main(this._selected);
 };
 
 proto._handleClick = function(e) {

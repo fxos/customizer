@@ -7,8 +7,8 @@ export default class ActionMenuController extends Controller {
     this.view = new ActionMenuView();
   }
 
-  main() {
-    this.view.render();
+  main(target) {
+    this.view.render(target);
     document.body.appendChild(this.view.el);
   }
 }
