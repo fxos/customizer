@@ -25,6 +25,8 @@ proto.createdCallback = function() {
 
   this.gaiaDomTree.addEventListener(
     'selected', this._handleSelected.bind(this));
+  this.gaiaDomTree.addEventListener(
+    'longpressed', this._handleLongPressed.bind(this));
   root.addEventListener('click', this._handleClick.bind(this));
 };
 
@@ -39,6 +41,10 @@ proto._handleSelected = function(e) {
   if (this._selected.nodeType == 3) {
     this._selected = this._selected.parentNode;
   }
+};
+
+proto._handleLongPressed = function(e) {
+
 };
 
 proto._handleClick = function(e) {
