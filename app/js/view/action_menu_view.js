@@ -1,5 +1,7 @@
 /* global View */
 
+/* globals FXOSCustomizer */
+
 /* import 'components/gaia-dialog/gaia-dialog'; */
 
 export default class ActionMenuView extends View {
@@ -16,6 +18,7 @@ export default class ActionMenuView extends View {
 
     var editBtn = document.createElement('button');
     editBtn.textContent = 'Edit';
+    editBtn.addEventListener('click', this._handleEdit.bind(this));
     this._dialog.appendChild(editBtn);
 
     var delBtn = document.createElement('button');
@@ -32,8 +35,13 @@ export default class ActionMenuView extends View {
     cancelBtn.addEventListener('click', this._handleCancel.bind(this));
     this._dialog.appendChild(cancelBtn);
 
-    document.body.appendChild(this._dialog);
+    FXOSCustomizer.appendChild(this._dialog);
     this._dialog.open();
+  }
+
+  _handleEdit(e) {
+    var modal = FXOSCustomizer.querySelector('gaia-modal');
+    modal.open();
   }
 
   _handleDelete(e) {
