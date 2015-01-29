@@ -9,6 +9,7 @@
   "dependencies": {
     "fxos-mvc": "fxos/mvc",
     "addon-generator": "fxos/addon-generator",
-    "gaia-dom-tree": "gaia-components/gaia-dom-tree"
+    "gaia-dom-tree": "gaia-components/gaia-dom-tree",
+    "gaia-css-inspector": "gaia-components/gaia-css-inspector"
   }
 }

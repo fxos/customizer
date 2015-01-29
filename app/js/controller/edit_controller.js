@@ -8,7 +8,7 @@ export default class EditController extends Controller {
   }
 
   main() {
-    this.view.render();
-    document.body.appendChild(this.view.el);
+    //this.view.render();
+    //document.body.appendChild(this.view.el);
   }
 }

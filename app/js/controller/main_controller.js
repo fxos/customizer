@@ -13,22 +13,13 @@ export default class MainController extends Controller {
   }
 
   main() {
-    // Add the listener for entering edit mode.
-    window.addEventListener('touchstart', () => {
-      window.alert('Got touch on: ' + location.href);
-    });
-
-    this.view.render();
-    window.addEventListener('hashchanged', this.route.bind(this));
-    this.route();
+    window.addEventListener('contextmenu', this._handleContextmenu.bind(this));
   }
 
-  route() {
-    var route = window.location.hash;
-    switch (route) {
-      default: this.activeController = this.controllers.edit;
-      break;
+  _handleContextmenu(e) {
+    if (!this._customizer) {
+      this._customizer = document.createElement('fxos-customizer');
+      document.body.appendChild(this._customizer);
     }
-    this.activeController.main();
   }
 }
