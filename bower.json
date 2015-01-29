@@ -1,12 +1,14 @@
 {
-	"name": "fxos-customizer",
-	"description": "An addon for FirefoxOS which builds customizes application interfaces.",
-	"ignore": [
-		"**/.*",
-		"node_modules",
-		"app/componenets"
-	],
-	"dependencies": {
-		"fxos-mvc": "git@github.com:fxos/mvc.git"
-	}
+  "name": "fxos-customizer",
+  "description": "An addon for FirefoxOS which builds customizes application interfaces.",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "app/componenets"
+  ],
+  "dependencies": {
+    "fxos-mvc": "fxos/mvc",
+    "addon-generator": "fxos/addon-generator",
+    "gaia-dom-tree": "gaia-components/gaia-dom-tree"
+  }
 }
