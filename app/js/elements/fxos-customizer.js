@@ -1,5 +1,7 @@
 /* globals ActionMenuController */
 
+/* globals FXOSCustomizer */
+
 (function(window) {
 'use strict';
 
@@ -12,17 +14,22 @@ var proto = Object.create(HTMLElement.prototype);
 `;*/
 
 proto.createdCallback = function() {
-  var shadow = this.createShadowRoot();
+  if (window.FXOSCustomizer) {
+    console.error('FXOSCustomizer is a singleton');
+    return;
+  }
+
+  window.FXOSCustomizer = this.createShadowRoot();
 
   this.gaiaDomTree = document.createElement('gaia-dom-tree');
-  shadow.appendChild(this.gaiaDomTree);
+  FXOSCustomizer.appendChild(this.gaiaDomTree);
 
   this.gaiaCssInspector = document.createElement('gaia-css-inspector');
-  shadow.appendChild(this.gaiaCssInspector);
+  FXOSCustomizer.appendChild(this.gaiaCssInspector);
 
   this.gaiaModal = document.createElement('gaia-modal');
   this.gaiaModal.innerHTML = '<p>lorem ipsum...</p>';
-  shadow.appendChild(this.gaiaModal);
+  FXOSCustomizer.appendChild(this.gaiaModal);
 
   var root = document.getElementById('root');
 
@@ -62,10 +69,8 @@ proto._handleClick = function(e) {
   this.gaiaDomTree.select(e.target);
 };
 
-var FXOSCustomizer = document.registerElement('fxos-customizer', {
+document.registerElement('fxos-customizer', {
   prototype: proto
 });
-
-window.FXOSCustomizer = FXOSCustomizer;
 
 })(window);
