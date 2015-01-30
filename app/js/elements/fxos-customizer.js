@@ -7,7 +7,7 @@ var template =
 `<gaia-dom-tree></gaia-dom-tree>
 <gaia-css-inspector></gaia-css-inspector>
 <gaia-modal>
-	<p>lorem ipsum...</p>
+  <p>lorem ipsum...</p>
 </gaia-modal>`;
 
 proto.createdCallback = function() {
@@ -25,10 +25,10 @@ proto.createdCallback = function() {
 };
 
 proto.setRootNode = function(rootNode) {
-	rootNode.addEventListener('click', this._handleClick.bind(this));
+  rootNode.addEventListener('click', this._handleClick.bind(this));
 
-	this.gaiaDomTree.setRoot(rootNode);
-	this.gaiaDomTree.render();
+  this.gaiaDomTree.setRoot(rootNode);
+  this.gaiaDomTree.render();
 };
 
 proto._handleSelected = function(e) {
@@ -48,7 +48,7 @@ proto._handleLongPressed = function(e) {
   this._handleSelected(e);
 
   this.dispatchEvent(new CustomEvent('action', {
-  	detail: this._selected
+    detail: this._selected
   }));
 };
 

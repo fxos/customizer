@@ -16,25 +16,25 @@ const APP_ROOT = './app/';
 const DIST_APP_ROOT = './dist/app/';
 
 gulp.src([
-	APP_ROOT + 'js/polyfill.js',
-	APP_ROOT + 'components/gaia-component/gaia-component.js',
-	APP_ROOT + 'components/gaia-dialog/gaia-dialog.js',
-	APP_ROOT + 'components/gaia-dom-tree/gaia-dom-tree.js',
-	APP_ROOT + 'components/gaia-css-inspector/gaia-css-inspector.js',
-	APP_ROOT + 'components/gaia-modal/gaia-modal.js',
-	APP_ROOT + 'components/addon-generator/addon-generator.js',
-	APP_ROOT + 'components/fxos-mvc/mvc.js',
-	APP_ROOT + 'js/elements/**.js',
-	APP_ROOT + 'js/controllers/**.js',
-	APP_ROOT + 'js/models/**.js',
-	APP_ROOT + 'js/views/**.js',
-	APP_ROOT + 'js/app.js'
-	])
-	.pipe(concat('addon-concat.js'))
-	.pipe(to5().on('error', function(e) {
-			console.log('error running 6to5', e);
-		}))
-	.pipe(gulp.dest(DIST_APP_ROOT + 'js'));
+  APP_ROOT + 'js/polyfill.js',
+  APP_ROOT + 'components/gaia-component/gaia-component.js',
+  APP_ROOT + 'components/gaia-dialog/gaia-dialog.js',
+  APP_ROOT + 'components/gaia-dom-tree/gaia-dom-tree.js',
+  APP_ROOT + 'components/gaia-css-inspector/gaia-css-inspector.js',
+  APP_ROOT + 'components/gaia-modal/gaia-modal.js',
+  APP_ROOT + 'components/addon-generator/addon-generator.js',
+  APP_ROOT + 'components/fxos-mvc/mvc.js',
+  APP_ROOT + 'js/elements/**.js',
+  APP_ROOT + 'js/controllers/**.js',
+  APP_ROOT + 'js/models/**.js',
+  APP_ROOT + 'js/views/**.js',
+  APP_ROOT + 'js/app.js'
+  ])
+  .pipe(concat('addon-concat.js'))
+  .pipe(to5().on('error', function(e) {
+      console.log('error running 6to5', e);
+    }))
+  .pipe(gulp.dest(DIST_APP_ROOT + 'js'));
 
 
 console.log('all done.');

@@ -5,31 +5,31 @@ var mainViewTemplate =
 <fxos-customizer-highlighter></fxos-customizer-highlighter>`;
 
 export default class MainView extends View {
-	constructor(options) {
-		super(options);
+  constructor(options) {
+    super(options);
 
-		this.render();
-	}
+    this.render();
+  }
 
-	init(controller) {
-		super(controller);
+  init(controller) {
+    super(controller);
 
-		this.customizer = this.$('fxos-customizer');
-		this.highlighter = this.$('fxos-customizer-highlighter');
+    this.customizer = this.$('fxos-customizer');
+    this.highlighter = this.$('fxos-customizer-highlighter');
 
-		this.on('action', 'fxos-customizer', (evt) => {
-			this.controller.actionMenuController.open(evt.detail);
-		});
-	}
+    this.on('action', 'fxos-customizer', (evt) => {
+      this.controller.actionMenuController.open(evt.detail);
+    });
+  }
 
-	template() {
-		return mainViewTemplate;
-	}
+  template() {
+    return mainViewTemplate;
+  }
 
-	render() {
-		super();
+  render() {
+    super();
 
-		this.el.appendChild(this.actionMenuView.el);
-		this.el.appendChild(this.editView.el);
-	}
+    this.el.appendChild(this.actionMenuView.el);
+    this.el.appendChild(this.editView.el);
+  }
 }

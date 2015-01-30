@@ -5,18 +5,18 @@ var editViewTemplate =
 
 export default class EditView extends View {
   constructor(options) {
-  	super(options);
+    super(options);
 
-  	this.render();
+    this.render();
   }
 
   init(controller) {
-  	super(controller);
+    super(controller);
 
-  	this.modal = this.$('gaia-modal');
+    this.modal = this.$('gaia-modal');
   }
 
   template() {
-  	return editViewTemplate;
+    return editViewTemplate;
   }
 }

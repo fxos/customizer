@@ -9,22 +9,22 @@
 var editView = new EditView();
 var actionMenuView = new ActionMenuView();
 var mainView = new MainView({
-	actionMenuView: actionMenuView,
-	editView: editView
+  actionMenuView: actionMenuView,
+  editView: editView
 });
 
 var editController = new EditController({
-	view: editView
+  view: editView
 });
 
 var actionMenuController = new ActionMenuController({
-	view: actionMenuView,
+  view: actionMenuView,
 
-	editController: editController
+  editController: editController
 });
 
 window.mainController = new MainController({
-	view: mainView,
+  view: mainView,
 
-	actionMenuController: actionMenuController
+  actionMenuController: actionMenuController
 });

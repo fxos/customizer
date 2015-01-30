@@ -2,35 +2,35 @@
 
 var actionMenuViewTemplate =
 `<gaia-dialog>
-	<button type="button" data-action="edit">Edit</button>
-	<button type="button" data-action="remove">Remove</button>
-	<button type="button" data-action="move">Move</button>
-	<button type="button" data-action="cancel">Cancel</button>
+  <button type="button" data-action="edit">Edit</button>
+  <button type="button" data-action="remove">Remove</button>
+  <button type="button" data-action="move">Move</button>
+  <button type="button" data-action="cancel">Cancel</button>
 </gaia-dialog>`;
 
 export default class ActionMenuView extends View {
   constructor(options) {
-  	super(options);
+    super(options);
 
-  	this.render();
+    this.render();
   }
 
   init(controller) {
-  	super(controller);
+    super(controller);
 
-  	this.dialog = this.$('gaia-dialog');
+    this.dialog = this.$('gaia-dialog');
 
-  	this.on('click', 'button', (evt) => {
-  		var action = this.controller[evt.target.dataset.action];
-  		if (typeof action === 'function') {
-  			action.call(this.controller);
-  		}
+    this.on('click', 'button', (evt) => {
+      var action = this.controller[evt.target.dataset.action];
+      if (typeof action === 'function') {
+        action.call(this.controller);
+      }
 
-  		this.dialog.close();
-  	});
+      this.dialog.close();
+    });
   }
 
   template() {
-  	return actionMenuViewTemplate;
+    return actionMenuViewTemplate;
   }
 }
