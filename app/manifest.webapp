@@ -2,7 +2,7 @@
   "name": "FxOS Customizer",
   "description": "An addon to create addons.",
   "customizations": [{
-    "filter": "clock",
+    "filter": "app",
     "css": ["style/app.css"],
     "scripts": ["js/addon-concat.js"]
   }],
