@@ -1,46 +1,34 @@
-/* globals ActionMenuController */
-
-/* globals FXOSCustomizer */
-
 (function(window) {
 'use strict';
 
 var proto = Object.create(HTMLElement.prototype);
 
-/*var template = `
-<style scoped>
-
-</style>
-`;*/
+var template =
+`<gaia-dom-tree></gaia-dom-tree>
+<gaia-css-inspector></gaia-css-inspector>
+<gaia-modal>
+	<p>lorem ipsum...</p>
+</gaia-modal>`;
 
 proto.createdCallback = function() {
-  if (window.FXOSCustomizer) {
-    console.error('FXOSCustomizer is a singleton');
-    return;
-  }
+  var shadow = this.createShadowRoot();
+  shadow.innerHTML = template;
 
-  window.FXOSCustomizer = this.createShadowRoot();
-
-  this.gaiaDomTree = document.createElement('gaia-dom-tree');
-  FXOSCustomizer.appendChild(this.gaiaDomTree);
-
-  this.gaiaCssInspector = document.createElement('gaia-css-inspector');
-  FXOSCustomizer.appendChild(this.gaiaCssInspector);
-
-  this.gaiaModal = document.createElement('gaia-modal');
-  this.gaiaModal.innerHTML = '<p>lorem ipsum...</p>';
-  FXOSCustomizer.appendChild(this.gaiaModal);
-
-  var root = document.getElementById('root');
-
-  this.gaiaDomTree.setRoot(root);
-  this.gaiaDomTree.render();
+  this.gaiaDomTree = shadow.querySelector('gaia-dom-tree');
+  this.gaiaCssInspector = shadow.querySelector('gaia-css-inspector');
+  this.gaiaModal = shadow.querySelector('gaia-modal');
 
   this.gaiaDomTree.addEventListener(
     'selected', this._handleSelected.bind(this));
   this.gaiaDomTree.addEventListener(
     'longpressed', this._handleLongPressed.bind(this));
-  root.addEventListener('click', this._handleClick.bind(this));
+};
+
+proto.setRootNode = function(rootNode) {
+	rootNode.addEventListener('click', this._handleClick.bind(this));
+
+	this.gaiaDomTree.setRoot(rootNode);
+	this.gaiaDomTree.render();
 };
 
 proto._handleSelected = function(e) {
@@ -58,7 +46,10 @@ proto._handleSelected = function(e) {
 
 proto._handleLongPressed = function(e) {
   this._handleSelected(e);
-  ActionMenuController.main(this._selected);
+
+  this.dispatchEvent(new CustomEvent('action', {
+  	detail: this._selected
+  }));
 };
 
 proto._handleClick = function(e) {

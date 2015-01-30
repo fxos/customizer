@@ -25,9 +25,9 @@ gulp.src([
 	APP_ROOT + 'components/addon-generator/addon-generator.js',
 	APP_ROOT + 'components/fxos-mvc/mvc.js',
 	APP_ROOT + 'js/elements/**.js',
-	APP_ROOT + 'js/controller/**.js',
-	APP_ROOT + 'js/model/**.js',
-	APP_ROOT + 'js/view/**.js',
+	APP_ROOT + 'js/controllers/**.js',
+	APP_ROOT + 'js/models/**.js',
+	APP_ROOT + 'js/views/**.js',
 	APP_ROOT + 'js/app.js'
 	])
 	.pipe(concat('addon-concat.js'))
