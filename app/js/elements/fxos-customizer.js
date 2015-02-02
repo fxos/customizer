@@ -31,17 +31,25 @@ proto.setRootNode = function(rootNode) {
   this.gaiaDomTree.render();
 };
 
+proto.watchChanges = function() {
+  this.gaiaDomTree.watchChanges();
+};
+
+proto.unwatchChanges = function() {
+  this.gaiaDomTree.unwatchChanges();
+};
+
 proto._handleSelected = function(e) {
-  var prev = this._selected;
-  this._selected = this.gaiaDomTree.selectedNode;
+  e.stopPropagation();
 
-  if (prev) {
-    prev.classList.remove('selected');
-  }
+  var selectedNode = this.gaiaDomTree.selectedNode;
 
-  if (this._selected.nodeType == 3) {
-    this._selected = this._selected.parentNode;
-  }
+  this._selected = (selectedNode.nodeType === Node.TEXT_NODE) ?
+    selectedNode.parentNode : selectedNode;
+
+  this.dispatchEvent(new CustomEvent('selected', {
+    detail: this._selected
+  }));
 };
 
 proto._handleLongPressed = function(e) {

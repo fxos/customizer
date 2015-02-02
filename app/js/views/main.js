@@ -24,7 +24,14 @@ export default class MainView extends View {
     this.customizer.gaiaDomTree.filter = '#' + this.el.id;
 
     this.on('action', 'fxos-customizer', (evt) => {
+      this.customizer.unwatchChanges();
       this.controller.actionMenuController.open(evt.detail);
+
+      setTimeout(this.customizer.watchChanges.bind(this.customizer), 1000);
+    });
+
+    this.on('selected', 'fxos-customizer', (evt) => {
+      this.highlighter.setTargetElement(evt.detail);
     });
   }
 

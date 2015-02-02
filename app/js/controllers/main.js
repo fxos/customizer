@@ -4,19 +4,29 @@ export default class MainController extends Controller {
   constructor(options) {
     super(options);
 
-    window.addEventListener('contextmenu', this.onContextMenu.bind(this));
+    this.attached = false;
+
+    window.addEventListener('contextmenu', this.attachView.bind(this));
   }
 
   attachView() {
+    if (this.attached) {
+      return;
+    }
+
+    this.view.customizer.setRootNode(document.documentElement);
     document.body.appendChild(this.view.el);
+
+    this.attached = true;
   }
 
   removeView() {
-    document.body.removeChild(this.view.el);
-  }
+    if (!this.attached) {
+      return;
+    }
 
-  onContextMenu() {
-    this.view.customizer.setRootNode(document.documentElement);
-    this.attachView();
+    document.body.removeChild(this.view.el);
+
+    this.attached = false;
   }
 }
