@@ -22,6 +22,8 @@ gulp.src([
   APP_ROOT + 'components/gaia-dom-tree/gaia-dom-tree.js',
   APP_ROOT + 'components/gaia-css-inspector/gaia-css-inspector.js',
   APP_ROOT + 'components/gaia-modal/gaia-modal.js',
+  APP_ROOT + 'components/gaia-tabs/gaia-tabs.js',
+  APP_ROOT + 'components/gaia-header/dist/gaia-header.js',
   APP_ROOT + 'components/addon-generator/addon-generator.js',
   APP_ROOT + 'components/fxos-mvc/mvc.js',
   APP_ROOT + 'js/elements/**.js',

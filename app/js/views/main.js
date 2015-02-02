@@ -10,6 +10,7 @@ export default class MainView extends View {
 
     // Give this view a unique ID.
     this.el.id = 'customizer-' + Date.now();
+    this.el.className = 'fxos-customizer-main-view';
 
     this.render();
   }
@@ -31,7 +32,7 @@ export default class MainView extends View {
     });
 
     this.on('selected', 'fxos-customizer', (evt) => {
-      this.highlighter.setTargetElement(evt.detail);
+      // this.highlighter.setTargetElement(evt.detail);
     });
   }
 

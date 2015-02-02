@@ -12,6 +12,8 @@ export default class ActionMenuView extends View {
   constructor(options) {
     super(options);
 
+    this.el.className = 'fxos-customizer-action-view';
+
     this.render();
   }
 

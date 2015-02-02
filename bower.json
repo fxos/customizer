@@ -12,9 +12,12 @@
     "gaia-dom-tree": "gaia-components/gaia-dom-tree",
     "gaia-dialog": "gaia-components/gaia-dialog",
     "gaia-css-inspector": "gaia-components/gaia-css-inspector",
-    "gaia-modal": "gaia-components/gaia-modal"
+    "gaia-modal": "gaia-components/gaia-modal",
+    "gaia-tabs": "gaia-components/gaia-tabs",
+    "gaia-header": "gaia-components/gaia-header"
   },
   "resolutions": {
-    "gaia-icons": "~0.7.4"
+    "gaia-icons": "~0.7.4",
+    "gaia-component": "~0.3.2"
   }
 }
