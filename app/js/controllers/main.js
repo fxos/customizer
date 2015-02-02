@@ -16,7 +16,7 @@ export default class MainController extends Controller {
   }
 
   onContextMenu() {
-    this.view.customizer.setRootNode(document.getElementById('root'));
+    this.view.customizer.setRootNode(document.documentElement);
     this.attachView();
   }
 }

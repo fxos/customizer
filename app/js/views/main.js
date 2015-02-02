@@ -8,6 +8,9 @@ export default class MainView extends View {
   constructor(options) {
     super(options);
 
+    // Give this view a unique ID.
+    this.el.id = 'customizer-' + Date.now();
+
     this.render();
   }
 
@@ -16,6 +19,9 @@ export default class MainView extends View {
 
     this.customizer = this.$('fxos-customizer');
     this.highlighter = this.$('fxos-customizer-highlighter');
+
+    // Hide this view from the DOM tree.
+    this.customizer.gaiaDomTree.filter = '#' + this.el.id;
 
     this.on('action', 'fxos-customizer', (evt) => {
       this.controller.actionMenuController.open(evt.detail);
