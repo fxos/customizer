@@ -9,12 +9,43 @@ var editViewTemplate =
     left: 0;
     width: 100%;
   }
+  .tab-pane {
+    box-sizing: padding-box;
+    position: absolute;
+    padding: 10px;
+    top: 50px;
+    bottom: 46px;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    transition: opacity 0.1s;
+    pointer-events: none;
+  }
+  .tab-pane.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  textarea {
+    width: 100%;
+  }
   </style>
   <gaia-header>
     <h1>Edit</h1>
     <button data-action="close">Done</button>
   </gaia-header>
-  <gaia-tabs>
+  <section class="tab-pane active" data-id="html">
+    <textarea rows="10"></textarea>
+  </section>
+  <section class="tab-pane" data-id="attributes">
+    <h3>Attributes</h3>
+  </section>
+  <section class="tab-pane" data-id="properties">
+    <h3>Properties</h3>
+  </section>
+  <section class="tab-pane" data-id="events">
+    <h3>Events</h3>
+  </section>
+  <gaia-tabs selected="0">
     <a href="#">HTML</a>
     <a href="#">Attributes</a>
     <a href="#">Properties</a>
@@ -38,16 +69,30 @@ export default class EditView extends View {
     this.header = this.$('gaia-header');
     this.tabs   = this.$('gaia-tabs');
 
+    this.htmlTextarea = this.$('section[data-id="html"] > textarea');
+
+    this.tabPanes = [].slice.apply(this.$$('.tab-pane'));
+
     this.on('click', 'button[data-action="close"]', (evt) => {
       this.controller.close();
     });
 
     this.tabs.addEventListener('change', (evt) => {
-      console.log('gaia-tabs::change', this.tabs.selected);
+      this.tabPanes.forEach((tabPane, index) => {
+        if (index === this.tabs.selected) {
+          tabPane.classList.add('active');
+        } else {
+          tabPane.classList.remove('active');
+        }
+      });
     });
   }
 
   template() {
     return editViewTemplate;
+  }
+
+  setTarget(target) {
+    this.htmlTextarea.value = target.innerHTML;
   }
 }

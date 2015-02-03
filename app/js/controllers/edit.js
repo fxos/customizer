@@ -8,6 +8,7 @@ export default class EditController extends Controller {
   open(target) {
     this.target = target;
 
+    this.view.setTarget(target);
     this.view.modal.open();
   }
 
