@@ -30,8 +30,9 @@ var editViewTemplate =
   }
   </style>
   <gaia-header>
+    <button data-action="cancel">Cancel</button>
     <h1>Edit</h1>
-    <button data-action="close">Done</button>
+    <button data-action="save">Save</button>
   </gaia-header>
   <section class="tab-pane active" data-id="html">
     <textarea rows="10"></textarea>
@@ -73,7 +74,12 @@ export default class EditView extends View {
 
     this.tabPanes = [].slice.apply(this.$$('.tab-pane'));
 
-    this.on('click', 'button[data-action="close"]', (evt) => {
+    this.on('click', 'button[data-action="cancel"]', (evt) => {
+      this.controller.close();
+    });
+
+    this.on('click', 'button[data-action="save"]', (evt) => {
+      this.controller.save();
       this.controller.close();
     });
 
@@ -85,6 +91,10 @@ export default class EditView extends View {
           tabPane.classList.remove('active');
         }
       });
+    });
+
+    this.htmlTextarea.addEventListener('keyup', (evt) => {
+      this.controller.changes.innerHTML = this.htmlTextarea.value;
     });
   }
 
