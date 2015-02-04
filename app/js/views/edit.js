@@ -27,6 +27,9 @@ var editViewTemplate =
   }
   textarea {
     width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
   }
   </style>
   <gaia-header>
@@ -35,7 +38,7 @@ var editViewTemplate =
     <button data-action="save">Save</button>
   </gaia-header>
   <section class="tab-pane active" data-id="html">
-    <textarea rows="10"></textarea>
+    <textarea></textarea>
   </section>
   <section class="tab-pane" data-id="attributes">
     <h3>Attributes</h3>

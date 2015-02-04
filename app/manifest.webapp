@@ -10,6 +10,14 @@
   "type": "certified",
   "permissions": {
     "device-storage:sdcard": { "access": "readwrite" },
-    "webapps-manage": {}
+    "webapps-manage": {},
+
+    "themeable":{},
+    "storage":{},
+    "device-storage:pictures":{ "access": "readwrite" },
+    "device-storage:videos":{ "access": "readwrite" },
+    "audio-channel-content":{},
+    "nfc-share": {},
+    "feature-detection": {}
   }
 }
