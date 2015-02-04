@@ -23,6 +23,11 @@ export default class EditController extends Controller {
   save() {
     var generator = new AddonGenerator(this.target);
 
+    generator.manifest.customizations = [{
+      filter: window.location.origin,
+      scripts: ['main.js']
+    }];
+
     if (this.changes.innerHTML) {
       generator.innerHTML(this.changes.innerHTML);
     }

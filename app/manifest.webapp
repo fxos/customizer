@@ -7,5 +7,9 @@
     "scripts": ["js/addon-concat.js"]
   }],
   "role": "addon",
-  "type": "certified"
+  "type": "certified",
+  "permissions": {
+    "device-storage:sdcard": { "access": "readwrite" },
+    "webapps-manage": {}
+  }
 }

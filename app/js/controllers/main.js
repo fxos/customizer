@@ -1,5 +1,7 @@
 /* global Controller */
 
+const ADDON_FILENAME = 'addon-temp.zip';
+
 export default class MainController extends Controller {
   constructor(options) {
     super(options);
@@ -30,7 +32,34 @@ export default class MainController extends Controller {
     this.attached = false;
   }
 
-  installAddon(addon) {
-    console.log(addon);
+  installAddon(addonBlob) {
+    console.log('installAddon()', addonBlob);
+
+    // Save the blob to a file because we don't support importing memory blobs.
+    var sdcard = navigator.getDeviceStorage('sdcard');
+
+    var deleteRequest = sdcard.delete(ADDON_FILENAME);
+    deleteRequest.onsuccess = deleteRequest.onerror = () => {
+      var addNamedRequest = sdcard.addNamed(addonBlob, ADDON_FILENAME);
+      addNamedRequest.onsuccess = () => {
+        var getRequest = sdcard.get(ADDON_FILENAME);
+        getRequest.onsuccess = () => {
+          var addonFile = getRequest.result;
+          navigator.mozApps.mgmt.import(addonFile)
+            .then((addon) => {
+              console.log('SUCCESS', addon);
+            })
+            .catch((error) => {
+              console.log('ERROR', error);
+            });
+        };
+        getRequest.onerror = (error) => {
+          console.error('Unable to get addon from DeviceStorage', error);
+        };
+      };
+      addNamedRequest.onerror = (error) => {
+        console.error('Unable to save addon to DeviceStorage', error);
+      };
+    };
   }
 }
