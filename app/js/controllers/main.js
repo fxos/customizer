@@ -29,4 +29,8 @@ export default class MainController extends Controller {
 
     this.attached = false;
   }
+
+  installAddon(addon) {
+    console.log(addon);
+  }
 }

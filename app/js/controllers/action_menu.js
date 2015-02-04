@@ -26,4 +26,8 @@ export default class ActionMenuController extends Controller {
   move() {
 
   }
+
+  cancel() {
+
+  }
 }

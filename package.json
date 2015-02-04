@@ -10,5 +10,8 @@
   "dependencies": {
     "fxos-build": "0.3.4",
     "gulp": "3.8.x"
+  },
+  "devDependencies": {
+    "gulp-merge": "^0.1.0"
   }
 }

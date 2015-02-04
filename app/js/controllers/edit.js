@@ -27,6 +27,6 @@ export default class EditController extends Controller {
       generator.innerHTML(this.changes.innerHTML);
     }
 
-    console.log(generator.generate());
+    this.mainController.installAddon(generator.generate());
   }
 }

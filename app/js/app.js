@@ -23,8 +23,13 @@ var actionMenuController = new ActionMenuController({
   editController: editController
 });
 
-window.mainController = new MainController({
+var mainController = new MainController({
   view: mainView,
 
   actionMenuController: actionMenuController
 });
+
+editController.mainController = mainController;
+actionMenuController.mainController = mainController;
+
+window.mainController = mainController;
