@@ -22,6 +22,10 @@ proto.createdCallback = function() {
     'selected', this._handleSelected.bind(this));
   this.gaiaDomTree.addEventListener(
     'longpressed', this._handleLongPressed.bind(this));
+
+  this.gaiaDomTree.addEventListener('contextmenu', (evt) => {
+    evt.stopPropagation();
+  });
 };
 
 proto.setRootNode = function(rootNode) {
