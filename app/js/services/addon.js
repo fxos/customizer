@@ -26,3 +26,23 @@ AddonService.getAddons = function(host) {
     };
   });
 };
+
+AddonService.uninstall = function(origin) {
+  return new Promise((resolve, reject) => {
+    this.getAddons().then((addons) => {
+      var addon = addons.find(addon => addon.origin === origin);
+      if (!addon) {
+        reject();
+        return;
+      }
+
+      var request = navigator.mozApps.mgmt.uninstall(addon);
+      request.onsuccess = function() {
+        resolve(request);
+      };
+      request.onerror = function() {
+        reject(request);
+      };
+    }).catch(reject);
+  });
+};

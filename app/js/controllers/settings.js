@@ -18,4 +18,12 @@ export default class SettingsController extends Controller {
   close() {
     this.view.modal.close();
   }
+
+  uninstall(addon) {
+    AddonService.uninstall(addon.origin).then(() => {
+      AddonService.getAddons(window.location.host).then((addons) => {
+        this.view.setAddons(addons);
+      });
+    });
+  }
 }

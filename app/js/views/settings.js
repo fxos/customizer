@@ -31,7 +31,7 @@ export default class SettingsView extends View {
     this.on('click', 'button', (evt) => {
       var action = this.controller[evt.target.dataset.action];
       if (typeof action === 'function') {
-        action.call(this.controller);
+        action.call(this.controller, evt.target.dataset);
       }
     });
   }
