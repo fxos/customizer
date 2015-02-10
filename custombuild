@@ -34,6 +34,7 @@ var app = gulp.src([
   APP_ROOT + 'js/elements/**.js',
   APP_ROOT + 'js/controllers/**.js',
   APP_ROOT + 'js/models/**.js',
+  APP_ROOT + 'js/services/**.js',
   APP_ROOT + 'js/views/**.js',
   APP_ROOT + 'js/app.js'
   ])

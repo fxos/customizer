@@ -24,6 +24,13 @@ export default class MainView extends View {
     // Hide this view from the DOM tree.
     this.customizer.gaiaDomTree.filter = '#' + this.el.id;
 
+    this.on('menu', 'fxos-customizer', (evt) => {
+      this.customizer.unwatchChanges();
+      this.controller.settingsController.open();
+
+      setTimeout(this.customizer.watchChanges.bind(this.customizer), 1000);
+    });
+
     this.on('action', 'fxos-customizer', (evt) => {
       this.customizer.unwatchChanges();
       this.controller.actionMenuController.open(evt.detail);
@@ -45,5 +52,6 @@ export default class MainView extends View {
 
     this.el.appendChild(this.actionMenuView.el);
     this.el.appendChild(this.editView.el);
+    this.el.appendChild(this.settingsView.el);
   }
 }
