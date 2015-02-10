@@ -1,15 +1,29 @@
 {
-  "name": "FxOS Customizer",
-  "description": "An addon to create addons.",
+  "name": "Gallery",
+  "description": "A demo of Gallery with an embedded FxOS Customizer",
   "customizations": [{
     "filter": "app",
     "css": ["style/app.css"],
     "scripts": ["js/addon-concat.js"]
   }],
-  "role": "addon",
   "type": "certified",
   "permissions": {
     "device-storage:sdcard": { "access": "readwrite" },
-    "webapps-manage": {}
+    "webapps-manage": {},
+    "themeable":{},
+    "storage":{},
+    "device-storage:pictures":{ "access": "readwrite" },
+    "device-storage:videos":{ "access": "readwrite" },
+    "audio-channel-content":{},
+    "nfc-share": {},
+    "feature-detection": {}
+  },
+  "launch_path": "/gallery/index.html",
+  "icons": {
+    "84": "/gallery/style/icons/gallery_84.png",
+    "126": "/gallery/style/icons/gallery_126.png",
+    "142": "/gallery/style/icons/gallery_142.png",
+    "189": "/gallery/style/icons/gallery_189.png",
+    "284": "/gallery/style/icons/gallery_284.png"
   }
 }

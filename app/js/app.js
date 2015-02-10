@@ -1,16 +1,20 @@
 /*global EditView*/
 /*global ActionMenuView*/
+/*global SettingsView*/
 /*global MainView*/
 
 /*global EditController*/
 /*global ActionMenuController*/
+/*global SettingsController*/
 /*global MainController*/
 
 var editView = new EditView();
 var actionMenuView = new ActionMenuView();
+var settingsView = new SettingsView();
 var mainView = new MainView({
+  editView: editView,
   actionMenuView: actionMenuView,
-  editView: editView
+  settingsView: settingsView
 });
 
 var editController = new EditController({
@@ -23,13 +27,19 @@ var actionMenuController = new ActionMenuController({
   editController: editController
 });
 
+var settingsController = new SettingsController({
+  view: settingsView
+});
+
 var mainController = new MainController({
   view: mainView,
 
-  actionMenuController: actionMenuController
+  actionMenuController: actionMenuController,
+  settingsController: settingsController
 });
 
 editController.mainController = mainController;
 actionMenuController.mainController = mainController;
+settingsController.mainController = mainController;
 
 window.mainController = mainController;

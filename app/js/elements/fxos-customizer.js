@@ -4,7 +4,11 @@
 var proto = Object.create(HTMLElement.prototype);
 
 var template =
-`<gaia-dom-tree></gaia-dom-tree>
+`<gaia-header>
+  <h1></h1>
+  <button type="button" data-action="settings">Settings</button>
+</gaia-header>
+<gaia-dom-tree></gaia-dom-tree>
 <gaia-css-inspector></gaia-css-inspector>
 <gaia-modal>
   <p>lorem ipsum...</p>
@@ -14,14 +18,21 @@ proto.createdCallback = function() {
   var shadow = this.createShadowRoot();
   shadow.innerHTML = template;
 
+  this.gaiaHeader = shadow.querySelector('gaia-header');
   this.gaiaDomTree = shadow.querySelector('gaia-dom-tree');
   this.gaiaCssInspector = shadow.querySelector('gaia-css-inspector');
   this.gaiaModal = shadow.querySelector('gaia-modal');
 
+  this.gaiaHeader.addEventListener(
+    'click', this._handleMenuAction.bind(this));
   this.gaiaDomTree.addEventListener(
     'selected', this._handleSelected.bind(this));
   this.gaiaDomTree.addEventListener(
     'longpressed', this._handleLongPressed.bind(this));
+
+  this.gaiaDomTree.addEventListener('contextmenu', (evt) => {
+    evt.stopPropagation();
+  });
 };
 
 proto.setRootNode = function(rootNode) {
@@ -37,6 +48,16 @@ proto.watchChanges = function() {
 
 proto.unwatchChanges = function() {
   this.gaiaDomTree.unwatchChanges();
+};
+
+proto._handleMenuAction = function(e) {
+  var action = e.target.dataset.action;
+  if (action) {
+    console.log(action);
+    this.dispatchEvent(new CustomEvent('menu', {
+      detail: action
+    }));
+  }
 };
 
 proto._handleSelected = function(e) {

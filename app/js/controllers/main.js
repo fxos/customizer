@@ -8,7 +8,13 @@ export default class MainController extends Controller {
 
     this.attached = false;
 
-    window.addEventListener('contextmenu', this.attachView.bind(this));
+    window.addEventListener('contextmenu', (evt) => {
+      if (this.attached) {
+        this.removeView();
+      } else {
+        this.attachView();
+      }
+    });
   }
 
   attachView() {
