@@ -4,7 +4,13 @@
 var proto = Object.create(HTMLElement.prototype);
 
 var template =
-`<gaia-header>
+`<style>
+  gaia-dom-tree {
+    width: 100%;
+    height: calc(100% - 50px);
+  }
+</style>
+<gaia-header>
   <h1></h1>
   <button type="button" data-action="settings">Settings</button>
 </gaia-header>
@@ -26,7 +32,7 @@ proto.createdCallback = function() {
   this.gaiaHeader.addEventListener(
     'click', this._handleMenuAction.bind(this));
   this.gaiaDomTree.addEventListener(
-    'selected', this._handleSelected.bind(this));
+    'click', this._handleSelected.bind(this));
   this.gaiaDomTree.addEventListener(
     'longpressed', this._handleLongPressed.bind(this));
 

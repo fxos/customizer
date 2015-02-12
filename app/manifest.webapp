@@ -1,6 +1,6 @@
 {
-  "name": "Gallery",
-  "description": "A demo of Gallery with an embedded FxOS Customizer",
+  "name": "FM Radio",
+  "description": "A demo of FM Radio with an embedded FxOS Customizer",
   "customizations": [{
     "filter": "app",
     "css": ["style/app.css"],
@@ -10,20 +10,20 @@
   "permissions": {
     "device-storage:sdcard": { "access": "readwrite" },
     "webapps-manage": {},
+
     "themeable":{},
     "storage":{},
-    "device-storage:pictures":{ "access": "readwrite" },
-    "device-storage:videos":{ "access": "readwrite" },
-    "audio-channel-content":{},
-    "nfc-share": {},
-    "feature-detection": {}
+    "fmradio":{},
+    "settings":{ "access": "readonly" },
+    "speaker-control":{},
+    "audio-channel-content":{}
   },
-  "launch_path": "/gallery/index.html",
+  "launch_path": "/fm/index.html",
   "icons": {
-    "84": "/gallery/style/icons/gallery_84.png",
-    "126": "/gallery/style/icons/gallery_126.png",
-    "142": "/gallery/style/icons/gallery_142.png",
-    "189": "/gallery/style/icons/gallery_189.png",
-    "284": "/gallery/style/icons/gallery_284.png"
+    "84": "/fm/style/icons/fm_84.png",
+    "126": "/fm/style/icons/fm_126.png",
+    "142": "/fm/style/icons/fm_142.png",
+    "189": "/fm/style/icons/fm_189.png",
+    "284": "/fm/style/icons/fm_284.png"
   }
 }

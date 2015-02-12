@@ -14,7 +14,8 @@
     "gaia-css-inspector": "gaia-components/gaia-css-inspector",
     "gaia-modal": "gaia-components/gaia-modal",
     "gaia-tabs": "gaia-components/gaia-tabs",
-    "gaia-header": "gaia-components/gaia-header"
+    "gaia-header": "gaia-components/gaia-header",
+    "gaia-theme": "gaia-components/gaia-theme"
   },
   "resolutions": {
     "gaia-icons": "~0.7.4",
