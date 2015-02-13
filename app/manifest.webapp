@@ -1,11 +1,12 @@
 {
-  "name": "FM Radio",
-  "description": "A demo of FM Radio with an embedded FxOS Customizer",
+  "name": "FxOS Customizer",
+  "description": "An addon to create addons.",
   "customizations": [{
     "filter": "app",
     "css": ["style/app.css"],
     "scripts": ["js/addon-concat.js"]
   }],
+  "role": "addon",
   "type": "certified",
   "permissions": {
     "device-storage:sdcard": { "access": "readwrite" },
@@ -17,13 +18,5 @@
     "settings":{ "access": "readonly" },
     "speaker-control":{},
     "audio-channel-content":{}
-  },
-  "launch_path": "/fm/index.html",
-  "icons": {
-    "84": "/fm/style/icons/fm_84.png",
-    "126": "/fm/style/icons/fm_126.png",
-    "142": "/fm/style/icons/fm_142.png",
-    "189": "/fm/style/icons/fm_189.png",
-    "284": "/fm/style/icons/fm_284.png"
   }
 }
