@@ -42,6 +42,7 @@ var editViewTemplate =
   </section>
   <section class="tab-pane" data-id="attributes">
     <h3>Attributes</h3>
+    <gaia-property-inspector root-property="attributes" data-textarea="textarea"></gaia-property-inspector>
   </section>
   <section class="tab-pane" data-id="properties">
     <h3>Properties</h3>
@@ -75,7 +76,8 @@ export default class EditView extends View {
     this.tabs   = this.$('gaia-tabs');
 
     this.htmlTextarea = this.$('section[data-id="html"] > textarea');
-    this.propertyInspector = this.$('gaia-property-inspector');
+    this.attributeInspector = this.$('section[data-id="attributes"] > gaia-property-inspector');
+    this.propertyInspector = this.$('section[data-id="properties"] > gaia-property-inspector');
 
     this.tabPanes = [].slice.apply(this.$$('.tab-pane'));
 
@@ -109,6 +111,7 @@ export default class EditView extends View {
 
   setTarget(target) {
     this.htmlTextarea.value = target.innerHTML;
+    this.attributeInspector.set(target);
     this.propertyInspector.set(target);
   }
 }
