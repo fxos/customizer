@@ -11,19 +11,16 @@ var editViewTemplate =
   }
   .tab-pane {
     box-sizing: padding-box;
+    display: none;
     position: absolute;
     padding: 10px;
     top: 50px;
     bottom: 46px;
     left: 0;
     width: 100%;
-    opacity: 0;
-    transition: opacity 0.1s;
-    pointer-events: none;
   }
   .tab-pane.active {
-    opacity: 1;
-    pointer-events: auto;
+    display: block;
   }
   textarea {
     width: 100%;
@@ -102,6 +99,10 @@ export default class EditView extends View {
 
     this.htmlTextarea.addEventListener('keyup', (evt) => {
       this.controller.changes.innerHTML = this.htmlTextarea.value;
+    });
+
+    this.el.addEventListener('contextmenu', (evt) => {
+      evt.stopPropagation();
     });
   }
 

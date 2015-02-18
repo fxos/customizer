@@ -16,7 +16,8 @@
     "gaia-tabs": "gaia-components/gaia-tabs",
     "gaia-header": "gaia-components/gaia-header",
     "gaia-theme": "gaia-components/gaia-theme",
-    "gaia-property-inspector": "gaia-components/gaia-property-inspector"
+    "gaia-property-inspector": "gaia-components/gaia-property-inspector",
+    "gaia-text-input": "gaia-components/gaia-text-input"
   },
   "resolutions": {
     "gaia-icons": "~0.7.4",
