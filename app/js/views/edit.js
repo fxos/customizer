@@ -28,6 +28,10 @@ var editViewTemplate =
     max-width: 100%;
     max-height: 100%;
   }
+  textarea,
+  input {
+    -moz-user-select: text !important;
+  }
   </style>
   <gaia-header>
     <button data-action="cancel">Cancel</button>
