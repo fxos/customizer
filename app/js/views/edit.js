@@ -1,51 +1,51 @@
 /* global View */
 
 var editViewTemplate =
-`<style scoped>
-  gaia-tabs {
-    position: absolute !important;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-  }
-  .gaia-modal {
-    background: var(--background, #fff);
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 9999;
-  }
-  .gaia-modal.active {
-    display: block;
-  }
-  .tab-pane {
-    box-sizing: padding-box;
-    display: none;
-    position: absolute;
-    padding: 10px;
-    top: 50px;
-    bottom: 46px;
-    left: 0;
-    width: 100%;
-  }
-  .tab-pane.active {
-    display: block;
-  }
-  textarea {
-    width: 100%;
-    height: 100%;
-    max-width: 100%;
-    max-height: 100%;
-  }
-  textarea,
-  input {
-    -moz-user-select: text !important;
-  }
-</style>
-<div class="gaia-modal">
+`<gaia-modal>
+  <style scoped>
+    gaia-tabs {
+      position: absolute !important;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+    }
+    .gaia-modal {
+      background: var(--background, #fff);
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 9999;
+    }
+    .gaia-modal.active {
+      display: block;
+    }
+    .tab-pane {
+      box-sizing: padding-box;
+      display: none;
+      position: absolute;
+      padding: 10px;
+      top: 50px;
+      bottom: 46px;
+      left: 0;
+      width: 100%;
+    }
+    .tab-pane.active {
+      display: block;
+    }
+    textarea {
+      width: 100%;
+      height: 100%;
+      max-width: 100%;
+      max-height: 100%;
+    }
+    textarea,
+    input {
+      -moz-user-select: text !important;
+    }
+  </style>
   <gaia-header>
     <button data-action="cancel">Cancel</button>
     <h1>Edit</h1>
@@ -71,7 +71,7 @@ var editViewTemplate =
     <a href="#">Properties</a>
     <a href="#">Events</a>
   </gaia-tabs>
-</div>`;
+</gaia-modal>`;
 
 export default class EditView extends View {
   constructor(options) {
@@ -85,7 +85,7 @@ export default class EditView extends View {
   init(controller) {
     super(controller);
 
-    this.modal  = this.$('.gaia-modal');
+    this.modal  = this.$('gaia-modal');
     this.header = this.$('gaia-header');
     this.tabs   = this.$('gaia-tabs');
 
@@ -128,11 +128,11 @@ export default class EditView extends View {
   }
 
   open() {
-    this.modal.classList.add('active');
+    this.modal.open();
   }
 
   close() {
-    this.modal.classList.remove('active');
+    this.modal.close();
   }
 
   setTarget(target) {
