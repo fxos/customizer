@@ -2,6 +2,7 @@
 
 var actionMenuViewTemplate =
 `<gaia-dialog>
+  <button type="button" data-action="viewsource">View Source</button>
   <button type="button" data-action="edit">Edit</button>
   <button type="button" data-action="remove">Remove</button>
   <button type="button" data-action="move">Move</button>
@@ -21,6 +22,7 @@ export default class ActionMenuView extends View {
     super(controller);
 
     this.dialog = this.$('gaia-dialog');
+    this.viewSourceButton = this.$('button[data-action=viewsource]');
 
     this.on('click', 'button', (evt) => {
       var action = this.controller[evt.target.dataset.action];
@@ -34,5 +36,12 @@ export default class ActionMenuView extends View {
 
   template() {
     return actionMenuViewTemplate;
+  }
+
+  enableViewSource(enabled) {
+    // It seems like I ought to be able to just set disabled or hidden
+    // on the element and that should work.  But it doesn't so I'm
+    // manually setting the display style.
+    this.viewSourceButton.style.display = enabled ? 'block' : 'none';
   }
 }
