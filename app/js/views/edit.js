@@ -1,13 +1,25 @@
 /* global View */
 
 var editViewTemplate =
-`<gaia-modal>
-  <style scoped>
+`<style scoped>
   gaia-tabs {
     position: absolute !important;
     bottom: 0;
     left: 0;
     width: 100%;
+  }
+  .gaia-modal {
+    background: var(--background, #fff);
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+  }
+  .gaia-modal.active {
+    display: block;
   }
   .tab-pane {
     box-sizing: padding-box;
@@ -32,7 +44,8 @@ var editViewTemplate =
   input {
     -moz-user-select: text !important;
   }
-  </style>
+</style>
+<div class="gaia-modal">
   <gaia-header>
     <button data-action="cancel">Cancel</button>
     <h1>Edit</h1>
@@ -58,7 +71,7 @@ var editViewTemplate =
     <a href="#">Properties</a>
     <a href="#">Events</a>
   </gaia-tabs>
-</gaia-modal>`;
+</div>`;
 
 export default class EditView extends View {
   constructor(options) {
@@ -72,7 +85,7 @@ export default class EditView extends View {
   init(controller) {
     super(controller);
 
-    this.modal  = this.$('gaia-modal');
+    this.modal  = this.$('.gaia-modal');
     this.header = this.$('gaia-header');
     this.tabs   = this.$('gaia-tabs');
 
@@ -112,6 +125,14 @@ export default class EditView extends View {
 
   template() {
     return editViewTemplate;
+  }
+
+  open() {
+    this.modal.classList.add('active');
+  }
+
+  close() {
+    this.modal.classList.remove('active');
   }
 
   setTarget(target) {

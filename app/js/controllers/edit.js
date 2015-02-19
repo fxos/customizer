@@ -13,11 +13,11 @@ export default class EditController extends Controller {
     this.changes = {};
 
     this.view.setTarget(target);
-    this.view.modal.open();
+    this.view.open();
   }
 
   close() {
-    this.view.modal.close();
+    this.view.close();
   }
 
   save() {
