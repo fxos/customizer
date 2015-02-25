@@ -32,6 +32,10 @@ export default class EditController extends Controller {
       generator.innerHTML(this.changes.innerHTML);
     }
 
+    if (this.changes.properties) {
+      generator.setProperties(this.changes.properties);
+    }
+
     this.mainController.installAddon(generator.generate());
   }
 }

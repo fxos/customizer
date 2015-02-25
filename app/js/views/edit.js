@@ -118,6 +118,16 @@ export default class EditView extends View {
       this.controller.changes.innerHTML = this.htmlTextarea.value;
     });
 
+    this.on('save', 'gaia-property-inspector', (evt) => {
+      var keyPath = [];
+      var parts = evt.detail.path.substr(1).split('/');
+      parts.forEach((part) => keyPath.push(part));
+      keyPath = keyPath.join('.');
+
+      this.controller.changes.properties = this.controller.changes.properties || {};
+      this.controller.changes.properties[keyPath] = evt.detail.newValue;
+    });
+
     this.el.addEventListener('contextmenu', (evt) => {
       evt.stopPropagation();
     });
@@ -136,8 +146,10 @@ export default class EditView extends View {
   }
 
   setTarget(target) {
-    this.htmlTextarea.value = target.innerHTML;
-    this.attributeInspector.set(target);
-    this.propertyInspector.set(target);
+    var clonedTarget = target.cloneNode(true);
+
+    this.htmlTextarea.value = clonedTarget.innerHTML;
+    this.attributeInspector.set(clonedTarget);
+    this.propertyInspector.set(clonedTarget);
   }
 }
