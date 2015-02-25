@@ -1,15 +1,14 @@
 /* global View */
 
 var settingsViewTemplate =
-`<gaia-modal>
+`<gaia-modal class="settings">
   <gaia-header>
-    <button data-action="close">Close</button>
+   <button data-action="close">Close</button>
     <h1>Settings</h1>
   </gaia-header>
   <section>
-    <h3>Installed Add-ons</h3>
-    <ul class="addons">
-    </ul>
+    <gaia-sub-header>Installed Add-ons</gaia-sub-header>
+    <gaia-list></gaia-list>
   </section>
 </gaia-modal>`;
 
@@ -26,14 +25,10 @@ export default class SettingsView extends View {
     super(controller);
 
     this.modal  = this.$('gaia-modal');
-    this.addons = this.$('.addons');
+    this.addons = this.$('gaia-list');
 
-    this.on('click', 'button', (evt) => {
-      var action = this.controller[evt.target.dataset.action];
-      if (typeof action === 'function') {
-        action.call(this.controller, evt.target.dataset);
-      }
-    });
+    this.on('click', 'gaia-button', this._handleClick.bind(this));
+    this.on('click', 'button', this._handleClick.bind(this));
   }
 
   template() {
@@ -47,13 +42,26 @@ export default class SettingsView extends View {
       var installTime = new Date(addon.installTime);
 
       this.addons.innerHTML +=
-`<li>
-  <span>
+`<a flexbox>
+  <span flex>
     ${installTime.toLocaleDateString()}
-    ${installTime.toLocaleTimeString()}
+    <span class="addon-time">
+      ${installTime.toLocaleTimeString()}
+    </span>
   </span>
-  <button type="button" data-action="uninstall" data-origin="${addon.origin}">Uninstall</button>
-</li>`;
+  <span flex>
+    <gaia-button circular data-action="uninstall" data-origin="${addon.origin}">
+      <i data-icon="close"></i>
+    </gaia-button>
+  </span>
+</a>`;
     });
+  }
+
+  _handleClick(evt) {
+    var action = this.controller[evt.target.dataset.action];
+    if (typeof action === 'function') {
+      action.call(this.controller, evt.target.dataset);
+    }
   }
 }

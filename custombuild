@@ -28,6 +28,9 @@ var components = gulp.src([
   APP_ROOT + 'components/gaia-property-inspector/lib/format.js',
   APP_ROOT + 'components/gaia-property-inspector/gaia-property-inspector.js',
   APP_ROOT + 'components/gaia-text-input/gaia-text-input.js',
+  APP_ROOT + 'components/gaia-sub-header/gaia-sub-header.js',
+  APP_ROOT + 'components/gaia-list/gaia-list.js',
+  APP_ROOT + 'components/gaia-button/gaia-button.js',
   APP_ROOT + 'components/addon-generator/dist/addon-generator.js'
   ])
   .pipe(concat('components-concat.js'));

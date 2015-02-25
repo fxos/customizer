@@ -17,7 +17,10 @@
     "gaia-header": "gaia-components/gaia-header",
     "gaia-theme": "gaia-components/gaia-theme",
     "gaia-property-inspector": "gaia-components/gaia-property-inspector",
-    "gaia-text-input": "gaia-components/gaia-text-input"
+    "gaia-text-input": "gaia-components/gaia-text-input",
+    "gaia-sub-header": "gaia-components/gaia-sub-header",
+    "gaia-list": "gaia-components/gaia-list",
+    "gaia-button": "gaia-components/gaia-button"
   },
   "resolutions": {
     "gaia-icons": "~0.7.4",
