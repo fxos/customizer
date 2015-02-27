@@ -38,6 +38,10 @@ export default class ActionMenuController extends Controller {
 
   }
 
+  append() {
+    this.appendChildController.open(this.target);
+  }
+
   cancel() {
   }
 }

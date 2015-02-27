@@ -56,6 +56,10 @@ proto.unwatchChanges = function() {
   this.gaiaDomTree.unwatchChanges();
 };
 
+proto.select = function(node) {
+  this.gaiaDomTree.select(node);
+};
+
 proto._handleMenuAction = function(e) {
   var action = e.target.dataset.action;
   if (action) {
@@ -92,7 +96,7 @@ proto._handleClick = function(e) {
     return;
   }
 
-  this.gaiaDomTree.select(e.target);
+  this.select(e.target);
 };
 
 document.registerElement('fxos-customizer', {
