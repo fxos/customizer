@@ -5,15 +5,30 @@ var proto = Object.create(HTMLElement.prototype);
 
 var template =
 `<style>
-  gaia-dom-tree {
-    width: 100%;
-    height: calc(100% - 50px);
-  }
+@import '../components/gaia-icons/gaia-icons-embedded.css';
+
+gaia-dom-tree {
+  width: 100%;
+  height: 100%;
+}
+
+.pin {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin: 0.5rem !important;
+  transition: opacity 0.5s ease-in-out 0.5s;
+  opacity: 1;
+}
+
+.pin.scrolling {
+  transition-delay: 0;
+  opacity: 0;
+}
 </style>
-<gaia-header>
-  <h1></h1>
-  <button type="button" data-action="settings">Settings</button>
-</gaia-header>
+<gaia-button circular class="pin" data-action="settings">
+  <i data-icon="settings"></i>
+</gaia-button>
 <gaia-dom-tree></gaia-dom-tree>
 <gaia-css-inspector></gaia-css-inspector>
 <gaia-modal>
@@ -24,12 +39,12 @@ proto.createdCallback = function() {
   var shadow = this.createShadowRoot();
   shadow.innerHTML = template;
 
-  this.gaiaHeader = shadow.querySelector('gaia-header');
+  this.settingsButton = shadow.querySelector('[data-action="settings"]');
   this.gaiaDomTree = shadow.querySelector('gaia-dom-tree');
   this.gaiaCssInspector = shadow.querySelector('gaia-css-inspector');
   this.gaiaModal = shadow.querySelector('gaia-modal');
 
-  this.gaiaHeader.addEventListener(
+  this.settingsButton.addEventListener(
     'click', this._handleMenuAction.bind(this));
   this.gaiaDomTree.addEventListener(
     'click', this._handleSelected.bind(this));
@@ -39,6 +54,19 @@ proto.createdCallback = function() {
   this.gaiaDomTree.addEventListener('contextmenu', (evt) => {
     evt.stopPropagation();
   });
+
+  this.gaiaDomTree.shadowRoot.addEventListener('scroll',
+  (evt) => {
+    if (this._scrollTimeout) {
+      clearTimeout(this._scrollTimeout);
+    }
+
+    this._scrollTimeout = setTimeout(() => {
+      this.settingsButton.classList.remove('scrolling');
+    }, 50);
+
+    this.settingsButton.classList.add('scrolling');
+  }, true);
 };
 
 proto.setRootNode = function(rootNode) {
