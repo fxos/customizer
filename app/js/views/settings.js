@@ -3,8 +3,9 @@
 var settingsViewTemplate =
 `<gaia-modal class="settings">
   <gaia-header>
-   <button data-action="close">Close</button>
+    <button data-action="close">Close</button>
     <h1>Settings</h1>
+    <button data-action="addons">All Add-ons</button>
   </gaia-header>
   <section>
     <gaia-sub-header>Installed Add-ons</gaia-sub-header>

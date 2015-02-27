@@ -19,6 +19,20 @@ export default class SettingsController extends Controller {
     this.view.modal.close();
   }
 
+  addons() {
+    var activity = new window.MozActivity({
+      name: 'configure',
+      data: {
+        target: 'device',
+        section: 'addons'
+      }
+    });
+
+    activity.onerror = (e) => {
+      console.error('Error opening Settings Add-ons panel', e);
+    };
+  }
+
   uninstall(addon) {
     AddonService.uninstall(addon.origin).then(() => {
       AddonService.getAddons(window.location.host).then((addons) => {
