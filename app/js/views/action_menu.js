@@ -6,6 +6,7 @@ var actionMenuViewTemplate =
   <button type="button" data-action="edit">Edit</button>
   <button type="button" data-action="remove">Remove</button>
   <button type="button" data-action="move">Move</button>
+  <button type="button" data-action="append">Append Child</button>
   <button type="button" data-action="cancel">Cancel</button>
 </gaia-dialog>`;
 

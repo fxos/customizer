@@ -158,5 +158,6 @@ export default class MainView extends View {
     this.el.appendChild(this.editView.el);
     this.el.appendChild(this.settingsView.el);
     this.el.appendChild(this.viewSourceView.el);
+    this.el.appendChild(this.appendChildView.el);
   }
 }

@@ -20,6 +20,7 @@ var components = gulp.src([
   APP_ROOT + 'components/drag/drag.js',
   APP_ROOT + 'components/gaia-component/gaia-component.js',
   APP_ROOT + 'components/gaia-dialog/gaia-dialog.js',
+  APP_ROOT + 'components/gaia-dialog/gaia-dialog-prompt.js',
   APP_ROOT + 'components/gaia-dom-tree/gaia-dom-tree.js',
   APP_ROOT + 'components/gaia-css-inspector/gaia-css-inspector.js',
   APP_ROOT + 'components/gaia-modal/gaia-modal.js',
