@@ -17,6 +17,7 @@ const APP_ROOT = './app/';
 const DIST_APP_ROOT = './dist/app/';
 
 var components = gulp.src([
+  APP_ROOT + 'components/drag/drag.js',
   APP_ROOT + 'components/gaia-component/gaia-component.js',
   APP_ROOT + 'components/gaia-dialog/gaia-dialog.js',
   APP_ROOT + 'components/gaia-dom-tree/gaia-dom-tree.js',
@@ -31,6 +32,7 @@ var components = gulp.src([
   APP_ROOT + 'components/gaia-sub-header/gaia-sub-header.js',
   APP_ROOT + 'components/gaia-list/gaia-list.js',
   APP_ROOT + 'components/gaia-button/gaia-button.js',
+  APP_ROOT + 'components/gaia-switch/gaia-switch.js',
   APP_ROOT + 'components/addon-generator/dist/addon-generator.js'
   ])
   .pipe(concat('components-concat.js'));

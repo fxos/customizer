@@ -40,4 +40,12 @@ export default class SettingsController extends Controller {
       });
     });
   }
+
+  enableAddon(addon) {
+
+  }
+
+  disableAddon(addon) {
+
+  }
 }

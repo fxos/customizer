@@ -30,6 +30,8 @@ export default class SettingsView extends View {
 
     this.on('click', 'gaia-button', this._handleClick.bind(this));
     this.on('click', 'button', this._handleClick.bind(this));
+
+    // this.on('change', 'gaia-switch', this._handleChange.bind(this));
   }
 
   template() {
@@ -43,7 +45,10 @@ export default class SettingsView extends View {
       var installTime = new Date(addon.installTime);
 
       this.addons.innerHTML +=
-`<a flexbox>
+`<li flexbox>
+  <span flex>
+    <gaia-switch data-origin="${addon.origin}"></gaia-switch>
+  </span>
   <span flex>
     ${installTime.toLocaleDateString()}
     <span class="addon-time">
@@ -52,10 +57,15 @@ export default class SettingsView extends View {
   </span>
   <span flex>
     <gaia-button circular data-action="uninstall" data-origin="${addon.origin}">
-      <i data-icon="close"></i>
+      <i data-icon="delete"></i>
     </gaia-button>
   </span>
-</a>`;
+</li>`;
+    });
+
+    // XXX - Shouldn't have to do this, but 'change' is not propagating
+    [].forEach.call(document.querySelectorAll('gaia-switch'), (gs) => {
+      gs.addEventListener('change', this._handleChange.bind(this));
     });
   }
 
@@ -63,6 +73,17 @@ export default class SettingsView extends View {
     var action = this.controller[evt.target.dataset.action];
     if (typeof action === 'function') {
       action.call(this.controller, evt.target.dataset);
+    }
+  }
+
+  _handleChange(evt) {
+    var gaiaSwitch = evt.target;
+    if (gaiaSwitch.checked) {
+      this.enableAddon(gaiaSwitch.dataset);
+    }
+
+    else {
+      this.disableAddon(gaiaSwitch.dataset);
     }
   }
 }
