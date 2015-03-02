@@ -3,13 +3,19 @@
 var moveViewTemplate =
 `<gaia-modal class="move">
   <gaia-header>
-    <button data-action="cancel">Cancel</button>
+    <button type="button" data-action="cancel">Cancel</button>
     <h1>Move</h1>
-    <button data-action="action">Action</button>
+    <button type="button" data-action="select">Select</button>
   </gaia-header>
   <section>
     <gaia-dom-tree></gaia-dom-tree>
   </section>
+  <gaia-dialog>
+    <button type="button" data-action="before">Insert Before</button>
+    <button type="button" data-action="after">Insert After</button>
+    <button type="button" data-action="prepend">Prepend</button>
+    <button type="button" data-action="append">Append</button>
+  </gaia-dialog>
 </gaia-modal>`;
 
 export default class MoveView extends View {
@@ -26,9 +32,9 @@ export default class MoveView extends View {
 
     this.modal   = this.$('gaia-modal');
     this.domTree = this.$('gaia-dom-tree');
+    this.dialog  = this.$('gaia-dialog');
 
     this.on('click', 'button', this._handleClick.bind(this));
-    this.on('longpressed', 'gaia-dom-tree', this._handleLongPressed.bind(this));
     this.on('contextmenu', 'gaia-dom-tree', (evt) => {
       evt.stopPropagation();
     });
@@ -43,9 +49,5 @@ export default class MoveView extends View {
     if (typeof action === 'function') {
       action.call(this.controller, evt.target.dataset);
     }
-  }
-
-  _handleLongPressed(evt) {
-
   }
 }
