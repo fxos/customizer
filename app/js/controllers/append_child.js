@@ -1,5 +1,7 @@
 /* global Controller */
 
+/* global AddonGenerator */
+
 export default class AppendChildController extends Controller {
   constructor(options) {
     super(options);
@@ -20,7 +22,15 @@ export default class AppendChildController extends Controller {
       return;
     }
 
-    this.target.appendChild(child);
-    this.customizer.select(child);
+    var generator = new AddonGenerator(this.target);
+
+    generator.manifest.customizations = [{
+      filter: window.location.origin,
+      scripts: ['main.js']
+    }];
+
+    generator.appendChild(tagName);
+
+    this.mainController.installAddon(generator.generate());
   }
 }
