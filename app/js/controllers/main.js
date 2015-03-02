@@ -69,6 +69,7 @@ export default class MainController extends Controller {
           var addonFile = getRequest.result;
           navigator.mozApps.mgmt.import(addonFile)
             .then((addon) => {
+              navigator.mozApps.mgmt.setEnabled(addon, true);
               console.log('SUCCESS', addon);
             })
             .catch((error) => {

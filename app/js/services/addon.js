@@ -27,6 +27,20 @@ AddonService.getAddons = function(host) {
   });
 };
 
+AddonService.getAddon = function(origin) {
+  return new Promise((resolve, reject) => {
+    this.getAddons().then((addons) => {
+      var addon = addons.find(addon => addon.origin === origin);
+      if (!addon) {
+        reject();
+        return;
+      }
+
+      resolve(addon);
+    }).catch(reject);
+  });
+};
+
 AddonService.uninstall = function(origin) {
   return new Promise((resolve, reject) => {
     this.getAddons().then((addons) => {

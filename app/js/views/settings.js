@@ -43,11 +43,11 @@ export default class SettingsView extends View {
 
     addons.forEach((addon) => {
       var installTime = new Date(addon.installTime);
-
+console.log(addon);
       this.addons.innerHTML +=
 `<li flexbox>
   <span flex>
-    <gaia-switch data-origin="${addon.origin}"></gaia-switch>
+    <gaia-switch data-origin="${addon.origin}" data-enabled="${addon.enabled}"></gaia-switch>
   </span>
   <span flex>
     ${installTime.toLocaleDateString()}
@@ -61,6 +61,14 @@ export default class SettingsView extends View {
     </gaia-button>
   </span>
 </li>`;
+    });
+
+    [].forEach.call(this.addons.querySelectorAll('gaia-switch'), (gs) => {
+      if (gs.dataset.enabled === 'true') {
+        gs.setAttribute('checked', true);
+      }
+
+      delete gs.dataset.enabled;
     });
 
     // XXX - Shouldn't have to do this, but 'change' is not propagating
@@ -79,11 +87,11 @@ export default class SettingsView extends View {
   _handleChange(evt) {
     var gaiaSwitch = evt.target;
     if (gaiaSwitch.checked) {
-      this.enableAddon(gaiaSwitch.dataset);
+      this.controller.enableAddon(gaiaSwitch.dataset);
     }
 
     else {
-      this.disableAddon(gaiaSwitch.dataset);
+      this.controller.disableAddon(gaiaSwitch.dataset);
     }
   }
 }

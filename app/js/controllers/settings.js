@@ -42,10 +42,14 @@ export default class SettingsController extends Controller {
   }
 
   enableAddon(addon) {
-
+    AddonService.getAddon(addon.origin).then((addon) => {
+      navigator.mozApps.mgmt.setEnabled(addon, true);
+    });
   }
 
   disableAddon(addon) {
-
+    AddonService.getAddon(addon.origin).then((addon) => {
+      navigator.mozApps.mgmt.setEnabled(addon, false);
+    });
   }
 }
