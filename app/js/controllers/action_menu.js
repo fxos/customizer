@@ -1,5 +1,7 @@
 /* global Controller */
 
+/* global AddonGenerator */
+
 export default class ActionMenuController extends Controller {
   constructor(options) {
     super(options);
@@ -27,7 +29,16 @@ export default class ActionMenuController extends Controller {
   }
 
   remove() {
-    this.target.remove();
+    var generator = new AddonGenerator(this.target);
+
+    generator.manifest.customizations = [{
+      filter: window.location.origin,
+      scripts: ['main.js']
+    }];
+
+    generator.remove();
+
+    this.mainController.installAddon(generator.generate());
   }
 
   viewsource() {
