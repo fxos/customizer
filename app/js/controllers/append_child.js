@@ -10,8 +10,6 @@ export default class AppendChildController extends Controller {
   open(target) {
     this.target = target;
 
-    this.customizer = document.body.querySelector('fxos-customizer');
-
     this.view.open();
   }
 

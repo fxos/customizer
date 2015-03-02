@@ -46,7 +46,7 @@ export default class ActionMenuController extends Controller {
   }
 
   move() {
-
+    this.moveController.open(this.target);
   }
 
   append() {

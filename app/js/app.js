@@ -3,6 +3,7 @@
 /*global ActionMenuView*/
 /*global SettingsView*/
 /*global AppendChildView*/
+/*global MoveView*/
 /*global MainView*/
 
 /*global EditController*/
@@ -10,6 +11,7 @@
 /*global ActionMenuController*/
 /*global SettingsController*/
 /*global AppendChildController*/
+/*global MoveController*/
 /*global MainController*/
 
 var editView = new EditView();
@@ -17,12 +19,14 @@ var actionMenuView = new ActionMenuView();
 var settingsView = new SettingsView();
 var viewSourceView = new ViewSourceView();
 var appendChildView = new AppendChildView();
+var moveView = new MoveView();
 var mainView = new MainView({
   editView: editView,
   actionMenuView: actionMenuView,
   settingsView: settingsView,
   viewSourceView: viewSourceView,
-  appendChildView: appendChildView
+  appendChildView: appendChildView,
+  moveView: moveView
 });
 
 var editController = new EditController({
@@ -37,11 +41,16 @@ var appendChildController = new AppendChildController({
   view: appendChildView
 });
 
+var moveController = new MoveController({
+  view: moveView
+});
+
 var actionMenuController = new ActionMenuController({
   view: actionMenuView,
   editController: editController,
   viewSourceController: viewSourceController,
-  appendChildController: appendChildController
+  appendChildController: appendChildController,
+  moveController: moveController
 });
 
 var settingsController = new SettingsController({
@@ -60,5 +69,6 @@ viewSourceController.mainController = mainController;
 actionMenuController.mainController = mainController;
 settingsController.mainController = mainController;
 appendChildController.mainController = mainController;
+moveController.mainController = mainController;
 
 window.mainController = mainController;
