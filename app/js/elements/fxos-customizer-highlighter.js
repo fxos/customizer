@@ -1,73 +1,49 @@
 (function(window) {
 'use strict';
 
-var proto = Object.create(HTMLElement.prototype);
-
-var lightHTML =
-`<style>
-fxos-customizer-highlighter {
-  pointer-events: none;
-  display: none;
-  position: fixed;
-  z-index: 9999999;
-}
-</style>`;
-
 var shadowHTML =
 `<style scoped>
-.inner {
+.overlay {
+  display: none;
+  position: absolute;
+  pointer-events: none;
+  z-index: 9999999; /* above the app, but below the other customizer elements */
   background-color: #00caf2;
   border: 2px dotted #fff;
   outline: 1px solid #00caf2;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
   opacity: 0.75;
 }
 </style>
-<div class="inner"></div>`;
+<div class="overlay"></div>`;
+
+var proto = Object.create(HTMLElement.prototype);
 
 proto.createdCallback = function() {
-  var shadow = this.createShadowRoot();
-  shadow.innerHTML = shadowHTML;
-
-  this.innerHTML = lightHTML;
+  this.shadow = this.createShadowRoot();
+  this.shadow.innerHTML = shadowHTML;
+  this.overlay = this.shadow.querySelector('.overlay');
 };
 
-proto.show = function() {
-  this.style.display = 'block';
+proto.highlight = function(element) {
+  // Figure out where the element is
+  var rect = element.getBoundingClientRect();
+
+  // Highlight it
+  // Note that we use add the document scroll offsets to the element
+  // coordinates to get document coordinates instead of screen coordinates.
+  this.overlay.style.left   = (rect.left + window.pageXOffset) + 'px';
+  this.overlay.style.top    = (rect.top + window.pageYOffset) + 'px';
+  this.overlay.style.width  = rect.width + 'px';
+  this.overlay.style.height = rect.height + 'px';
+  this.overlay.style.display = 'block';
+
+  // And now make it visible
+  element.scrollIntoView({behavior: 'smooth'});
 };
 
 proto.hide = function() {
-  this.style.display = 'none';
+  this.overlay.style.display = 'none';
 };
 
-proto.clearTarget = function() {
-  this.setTargetRect(0, 0, 0, 0);
-
-  this.hide();
-};
-
-proto.setTargetRect = function(x, y, w, h) {
-  this.style.left   = x + 'px';
-  this.style.top    = y + 'px';
-  this.style.width  = w + 'px';
-  this.style.height = h + 'px';
-
-  this.show();
-};
-
-proto.setTargetElement = function(element) {
-  var rect = element.getBoundingClientRect();
-  this.setTargetRect(rect.left, rect.top, rect.width, rect.height);
-};
-
-var FXOSCustomizerHighlighter = document.registerElement('fxos-customizer-highlighter', {
-  prototype: proto
-});
-
-window.FXOSCustomizerHighlighter = FXOSCustomizerHighlighter;
-
+document.registerElement('fxos-customizer-highlighter', { prototype: proto });
 })(window);

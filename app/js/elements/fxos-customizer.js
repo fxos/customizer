@@ -109,8 +109,9 @@ proto.watchChanges = function() {
   };
 
   this._observer = new MutationObserver((mutations) => {
-    // Only re-render if a mutation occurred outside of the <fxos-customizer>
-    // shadow root.
+    // Only re-render if a mutation occurred in the app itself, and is
+    // outside of the customizer addon. This depends on the customizer
+    // root element having the class "fxos-customizer-main-view"
     for (var i = mutations.length - 1; i >= 0; i--) {
       if (!this._shadowContains(mutations[i].target)) {
         console.log(mutations[i].target.outerHTML);
@@ -145,6 +146,9 @@ proto._handleSelected = function(e) {
   e.stopPropagation();
 
   var selectedNode = this.gaiaDomTree.selectedNode;
+  if (!selectedNode) {
+    return;
+  }
 
   this._selected = (selectedNode.nodeType === Node.TEXT_NODE) ?
     selectedNode.parentNode : selectedNode;
