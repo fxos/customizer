@@ -143,7 +143,7 @@ export default class MainView extends View {
     });
 
     this.on('selected', 'fxos-customizer', (evt) => {
-      // this.highlighter.setTargetElement(evt.detail);
+      this.highlighter.highlight(evt.detail);
     });
   }
 

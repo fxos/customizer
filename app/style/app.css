@@ -7,11 +7,20 @@ fxos-customizer {
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 100;
   border-top: 1px solid #ccc;
+  /*
+   * this needs to go on top of the regular app, but below
+   * gaia-modal and gaia-dialog which we override below.
+   */
+  z-index: 10000000;
+}
+
+gaia-dialog {
+  z-index: 10000002 !important;
 }
 
 gaia-modal {
+  z-index: 10000001 !important;
   background: white;
 }
 
