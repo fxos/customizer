@@ -32,10 +32,8 @@ export default class MainController extends Controller {
       overflow: initial !important;
     }
 
-    body::after {
-      content: "";
-      height: ${padding}px;
-      display: block;
+    body {
+      padding-bottom: ${padding}px !important;
     }`;
     document.head.appendChild(this._styleEl);
 
