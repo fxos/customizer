@@ -18,6 +18,7 @@ const DIST_APP_ROOT = './dist/app/';
 
 var components = gulp.src([
   APP_ROOT + 'components/drag/drag.js',
+  APP_ROOT + 'components/gesture/gesture.js',
   APP_ROOT + 'components/gaia-component/gaia-component.js',
   APP_ROOT + 'components/gaia-dialog/gaia-dialog.js',
   APP_ROOT + 'components/gaia-dialog/gaia-dialog-prompt.js',
