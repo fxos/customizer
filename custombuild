@@ -63,7 +63,7 @@ var app = gulp.src([
 
 merge(components, addonGenerator, app)
   .pipe(concat('addon-concat.js'))
-  // .pipe(uglify())
+  .pipe(uglify())
   .pipe(gulp.dest(DIST_APP_ROOT + 'js'));
 
 console.log('all done.');
