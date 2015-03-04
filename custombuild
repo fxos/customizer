@@ -8,7 +8,6 @@
  */
 var gulp = require('gulp');
 var merge = require('gulp-merge');
-var uglify = require('gulp-uglify');
 
 var buildModules = __dirname + '/node_modules/fxos-build/node_modules/';
 var concat = require(buildModules + 'gulp-concat');
@@ -35,16 +34,9 @@ var components = gulp.src([
   APP_ROOT + 'components/gaia-list/gaia-list.js',
   APP_ROOT + 'components/gaia-button/gaia-button.js',
   APP_ROOT + 'components/gaia-switch/gaia-switch.js',
+  APP_ROOT + 'components/addon-generator/dist/addon-generator.js'
   ])
-  .pipe(concat('components-concat.js'))
-  .pipe(to5().on('error', function(e) {
-      console.log('error running 6to5', e);
-    }));
-
-var addonGenerator = gulp.src(APP_ROOT + 'components/addon-generator/dist/addon-generator.js')
-  .pipe(to5().on('error', function(e) {
-      console.log('error running 6to5', e);
-    }));
+  .pipe(concat('components-concat.js'));
 
 var app = gulp.src([
   APP_ROOT + 'js/polyfill.js',
@@ -61,9 +53,8 @@ var app = gulp.src([
       console.log('error running 6to5', e);
     }));
 
-merge(components, addonGenerator, app)
+merge(components, app)
   .pipe(concat('addon-concat.js'))
-  .pipe(uglify())
   .pipe(gulp.dest(DIST_APP_ROOT + 'js'));
 
 console.log('all done.');
