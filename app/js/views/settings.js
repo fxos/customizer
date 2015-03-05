@@ -43,15 +43,15 @@ export default class SettingsView extends View {
 
     addons.forEach((addon) => {
       var installTime = new Date(addon.installTime);
-console.log(addon);
       this.addons.innerHTML +=
 `<li flexbox>
   <span flex>
     <gaia-switch data-origin="${addon.origin}" data-enabled="${addon.enabled}"></gaia-switch>
   </span>
   <span flex>
-    ${installTime.toLocaleDateString()}
+    ${addon.manifest.name}
     <span class="addon-time">
+      ${installTime.toLocaleDateString()}
       ${installTime.toLocaleTimeString()}
     </span>
   </span>

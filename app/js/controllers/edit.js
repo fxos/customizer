@@ -22,8 +22,12 @@ export default class EditController extends Controller {
   }
 
   save() {
-    var generator = new AddonGenerator(this.target);
+    var name = window.prompt('Enter a name for this add-on', 'Addon ' + new Date().toISOString());
+    if (!name) {
+      return;
+    }
 
+    var generator = new AddonGenerator(this.target, name);
     generator.manifest.customizations = [{
       filter: window.location.origin,
       scripts: ['main.js']
@@ -38,5 +42,7 @@ export default class EditController extends Controller {
     }
 
     AddonService.install(generator.generate());
+
+    this.close();
   }
 }

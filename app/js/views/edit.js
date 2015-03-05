@@ -100,7 +100,6 @@ export default class EditView extends View {
 
     this.on('click', 'button[data-action="save"]', (evt) => {
       this.controller.save();
-      this.controller.close();
     });
 
     this.tabs.addEventListener('change', (evt) => {
