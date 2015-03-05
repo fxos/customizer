@@ -1,17 +1,47 @@
-/* global Controller */
+/* global Controller, Gesture */
 
 export default class MainController extends Controller {
   constructor(options) {
     super(options);
-
     this.attached = false;
+    this.waitToBeOpened();
+  }
 
-    window.addEventListener('contextmenu', (evt) => {
-      if (this.attached) {
-        this.removeView();
-      } else {
-        this.attachView();
-      }
+  waitToBeOpened() {
+    var openGesture = {
+      type: 'swipe',    // Swipe:
+      numFingers: 1,    // with one finger,
+      startRegion: {    // from bottom 10% of the screen,
+        x0: 0, y0: 0.9, x1: 1, y1: 1
+      },
+      endRegion: {      // up into the top 80% of the screen,
+        x0: 0, y0: 0, x1: 1, y1: 0.80
+      },
+      maxTime: 1000,    // in less than 1 second.
+    };
+
+    Gesture.detect(openGesture).then(() => {
+      this.attachView();
+      this.waitToBeClosed();
+    });
+  }
+
+  waitToBeClosed() {
+    var closeGesture = {
+      type: 'swipe',    // Swipe:
+      numFingers: 1,    // with one finger,
+      startRegion: {    // from the middle of the screen
+        x0: 0, y0: 0.4, x1: 1, y1: 0.6
+      },
+      endRegion: {      // down into the bottom quarter of the screen
+        x0: 0, y0: 0.65, x1: 1, y1: 1.0
+      },
+      maxTime: 1000,    // in less than 1 second.
+    };
+
+    Gesture.detect(closeGesture).then(() => {
+      this.removeView();
+      this.waitToBeOpened();
     });
   }
 
