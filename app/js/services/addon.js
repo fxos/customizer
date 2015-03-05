@@ -1,3 +1,5 @@
+/* global AddonGenerator */
+
 var AddonService = {};
 
 const ADDON_FILENAME = 'addon-temp.zip';
@@ -41,6 +43,37 @@ AddonService.getAddon = function(origin) {
       resolve(addon);
     }).catch(reject);
   });
+};
+
+AddonService.getGenerator = function(target) {
+  return new Promise((resolve, reject) => {
+    var name = window.prompt('Enter a name for this add-on', 'Addon ' + new Date().toISOString());
+    if (!name) {
+      reject();
+      return;
+    }
+
+    var generator = new AddonGenerator(target, name);
+    generator.manifest.customizations = [{
+      filter: window.location.origin,
+      scripts: ['main.js']
+    }];
+
+    resolve(generator);
+  });
+};
+
+AddonService.generate = function(target, callback) {
+  if (typeof callback !== 'function') {
+    return;
+  }
+
+  return AddonService.getGenerator(target)
+    .then((generator) => {
+      callback(generator);
+
+      AddonService.install(generator.generate());
+    });
 };
 
 AddonService.install = function(blob) {

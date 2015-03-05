@@ -1,6 +1,5 @@
 /* global Controller */
 
-/* global AddonGenerator */
 /* global AddonService */
 
 export default class MoveController extends Controller {
@@ -28,50 +27,34 @@ export default class MoveController extends Controller {
   }
 
   before() {
-    var generator = new AddonGenerator(this.target);
-    generator.manifest.customizations = [{
-      filter: window.location.origin,
-      scripts: ['main.js']
-    }];
-    generator.moveBefore(this.destination);
-    AddonService.install(generator.generate());
+    AddonService.generate(this.target, (generator) => {
+      generator.moveBefore(this.destination);
 
-    this.view.modal.close();
+      this.view.modal.close();
+    });
   }
 
   after() {
-    var generator = new AddonGenerator(this.target);
-    generator.manifest.customizations = [{
-      filter: window.location.origin,
-      scripts: ['main.js']
-    }];
-    generator.moveAfter(this.destination);
-    AddonService.install(generator.generate());
+    AddonService.generate(this.target, (generator) => {
+      generator.moveAfter(this.destination);
 
-    this.view.modal.close();
+      this.view.modal.close();
+    });
   }
 
   prepend() {
-    var generator = new AddonGenerator(this.target);
-    generator.manifest.customizations = [{
-      filter: window.location.origin,
-      scripts: ['main.js']
-    }];
-    generator.movePrepend(this.destination);
-    AddonService.install(generator.generate());
+    AddonService.generate(this.target, (generator) => {
+      generator.movePrepend(this.destination);
 
-    this.view.modal.close();
+      this.view.modal.close();
+    });
   }
 
   append() {
-    var generator = new AddonGenerator(this.target);
-    generator.manifest.customizations = [{
-      filter: window.location.origin,
-      scripts: ['main.js']
-    }];
-    generator.moveAppend(this.destination);
-    AddonService.install(generator.generate());
+    AddonService.generate(this.target, (generator) => {
+      generator.moveAppend(this.destination);
 
-    this.view.modal.close();
+      this.view.modal.close();
+    });
   }
 }

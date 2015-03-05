@@ -1,6 +1,5 @@
 /* global Controller */
 
-/* global AddonGenerator */
 /* global AddonService */
 
 export default class ActionMenuController extends Controller {
@@ -30,16 +29,9 @@ export default class ActionMenuController extends Controller {
   }
 
   remove() {
-    var generator = new AddonGenerator(this.target);
-
-    generator.manifest.customizations = [{
-      filter: window.location.origin,
-      scripts: ['main.js']
-    }];
-
-    generator.remove();
-
-    AddonService.install(generator.generate());
+    AddonService.generate(this.target, (generator) => {
+      generator.remove();
+    });
   }
 
   viewsource() {

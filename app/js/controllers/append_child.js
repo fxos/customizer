@@ -1,6 +1,5 @@
 /* global Controller */
 
-/* global AddonGenerator */
 /* global AddonService */
 
 export default class AppendChildController extends Controller {
@@ -21,15 +20,8 @@ export default class AppendChildController extends Controller {
       return;
     }
 
-    var generator = new AddonGenerator(this.target);
-
-    generator.manifest.customizations = [{
-      filter: window.location.origin,
-      scripts: ['main.js']
-    }];
-
-    generator.appendChild(tagName);
-
-    AddonService.install(generator.generate());
+    AddonService.generate(this.target, (generator) => {
+      generator.appendChild(tagName);
+    });
   }
 }
