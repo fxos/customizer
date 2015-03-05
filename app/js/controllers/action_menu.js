@@ -1,6 +1,7 @@
 /* global Controller */
 
 /* global AddonGenerator */
+/* global AddonService */
 
 export default class ActionMenuController extends Controller {
   constructor(options) {
@@ -38,7 +39,7 @@ export default class ActionMenuController extends Controller {
 
     generator.remove();
 
-    this.mainController.installAddon(generator.generate());
+    AddonService.install(generator.generate());
   }
 
   viewsource() {

@@ -1,6 +1,7 @@
 /* global Controller */
 
 /* global AddonGenerator */
+/* global AddonService */
 
 export default class EditController extends Controller {
   constructor(options) {
@@ -36,6 +37,6 @@ export default class EditController extends Controller {
       generator.setProperties(this.changes.properties);
     }
 
-    this.mainController.installAddon(generator.generate());
+    AddonService.install(generator.generate());
   }
 }

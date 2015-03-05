@@ -1,6 +1,7 @@
 /* global Controller */
 
 /* global AddonGenerator */
+/* global AddonService */
 
 export default class MoveController extends Controller {
   constructor(options) {
@@ -33,7 +34,7 @@ export default class MoveController extends Controller {
       scripts: ['main.js']
     }];
     generator.moveBefore(this.destination);
-    this.mainController.installAddon(generator.generate());
+    AddonService.install(generator.generate());
 
     this.view.modal.close();
   }
@@ -45,7 +46,7 @@ export default class MoveController extends Controller {
       scripts: ['main.js']
     }];
     generator.moveAfter(this.destination);
-    this.mainController.installAddon(generator.generate());
+    AddonService.install(generator.generate());
 
     this.view.modal.close();
   }
@@ -57,7 +58,7 @@ export default class MoveController extends Controller {
       scripts: ['main.js']
     }];
     generator.movePrepend(this.destination);
-    this.mainController.installAddon(generator.generate());
+    AddonService.install(generator.generate());
 
     this.view.modal.close();
   }
@@ -69,7 +70,7 @@ export default class MoveController extends Controller {
       scripts: ['main.js']
     }];
     generator.moveAppend(this.destination);
-    this.mainController.installAddon(generator.generate());
+    AddonService.install(generator.generate());
 
     this.view.modal.close();
   }

@@ -1,6 +1,7 @@
 /* global Controller */
 
 /* global AddonGenerator */
+/* global AddonService */
 
 export default class AppendChildController extends Controller {
   constructor(options) {
@@ -29,6 +30,6 @@ export default class AppendChildController extends Controller {
 
     generator.appendChild(tagName);
 
-    this.mainController.installAddon(generator.generate());
+    AddonService.install(generator.generate());
   }
 }
