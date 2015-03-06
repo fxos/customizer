@@ -59,17 +59,28 @@ proto.createdCallback = function() {
   this.gaiaDomTree.addEventListener('contextmenu', (evt) => {
     evt.stopPropagation();
   });
+
+  this._rootNodeClickHandler = this._handleClick.bind(this);
 };
 
 proto.setRootNode = function(rootNode) {
-  this._root = rootNode;
+  // If we already have a root node defined, disconnect from it first
+  if (this._root) {
+    this.unwatchChanges();
+    this.gaiaDomTree.setRoot(null);
+    this.gaiaDomTree.render();
+    this._root.removeEventListener('click', this._rootNodeClickHandler);
+    this._root = null;
+  }
 
-  rootNode.addEventListener('click', this._handleClick.bind(this));
-
-  this.gaiaDomTree.setRoot(rootNode);
-  this.gaiaDomTree.render();
-
-  this.watchChanges();
+  // If we've got a new root node, set that one up
+  if (rootNode) {
+    this._root = rootNode;
+    rootNode.addEventListener('click', this._rootNodeClickHandler);
+    this.gaiaDomTree.setRoot(rootNode);
+    this.gaiaDomTree.render();
+    this.watchChanges();
+  }
 };
 
 proto._watchScrolling = function() {
@@ -126,6 +137,7 @@ proto.watchChanges = function() {
 
 proto.unwatchChanges = function() {
   this._observer.disconnect();
+  this._observer = null;
 };
 
 proto.select = function(node) {

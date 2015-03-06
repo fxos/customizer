@@ -77,6 +77,9 @@ export default class MainController extends Controller {
     document.head.removeChild(this._styleEl);
     this._styleEl = null;
 
+    // disconnect from the <html> element
+    this.view.customizer.setRootNode(null);
+
     this.attached = false;
   }
 }
