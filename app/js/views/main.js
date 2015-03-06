@@ -104,9 +104,53 @@ var mainViewTemplate =
 
     --checkbox-border-color: var(--background-minus-minus);
   }
+
+  div.fxos-customizer-container {
+    background-color: var(--background);
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 100%; /* off-screen by default, animated translate to show and hide */
+    height: 50vh;
+    border-top: 1px solid #ccc;
+    /*
+     * this needs to go on top of the regular app, but below
+     * gaia-modal and gaia-dialog which we override elsewhere.
+     */
+    z-index: 10000000;
+
+    /* We show and hide this with an animated transform */
+    transition: transform 150ms;
+  }
+
+  /*
+   * Add this show class to animate the container onto the screen,
+   * and remove it to animate the container off.
+   */
+  .fxos-customizer-container.show {
+    transform: translateY(-100%);
+  }
 </style>
-<fxos-customizer></fxos-customizer>
-<fxos-customizer-highlighter></fxos-customizer-highlighter>`;
+<style class="fxos-customizer-global-styles" disabled>
+/*
+ * These styles need to be applied globally to the app when the customizer
+ * is displayed so that the user can scroll to see all of the app even
+ * with the customizer taking up the bottom half of the screen.
+ *
+ * Note that this stylesheet is not scoped and is disabled by default.
+ */
+html, body {
+  overflow: initial !important;
+}
+
+body {
+  padding-bottom: 50vh !important;
+}
+</style>
+<div class="fxos-customizer-container"><fxos-customizer></fxos-customizer></div>
+<div class="fxos-customizer-child-views">
+<fxos-customizer-highlighter></fxos-customizer-highlighter>
+</div>`;
 
 export default class MainView extends View {
   constructor(options) {
@@ -122,8 +166,27 @@ export default class MainView extends View {
   init(controller) {
     super(controller);
 
+    this.container = this.$('div.fxos-customizer-container');
+    this.childViews = this.$('div.fxos-customizer-child-views');
     this.customizer = this.$('fxos-customizer');
     this.highlighter = this.$('fxos-customizer-highlighter');
+    this.globalStyleSheet = this.$('style.fxos-customizer-global-styles');
+
+    // When the customizer is closed, we want its impact on the
+    // running app to be minimal, so we remove all of the children of
+    // this view except for the container and the stylesheet and only
+    // add them back when we actually open the customizer.
+    this.container.removeChild(this.customizer);
+    this.el.removeChild(this.childViews);
+
+    // We put all of the other view elements that the app needs into the
+    // childViews container, so that we can add and remove them all at once.
+    this.childViews.appendChild(this.actionMenuView.el);
+    this.childViews.appendChild(this.editView.el);
+    this.childViews.appendChild(this.settingsView.el);
+    this.childViews.appendChild(this.viewSourceView.el);
+    this.childViews.appendChild(this.appendChildView.el);
+    this.childViews.appendChild(this.moveView.el);
 
     // Hide this view from the DOM tree.
     this.customizer.gaiaDomTree.filter = '#' + this.el.id;
@@ -151,14 +214,63 @@ export default class MainView extends View {
     return mainViewTemplate;
   }
 
-  render() {
-    super();
+  _addChildViews() {
+    // We need all of these things for the customizer to work
+    // But we don't want them sitting in the document tree when the
+    // customizer is closed, so we add them all only when we open.
+    this.container.appendChild(this.customizer); // the <fxos-customizer>
+    this.el.appendChild(this.childViews); // The highlighter and child views
+  }
 
-    this.el.appendChild(this.actionMenuView.el);
-    this.el.appendChild(this.editView.el);
-    this.el.appendChild(this.settingsView.el);
-    this.el.appendChild(this.viewSourceView.el);
-    this.el.appendChild(this.appendChildView.el);
-    this.el.appendChild(this.moveView.el);
+  _removeChildViews() {
+    // When we close the customizer we can remove these elements from the
+    // document, leaving only this.el, this.container and this.globalStyleSheet
+    this.container.removeChild(this.customizer);
+    this.el.removeChild(this.childViews);
+  }
+
+  open() {
+    return new Promise((resolve, reject) => {
+      // Start the opening animation for the customizer
+      this.container.classList.add('show');
+
+      // Wait for the animation to end, then:
+      var listener = () => {
+        this.container.removeEventListener('transitionend', listener);
+        // Add the fxos-customizer element and the other elements we need
+        this._addChildViews();
+        // Enable the global stylesheet
+        this.globalStyleSheet.disabled = false;
+        // Resolve the promise
+        resolve();
+      };
+      this.container.addEventListener('transitionend', listener);
+    });
+  }
+
+  close() {
+    return new Promise((resolve, reject) => {
+      // Start hiding the customizer with an animated transition
+      this.container.classList.remove('show');
+
+      // Erase any highlight right away
+      this.highlighter.highlight(null);
+
+      // Scroll the app to the top before beginning the transition
+      // so we don't see the blank white padding as the panel slides down
+      document.body.scrollIntoView();
+
+      // Wait for the transition to end, then:
+      var listener = () => {
+        this.container.removeEventListener('transitionend', listener);
+        // Disable the global stylesheet
+        this.globalStyleSheet.disabled = true;
+        // Remove all the unnecessary elements from the document
+        this._removeChildViews();
+        // And resolve the promise
+        resolve();
+      };
+      this.container.addEventListener('transitionend', listener);
+    });
   }
 }

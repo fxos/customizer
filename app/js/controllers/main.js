@@ -3,12 +3,18 @@
 export default class MainController extends Controller {
   constructor(options) {
     super(options);
-    this.attached = false;
-    this.waitToBeOpened();
+
+    // We insert the main view into the document on startup.  This adds a
+    // small disabled stylesheet and a minimal offscreen element to the
+    // DOM. The mainView keeps the rest of the customizer out of the DOM
+    // until its open() method is called.
+    document.body.appendChild(this.view.el);
+
+    this._waitToBeOpened();
   }
 
-  waitToBeOpened() {
-    var openGesture = {
+  get openGesture() {
+    return {
       type: 'swipe',    // Swipe:
       numFingers: 2,    // with two fingers,
       startRegion: {    // from bottom 20% of the screen,
@@ -19,15 +25,10 @@ export default class MainController extends Controller {
       },
       maxTime: 1000,    // in less than 1 second.
     };
-
-    Gesture.detect(openGesture).then(() => {
-      this.attachView();
-      this.waitToBeClosed();
-    });
   }
 
-  waitToBeClosed() {
-    var closeGesture = {
+  get closeGesture() {
+    return {
       type: 'swipe',    // Swipe:
       numFingers: 2,    // with two fingers,
       startRegion: {    // from the middle ~half of the screen
@@ -38,48 +39,23 @@ export default class MainController extends Controller {
       },
       maxTime: 1000,    // in less than 1 second.
     };
-
-    Gesture.detect(closeGesture).then(() => {
-      this.removeView();
-      this.waitToBeOpened();
-    });
   }
 
-  attachView() {
-    if (this.attached) {
-      return;
-    }
-
-    this.view.customizer.setRootNode(document.documentElement);
-    document.body.appendChild(this.view.el);
-
-    var padding = this.view.el.querySelector('fxos-customizer').offsetHeight;
-    this._styleEl = document.createElement('style');
-    this._styleEl.textContent = `
-    html, body {
-      overflow: initial !important;
-    }
-
-    body {
-      padding-bottom: ${padding}px !important;
-    }`;
-    document.head.appendChild(this._styleEl);
-
-    this.attached = true;
+  // These private _wait methods call each other. If you try to call them
+  // directly, you'll end up with more than one gesture detector listening
+  // at a time.
+  _waitToBeOpened() {
+    Gesture.detect(this.openGesture)
+      .then(() => this.view.open())
+      .then(() => {
+        this.view.customizer.setRootNode(document.documentElement);
+        this._waitToBeClosed();
+      });
   }
 
-  removeView() {
-    if (!this.attached) {
-      return;
-    }
-
-    document.body.removeChild(this.view.el);
-    document.head.removeChild(this._styleEl);
-    this._styleEl = null;
-
-    // disconnect from the <html> element
-    this.view.customizer.setRootNode(null);
-
-    this.attached = false;
+  _waitToBeClosed() {
+    Gesture.detect(this.closeGesture)
+      .then(() => this.view.close())
+      .then(() => this._waitToBeOpened());
   }
 }

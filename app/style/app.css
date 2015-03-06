@@ -1,20 +1,5 @@
 @import '../components/gaia-icons/gaia-icons-embedded.css';
 
-fxos-customizer {
-  background-color: rgba(0, 0, 0, 0.8);
-  position: fixed;
-  top: 50%;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  border-top: 1px solid #ccc;
-  /*
-   * this needs to go on top of the regular app, but below
-   * gaia-modal and gaia-dialog which we override below.
-   */
-  z-index: 10000000;
-}
-
 gaia-dialog {
   z-index: 10000002 !important;
 }
