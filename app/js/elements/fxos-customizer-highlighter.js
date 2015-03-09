@@ -27,10 +27,10 @@ proto.createdCallback = function() {
 
 proto.highlight = function(element) {
   // Figure out where the element is
-  var rect = element.getBoundingClientRect();
+  var rect = element && element.getBoundingClientRect();
 
   // If the element has zero size, hide the highlight
-  if (rect.width === 0 && rect.height === 0) {
+  if (!rect || (rect.width === 0 && rect.height === 0)) {
     this.overlay.style.display = 'none';
   }
   else {
