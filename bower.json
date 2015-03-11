@@ -26,6 +26,7 @@
   },
   "resolutions": {
     "gaia-icons": "~0.7.4",
-    "gaia-component": "~0.3.2"
+    "gaia-component": "~0.3.2",
+    "jszip": "~2.3.0"
   }
 }

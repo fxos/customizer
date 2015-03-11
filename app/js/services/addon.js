@@ -72,7 +72,8 @@ AddonService.generate = function(target, callback) {
     .then((generator) => {
       callback(generator);
 
-      AddonService.install(generator.generate());
+      var addonBlob = new Blob([generator.generate()], { type: 'application/zip' });
+      AddonService.install(addonBlob);
     });
 };
 
