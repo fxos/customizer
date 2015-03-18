@@ -10,13 +10,28 @@ export default class SettingsController extends Controller {
   open() {
     this.view.modal.open();
 
-    AddonService.getAddons(window.location.host).then((addons) => {
-      this.view.setAddons(addons);
-    });
+    this._setMergeMode(false);
   }
 
   close() {
+    if (this._mergeMode) {
+      this._setMergeMode(false);
+      return;
+    }
+
     this.view.modal.close();
+  }
+
+  mergeMode() {
+    this._setMergeMode(true);
+  }
+
+  doneMerging() {
+    this._setMergeMode(false);
+
+    AddonService.merge(this.view.getSelectedAddons()).then(() => {
+
+    });
   }
 
   addons() {
@@ -33,23 +48,29 @@ export default class SettingsController extends Controller {
     };
   }
 
-  uninstall(addon) {
-    AddonService.uninstall(addon.origin).then(() => {
-      AddonService.getAddons(window.location.host).then((addons) => {
-        this.view.setAddons(addons);
-      });
+  addonDetail(addon) {
+    console.log('addonDetail()', addon);
+
+    var activity = new window.MozActivity({
+      name: 'configure',
+      data: {
+        target: 'device',
+        section: 'addons'
+      }
     });
+
+    activity.onerror = (e) => {
+      console.error('Error opening Settings Add-ons panel', e);
+    };
   }
 
-  enableAddon(addon) {
-    AddonService.getAddon(addon.origin).then((addon) => {
-      navigator.mozApps.mgmt.setEnabled(addon, true);
-    });
-  }
+  _setMergeMode(mergeMode) {
+    this._mergeMode = mergeMode;
 
-  disableAddon(addon) {
-    AddonService.getAddon(addon.origin).then((addon) => {
-      navigator.mozApps.mgmt.setEnabled(addon, false);
+    this.view.setMergeMode(this._mergeMode);
+
+    AddonService.getAddons(window.location.host).then((addons) => {
+      this.view.setAddons(addons, this._mergeMode);
     });
   }
 }

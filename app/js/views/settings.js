@@ -1,15 +1,22 @@
 /* global View */
 
 var settingsViewTemplate =
-`<gaia-modal class="settings">
+`<style scoped>
+  .hidden {
+    display: none;
+  }
+</style>
+<gaia-modal class="settings">
   <gaia-header>
     <button data-action="close">Close</button>
     <h1>Settings</h1>
-    <button data-action="addons">All Add-ons</button>
+    <button data-action="mergeMode">Merge</button>
+    <button data-action="doneMerging" disabled hidden>Done</button>
   </gaia-header>
   <section>
     <gaia-sub-header>Installed Add-ons</gaia-sub-header>
     <gaia-list></gaia-list>
+    <gaia-button data-action="addons">All Add-ons</gaia-button>
   </section>
 </gaia-modal>`;
 
@@ -26,55 +33,68 @@ export default class SettingsView extends View {
     super(controller);
 
     this.modal  = this.$('gaia-modal');
+    this.header = this.$('gaia-header');
     this.addons = this.$('gaia-list');
+
+    this.closeButton       = this.$('button[data-action="close"]');
+    this.mergeModeButton   = this.$('button[data-action="mergeMode"]');
+    this.doneMergingButton = this.$('button[data-action="doneMerging"]');
 
     this.on('click', 'gaia-button', this._handleClick.bind(this));
     this.on('click', 'button', this._handleClick.bind(this));
+    this.on('click', 'a', this._handleClick.bind(this));
 
-    // this.on('change', 'gaia-switch', this._handleChange.bind(this));
+    this.on('click', 'gaia-checkbox', () => setTimeout(this._handleSelectionChange.bind(this)));
+    this.addons.addEventListener('click', this._handleSelectionChange.bind(this));
   }
 
   template() {
     return settingsViewTemplate;
   }
 
-  setAddons(addons) {
+  setAddons(addons, mergeMode) {
     this.addons.innerHTML = '';
 
     addons.forEach((addon) => {
       var installTime = new Date(addon.installTime);
-      this.addons.innerHTML +=
+
+      this.addons.innerHTML += mergeMode ?
 `<li flexbox>
   <span flex>
-    <gaia-switch data-origin="${addon.origin}" data-enabled="${addon.enabled}"></gaia-switch>
+    <gaia-checkbox id="${addon.origin}"></gaia-checkbox>
   </span>
-  <span flex>
+  <label for="${addon.origin}" flex>
     ${addon.manifest.name}
     <span class="addon-time">
       ${installTime.toLocaleDateString()}
       ${installTime.toLocaleTimeString()}
     </span>
-  </span>
-  <span flex>
-    <gaia-button circular data-action="uninstall" data-origin="${addon.origin}">
-      <i data-icon="delete"></i>
-    </gaia-button>
-  </span>
+  </label>
+</li>` :
+`<li flexbox>
+  <a flex data-action="addonDetail" data-origin="${addon.origin}">
+    ${addon.manifest.name}
+    <span class="addon-time">
+      ${installTime.toLocaleDateString()}
+      ${installTime.toLocaleTimeString()}
+    </span>
+  </a>
+  <i data-icon="forward-light"></i>
 </li>`;
     });
+  }
 
-    [].forEach.call(this.addons.querySelectorAll('gaia-switch'), (gs) => {
-      if (gs.dataset.enabled === 'true') {
-        gs.setAttribute('checked', true);
-      }
+  setMergeMode(mergeMode) {
+    this.mergeModeButton.hidden = mergeMode;
+    this.doneMergingButton.hidden = !mergeMode;
 
-      delete gs.dataset.enabled;
-    });
+    this.closeButton.textContent = mergeMode ? 'Cancel' : 'Close';
+    this.header.querySelector('h1').textContent =
+      mergeMode ? 'Merge Add-ons' : 'Settings';
+  }
 
-    // XXX - Shouldn't have to do this, but 'change' is not propagating
-    [].forEach.call(document.querySelectorAll('gaia-switch'), (gs) => {
-      gs.addEventListener('change', this._handleChange.bind(this));
-    });
+  getSelectedAddons() {
+    return [].map.call(this.addons.querySelectorAll('gaia-checkbox[checked]'), gc => gc.id);
   }
 
   _handleClick(evt) {
@@ -84,14 +104,7 @@ export default class SettingsView extends View {
     }
   }
 
-  _handleChange(evt) {
-    var gaiaSwitch = evt.target;
-    if (gaiaSwitch.checked) {
-      this.controller.enableAddon(gaiaSwitch.dataset);
-    }
-
-    else {
-      this.controller.disableAddon(gaiaSwitch.dataset);
-    }
+  _handleSelectionChange(evt) {
+    this.doneMergingButton.disabled = this.getSelectedAddons().length === 0;
   }
 }

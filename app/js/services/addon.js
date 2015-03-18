@@ -1,4 +1,5 @@
 /* global AddonGenerator */
+/* global AddonMerger */
 
 var AddonService = {};
 
@@ -68,13 +69,12 @@ AddonService.generate = function(target, callback) {
     return;
   }
 
-  return AddonService.getGenerator(target)
-    .then((generator) => {
-      callback(generator);
+  return AddonService.getGenerator(target).then((generator) => {
+    callback(generator);
 
-      var addonBlob = new Blob([generator.generate()], { type: 'application/zip' });
-      AddonService.install(addonBlob);
-    });
+    var addonBlob = new Blob([generator.generate()], { type: 'application/zip' });
+    AddonService.install(addonBlob);
+  });
 };
 
 AddonService.install = function(blob) {
@@ -137,6 +137,61 @@ AddonService.uninstall = function(origin) {
       request.onerror = function() {
         reject(request);
       };
+    }).catch(reject);
+  });
+};
+
+AddonService.getMerger = function() {
+  return new Promise((resolve, reject) => {
+    var name = window.prompt('Enter a name for this add-on', 'Merged Addon ' + new Date().toISOString());
+    if (!name) {
+      reject();
+      return;
+    }
+
+    var merger = new AddonMerger(name);
+    merger.manifest.customizations = [{
+      filter: window.location.origin,
+      scripts: ['main.js']
+    }];
+
+    resolve(merger);
+  });
+};
+
+AddonService.merge = function(origins) {
+  return new Promise((resolve, reject) => {
+    AddonService.getMerger().then((merger) => {
+      var blobs = [];
+      var addons = [];
+
+      origins.forEach((origin) => {
+        AddonService.getAddon(origin).then((addon) => {
+          addons.push(addon);
+
+          addon.export().then((blob) => {
+            blobs.push(blob);
+
+            if (blobs.length === origins.length) {
+              blobs.forEach(blob => merger.add(blob));
+
+              merger.merge((arrayBuffer) => {
+                if (!arrayBuffer) {
+                  reject();
+                  return;
+                }
+
+                addons.forEach((addon) => {
+                  navigator.mozApps.mgmt.uninstall(addon);
+                });
+
+                var addonBlob = new Blob([arrayBuffer], { type: 'application/zip' });
+                AddonService.install(addonBlob).then(resolve).catch(reject);
+              });
+            }
+          }).catch(reject);
+        }).catch(reject);
+      });
     }).catch(reject);
   });
 };

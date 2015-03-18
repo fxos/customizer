@@ -22,7 +22,8 @@
     "gaia-list": "gaia-components/gaia-list",
     "gaia-button": "gaia-components/gaia-button",
     "gaia-switch": "gaia-components/gaia-switch",
-    "gesture": "fxos/gesture"
+    "gesture": "fxos/gesture",
+    "gaia-checkbox": "gaia-components/gaia-checkbox"
   },
   "resolutions": {
     "gaia-icons": "~0.7.4",
