@@ -1,29 +1,18 @@
 {
-  "name": "FM Radio",
-  "description": "A demo of FM Radio with an embedded FxOS Customizer",
+  "name": "Customizer",
+  "description": "Tool for editing apps on-device",
   "customizations": [{
-    "filter": "app",
+    "filter": ".*",
     "css": ["style/app.css"],
     "scripts": ["js/addon-concat.js"]
   }],
   "type": "certified",
+  "role": "addon",
   "permissions": {
     "device-storage:sdcard": { "access": "readwrite" },
     "webapps-manage": {},
-
     "themeable":{},
-    "storage":{},
-    "fmradio":{},
-    "settings":{ "access": "readonly" },
-    "speaker-control":{},
-    "audio-channel-content":{}
+    "settings":{ "access": "readonly" }
   },
-  "launch_path": "/fm/index.html",
-  "icons": {
-    "84": "/fm/style/icons/fm_84.png",
-    "126": "/fm/style/icons/fm_126.png",
-    "142": "/fm/style/icons/fm_142.png",
-    "189": "/fm/style/icons/fm_189.png",
-    "284": "/fm/style/icons/fm_284.png"
-  }
+  "package_path": "customizer.zip"
 }
