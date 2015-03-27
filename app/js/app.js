@@ -35,6 +35,38 @@ window.addEventListener('DOMContentLoaded', () => {
     console.error('[Customizer] An error occurred getting the manifestURL');
   };
 
+  /**
+   * TODO: Bug 1148218 - [Customizer] Undo inline stylesheets from Bug 1148139
+   */
+  function styleHack() {
+    /*jshint maxlen:false*/
+    var style = document.createElement('style');
+    style.innerHTML =
+`@import '../components/gaia-icons/gaia-icons-embedded.css';
+
+gaia-dialog {
+  z-index: 10000002 !important;
+}
+
+gaia-modal {
+  z-index: 10000001 !important;
+  background: white;
+}
+
+.settings gaia-list gaia-button {
+  /* XXX/drs: Why do we have to make this !important? It's very specific. */
+  margin: 0 0 0 auto !important;
+
+  --button-background: red;
+  text-align: center;
+}
+
+.settings gaia-list .addon-time {
+  color: #aaa;
+}`;
+    document.head.appendChild(style);
+  }
+
   function boot() {
     var editView = new EditView();
     var actionMenuView = new ActionMenuView();
@@ -92,5 +124,7 @@ window.addEventListener('DOMContentLoaded', () => {
     settingsController.mainController = mainController;
     appendChildController.mainController = mainController;
     moveController.mainController = mainController;
+
+    styleHack();
   }
 });

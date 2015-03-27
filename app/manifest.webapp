@@ -3,7 +3,6 @@
   "description": "Tool for editing apps on-device",
   "customizations": [{
     "filter": ".*",
-    "css": ["style/app.css"],
     "scripts": ["js/addon-concat.js"]
   }],
   "type": "certified",
