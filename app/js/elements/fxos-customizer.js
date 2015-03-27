@@ -5,7 +5,19 @@ var proto = Object.create(HTMLElement.prototype);
 
 var template =
 `<style>
-@import '../components/gaia-icons/gaia-icons-embedded.css';
+[data-icon]:before,
+.ligature-icons {
+  font-family: "gaia-icons";
+  content: attr(data-icon);
+  display: inline-block;
+  font-weight: 500;
+  font-style: normal;
+  text-decoration: inherit;
+  text-transform: none;
+  text-rendering: optimizeLegibility;
+  font-size: 30px;
+  -webkit-font-smoothing: antialiased;
+}
 
 gaia-dom-tree {
   width: 100%;
