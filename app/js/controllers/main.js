@@ -4,12 +4,6 @@ export default class MainController extends Controller {
   constructor(options) {
     super(options);
 
-    // We insert the main view into the document on startup.  This adds a
-    // small disabled stylesheet and a minimal offscreen element to the
-    // DOM. The mainView keeps the rest of the customizer out of the DOM
-    // until its open() method is called.
-    document.body.appendChild(this.view.el);
-
     this._waitToBeOpened();
   }
 
