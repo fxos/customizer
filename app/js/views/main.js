@@ -131,7 +131,7 @@ var mainViewTemplate =
     transform: translateY(-100%);
   }
 </style>
-<style class="fxos-customizer-global-styles" disabled>
+<style>
 /*
  * These styles need to be applied globally to the app when the customizer
  * is displayed so that the user can scroll to see all of the app even
@@ -170,14 +170,6 @@ export default class MainView extends View {
     this.childViews = this.$('div.fxos-customizer-child-views');
     this.customizer = this.$('fxos-customizer');
     this.highlighter = this.$('fxos-customizer-highlighter');
-    this.globalStyleSheet = this.$('style.fxos-customizer-global-styles');
-
-    // When the customizer is closed, we want its impact on the
-    // running app to be minimal, so we remove all of the children of
-    // this view except for the container and the stylesheet and only
-    // add them back when we actually open the customizer.
-    this.container.removeChild(this.customizer);
-    this.el.removeChild(this.childViews);
 
     // We put all of the other view elements that the app needs into the
     // childViews container, so that we can add and remove them all at once.
@@ -214,62 +206,56 @@ export default class MainView extends View {
     return mainViewTemplate;
   }
 
-  _addChildViews() {
-    // We need all of these things for the customizer to work
-    // But we don't want them sitting in the document tree when the
-    // customizer is closed, so we add them all only when we open.
-    this.container.appendChild(this.customizer); // the <fxos-customizer>
-    this.el.appendChild(this.childViews); // The highlighter and child views
+  _addToBody() {
+    document.body.appendChild(this.el);
   }
 
-  _removeChildViews() {
-    // When we close the customizer we can remove these elements from the
-    // document, leaving only this.el, this.container and this.globalStyleSheet
-    this.container.removeChild(this.customizer);
-    this.el.removeChild(this.childViews);
+  _removeFromBody() {
+    document.body.removeChild(this.el);
   }
 
   open() {
+    // Add the fxos-customizer element and the other elements we need
+    this._addToBody();
+
     return new Promise((resolve, reject) => {
-      // Start the opening animation for the customizer
-      this.container.classList.add('show');
+      window.requestAnimationFrame(() => {
+        // Start the opening animation for the customizer
+        this.container.classList.add('show');
+      });
 
       // Wait for the animation to end, then:
       var listener = () => {
         this.container.removeEventListener('transitionend', listener);
-        // Add the fxos-customizer element and the other elements we need
-        this._addChildViews();
-        // Enable the global stylesheet
-        this.globalStyleSheet.disabled = false;
         // Resolve the promise
         resolve();
       };
+
       this.container.addEventListener('transitionend', listener);
     });
   }
 
   close() {
     return new Promise((resolve, reject) => {
-      // Start hiding the customizer with an animated transition
-      this.container.classList.remove('show');
-
-      // Erase any highlight right away
-      this.highlighter.highlight(null);
-
-      // Scroll the app to the top before beginning the transition
-      // so we don't see the blank white padding as the panel slides down
-      document.body.scrollIntoView();
+      window.requestAnimationFrame(() => {
+        // Start hiding the customizer with an animated transition
+        this.container.classList.remove('show');
+        // Erase any highlight right away
+        this.highlighter.highlight(null);
+        // Scroll the app to the top before beginning the transition
+        // so we don't see the blank white padding as the panel slides down
+        document.body.scrollIntoView();
+      });
 
       // Wait for the transition to end, then:
       var listener = () => {
         this.container.removeEventListener('transitionend', listener);
-        // Disable the global stylesheet
-        this.globalStyleSheet.disabled = true;
         // Remove all the unnecessary elements from the document
-        this._removeChildViews();
+        this._removeFromBody();
         // And resolve the promise
         resolve();
       };
+
       this.container.addEventListener('transitionend', listener);
     });
   }
