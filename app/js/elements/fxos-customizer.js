@@ -137,8 +137,9 @@ proto.watchChanges = function() {
     // root element having the class "fxos-customizer-main-view"
     for (var i = mutations.length - 1; i >= 0; i--) {
       if (!this._shadowContains(mutations[i].target)) {
-        console.log(mutations[i].target.outerHTML);
+        var selectedNode = this.gaiaDomTree.selectedNode;
         this.gaiaDomTree.render();
+        this.select(selectedNode);
         return;
       }
     }
