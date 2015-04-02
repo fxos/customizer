@@ -8,6 +8,7 @@
  */
 var gulp = require('gulp');
 var merge = require('gulp-merge');
+var replace = require('gulp-replace');
 
 var buildModules = __dirname + '/node_modules/fxos-build/node_modules/';
 var concat = require(buildModules + 'gulp-concat');
@@ -58,6 +59,8 @@ var app = gulp.src([
 
 merge(components, app)
   .pipe(concat('addon-concat.js'))
+  .pipe(replace(/gaia\-/g, 'customizer-gaia-'))
+  .pipe(replace(/customizer\-gaia\-icons\/customizer\-gaia\-icons\.css/g, 'gaia-icons/gaia-icons.css'))
   .pipe(gulp.dest(DIST_APP_ROOT + 'js'));
 
 console.log('all done.');
