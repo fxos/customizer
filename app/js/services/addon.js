@@ -2,8 +2,6 @@
 
 var AddonService = {};
 
-const ADDON_FILENAME = 'addon-temp.zip';
-
 AddonService.getAddons = function(host) {
   return new Promise((resolve, reject) => {
     var request = navigator.mozApps.mgmt.getAll();
@@ -79,45 +77,18 @@ AddonService.generate = function(target, callback) {
 
 AddonService.install = function(blob) {
   return new Promise((resolve, reject) => {
-    // Save the blob to a file because we don't support importing memory blobs.
-    var sdcard = navigator.getDeviceStorage('sdcard');
+    // Import the addon using the tempfile.
+    navigator.mozApps.mgmt.import(blob)
+      .then((addon) => {
 
-    // Delete the tempfile from the SD card.
-    var deleteRequest = sdcard.delete(ADDON_FILENAME);
-    deleteRequest.onsuccess = deleteRequest.onerror = () => {
-
-      // Add the addon blob to the SD card using the temp filename.
-      var addNamedRequest = sdcard.addNamed(blob, ADDON_FILENAME);
-      addNamedRequest.onsuccess = () => {
-
-        // Retrieve the new tempfile.
-        var getRequest = sdcard.get(ADDON_FILENAME);
-        getRequest.onsuccess = () => {
-          var addonFile = getRequest.result;
-
-          // Import the addon using the tempfile.
-          navigator.mozApps.mgmt.import(addonFile)
-            .then((addon) => {
-
-              // Enable the addon by default.
-              navigator.mozApps.mgmt.setEnabled(addon, true);
-              resolve(addon);
-            })
-            .catch((error) => {
-              console.error('Unable to install the addon', error);
-              reject(error);
-            });
-        };
-        getRequest.onerror = (error) => {
-          console.error('Unable to get addon from DeviceStorage', error);
-          reject(error);
-        };
-      };
-      addNamedRequest.onerror = (error) => {
-        console.error('Unable to save addon to DeviceStorage', error);
+        // Enable the addon by default.
+        navigator.mozApps.mgmt.setEnabled(addon, true);
+        resolve(addon);
+      })
+      .catch((error) => {
+        console.error('Unable to install the addon', error);
         reject(error);
-      };
-    };
+      });
   });
 };
 
