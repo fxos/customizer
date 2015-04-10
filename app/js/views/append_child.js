@@ -1,6 +1,11 @@
 /* global View */
 
 var appendChildViewTemplate = `
+<style scoped>
+.shadow-host {
+  z-index: 10000001;
+}
+</style>
 <gaia-dialog-prompt></gaia-dialog-prompt>
 `;
 
