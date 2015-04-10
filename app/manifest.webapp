@@ -3,7 +3,10 @@
   "description": "Tool for editing apps on-device",
   "customizations": [{
     "filter": ".*",
-    "scripts": ["js/addon-concat.js"]
+    "scripts": [
+      "js/components-concat.js",
+      "js/addon-concat.js"
+    ]
   }],
   "type": "certified",
   "role": "addon",

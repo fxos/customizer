@@ -9,6 +9,7 @@
 var gulp = require('gulp');
 var merge = require('gulp-merge');
 var replace = require('gulp-replace');
+var wrapper = require('gulp-wrapper');
 
 var buildModules = __dirname + '/node_modules/fxos-build/node_modules/';
 var concat = require(buildModules + 'gulp-concat');
@@ -19,7 +20,6 @@ const DIST_APP_ROOT = './dist/app/';
 
 var components = gulp.src([
   APP_ROOT + 'components/drag/drag.js',
-  APP_ROOT + 'components/gesture/gesture.js',
   APP_ROOT + 'components/gaia-component/gaia-component.js',
   APP_ROOT + 'components/gaia-icons/gaia-icons.js',
   APP_ROOT + 'components/font-fit/font-fit.js',
@@ -40,11 +40,38 @@ var components = gulp.src([
   APP_ROOT + 'components/gaia-switch/gaia-switch.js',
   APP_ROOT + 'components/addon-generator/dist/addon-generator.js'
   ])
-  .pipe(concat('components-concat.js'));
+  .pipe(concat('components-concat.js'))
 
-var app = gulp.src([
+  // Namespace all `gaia-` components to avoid collisions in case the
+  // app the Customizer is injected into has already declared them.
+  .pipe(replace(/gaia\-/g, 'customizer-gaia-'))
+
+  // Fix the `gaia-icons` path after namespacing has completed.
+  .pipe(replace(/customizer\-gaia\-icons\/customizer\-gaia\-icons\.css/g, 'gaia-icons/gaia-icons.css'))
+
+  // Strip out all comments since all this code will get concatenated and
+  // wrapped in a multi-line comment inside a function for lazy-loading.
+  .pipe(replace(/(?:\/\*(?:[\s\S]*?)\*\/)|(?:([\s;])+\/\/(?:.*)$)/gm, ''))
+
+  // Wrap the entire source in a multi-line comment within a function
+  // (e.g.: `function() {/* ... */}`) and insert the source in localStorage
+  // for lazy-loading later.
+  .pipe(wrapper({
+    header: 'function componentsSource() {/*',
+    footer: '*/}\n' +
+      '(function() {\n' +
+        'var source = componentsSource.toString();\n' +
+        'source = source.substr(31, source.length - 34);\n' +
+        'window.localStorage.setItem(\'__CUSTOMIZER__componentsSource\', source);\n' +
+      '})();\n' +
+      'console.log(\'Injected components-concat.js\');'
+  }))
+  .pipe(gulp.dest(DIST_APP_ROOT + 'js'));
+
+var addon = gulp.src([
   APP_ROOT + 'js/polyfill.js',
   APP_ROOT + 'components/fxos-mvc/mvc.js',
+  APP_ROOT + 'components/gesture/gesture.js',
   APP_ROOT + 'js/elements/**.js',
   APP_ROOT + 'js/controllers/**.js',
   APP_ROOT + 'js/models/**.js',
@@ -52,15 +79,20 @@ var app = gulp.src([
   APP_ROOT + 'js/views/**.js',
   APP_ROOT + 'js/app.js'
   ])
-  .pipe(concat('app-concat.js'))
+  .pipe(concat('addon-concat.js'))
   .pipe(to5().on('error', function(e) {
       console.log('error running 6to5', e);
-    }));
+    }))
 
-merge(components, app)
-  .pipe(concat('addon-concat.js'))
+  // Namespace all `gaia-` components to avoid collisions in case the
+  // app the Customizer is injected into has already declared them.
   .pipe(replace(/gaia\-/g, 'customizer-gaia-'))
+
+  // Fix the `gaia-icons` path after namespacing has completed.
   .pipe(replace(/customizer\-gaia\-icons\/customizer\-gaia\-icons\.css/g, 'gaia-icons/gaia-icons.css'))
+  .pipe(wrapper({
+    footer: 'console.log(\'Injected addon-concat.js\');'
+  }))
   .pipe(gulp.dest(DIST_APP_ROOT + 'js'));
 
 console.log('all done.');
