@@ -140,7 +140,7 @@ var mainViewTemplate =
  * Note that this stylesheet is not scoped and is disabled by default.
  */
 html, body {
-  overflow: initial !important;
+  overflow-y: initial !important;
 }
 
 body {
