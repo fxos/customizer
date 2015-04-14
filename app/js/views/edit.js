@@ -1,5 +1,7 @@
 /* global View */
 
+/* global html_beautify */
+
 var editViewTemplate =
 `<gaia-modal>
   <style scoped>
@@ -30,15 +32,15 @@ var editViewTemplate =
       bottom: 46px;
       left: 0;
       width: 100%;
+      height: auto;
     }
     .tab-pane.active {
       display: block;
     }
     textarea {
+      font-family: Consolas,Monaco,"Andale Mono",monospace;
       width: 100%;
       height: 100%;
-      max-width: 100%;
-      max-height: 100%;
     }
     textarea,
     input {
@@ -145,8 +147,12 @@ export default class EditView extends View {
 
   setTarget(target) {
     var clonedTarget = target.cloneNode(true);
+    var html = html_beautify(clonedTarget.innerHTML.trim(), {
+      indent_size: 2
+    });
 
-    this.htmlTextarea.value = clonedTarget.innerHTML;
+    this.htmlTextarea.value = html;
+
     this.attributeInspector.set(clonedTarget);
     this.propertyInspector.set(clonedTarget);
   }
