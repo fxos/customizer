@@ -199,8 +199,12 @@ proto._handleClick = function(e) {
   this.select(e.target);
 };
 
-document.registerElement('fxos-customizer', {
-  prototype: proto
-});
+try {
+  document.registerElement('fxos-customizer', { prototype: proto });
+} catch (e) {
+  if (e.name !== 'NotSupportedError') {
+    throw e;
+  }
+}
 
 })(window);
