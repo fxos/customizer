@@ -52,5 +52,12 @@ proto.hide = function() {
   this.overlay.style.display = 'none';
 };
 
-document.registerElement('fxos-customizer-highlighter', { prototype: proto });
+try {
+  document.registerElement('fxos-customizer-highlighter', { prototype: proto });
+} catch (e) {
+  if (e.name !== 'NotSupportedError') {
+    throw e;
+  }
+}
+
 })(window);
