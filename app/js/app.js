@@ -8,7 +8,7 @@ const BLOCKED_APPS = [
 window.addEventListener('DOMContentLoaded', () => {
   var request = navigator.mozApps.getSelf();
   request.onsuccess = function() {
-    var manifestURL = request.result.manifestURL;
+    var manifestURL = request.result && request.result.manifestURL;
     if (BLOCKED_APPS.find(a => a === manifestURL)) {
       console.log(`[Customizer] BLOCKING injection into ${manifestURL}`);
       return;
