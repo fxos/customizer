@@ -18,6 +18,32 @@ var to5 = require(buildModules + 'gulp-6to5');
 const APP_ROOT = './app/';
 const DIST_APP_ROOT = './dist/app/';
 
+var componentsHeader = [
+  'function componentsSource() {/*',
+  '(function() {'
+].join('\n');
+
+var componentsFooter = [
+  '}).call(window);',
+  '*/}',
+  '(function() {',
+    'var source = componentsSource.toString();',
+    'source = source.substr(31, source.length - 34);',
+    'window.localStorage.setItem(\'__CUSTOMIZER__componentsSource\', source);',
+  '})();',
+  'console.log(\'Injected components-concat.js\');'
+].join('\n');
+
+var addonHeader = [
+  '(function() {',
+  'var result;' // js-prettify needs this to run in 'strict' mode.
+].join('\n');
+
+var addonFooter = [
+  '}).call(window);',
+  'console.log(\'Injected addon-concat.js\');'
+].join('\n');
+
 var components = gulp.src([
   APP_ROOT + 'components/drag/drag.js',
   APP_ROOT + 'components/gaia-component/gaia-component.js',
@@ -57,14 +83,8 @@ var components = gulp.src([
 // (e.g.: `function() {/* ... */}`) and insert the source in localStorage
 // for lazy-loading later.
 .pipe(wrapper({
-  header: 'function componentsSource() {/*',
-  footer: '*/}\n' +
-    '(function() {\n' +
-      'var source = componentsSource.toString();\n' +
-      'source = source.substr(31, source.length - 34);\n' +
-      'window.localStorage.setItem(\'__CUSTOMIZER__componentsSource\', source);\n' +
-    '})();\n' +
-    'console.log(\'Injected components-concat.js\');'
+  header: componentsHeader,
+  footer: componentsFooter
 }))
 .pipe(gulp.dest(DIST_APP_ROOT + 'js'));
 
@@ -95,8 +115,8 @@ var addon = gulp.src([
 // Fix the `gaia-icons` path after namespacing has completed.
 .pipe(replace(/customizer\-gaia\-icons\/customizer\-gaia\-icons\.css/g, 'gaia-icons/gaia-icons.css'))
 .pipe(wrapper({
-  header: 'var result;', // js-prettify needs this to run in 'strict' mode.
-  footer: 'console.log(\'Injected addon-concat.js\');'
+  header: addonHeader,
+  footer: addonFooter
 }))
 .pipe(gulp.dest(DIST_APP_ROOT + 'js'));
 
