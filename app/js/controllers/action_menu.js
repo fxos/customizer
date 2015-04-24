@@ -30,7 +30,7 @@ export default class ActionMenuController extends Controller {
 
   remove() {
     AddonService.generate(this.target, (generator) => {
-      generator.remove();
+      generator.opRemove();
     });
   }
 

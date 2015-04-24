@@ -51,11 +51,10 @@ AddonService.getGenerator = function(target) {
       return;
     }
 
-    var generator = new AddonGenerator(target, name);
-    generator.manifest.customizations = [{
-      filter: window.location.origin,
-      scripts: ['main.js']
-    }];
+    var generator = new AddonGenerator({
+      target: target,
+      name: name
+    });
 
     resolve(generator);
   });

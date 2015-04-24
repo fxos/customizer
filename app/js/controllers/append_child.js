@@ -21,7 +21,7 @@ export default class AppendChildController extends Controller {
     }
 
     AddonService.generate(this.target, (generator) => {
-      generator.appendChild(tagName);
+      generator.opAppendChild(tagName);
     });
   }
 }
