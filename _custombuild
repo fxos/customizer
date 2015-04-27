@@ -64,7 +64,7 @@ var components = gulp.src([
   APP_ROOT + 'components/gaia-list/gaia-list.js',
   APP_ROOT + 'components/gaia-button/gaia-button.js',
   APP_ROOT + 'components/gaia-switch/gaia-switch.js',
-  APP_ROOT + 'components/addon-generator/dist/addon-generator.js'
+  APP_ROOT + 'components/jszip/dist/jszip.js'
 ])
 .pipe(concat('components-concat.js'))
 
@@ -89,6 +89,8 @@ var components = gulp.src([
 .pipe(gulp.dest(DIST_APP_ROOT + 'js'));
 
 var addon = gulp.src([
+  APP_ROOT + 'components/observe-shim/lib/observe-shim.js',
+  APP_ROOT + 'components/observe-utils/lib/observe-utils.js',
   APP_ROOT + 'components/fxos-mvc/mvc.js',
   APP_ROOT + 'components/gesture/gesture.js',
   APP_ROOT + 'components/js-beautify/js/lib/beautify.js',

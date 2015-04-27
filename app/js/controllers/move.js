@@ -28,7 +28,7 @@ export default class MoveController extends Controller {
 
   before() {
     AddonService.generate(this.target, (generator) => {
-      generator.moveBefore(this.destination);
+      generator.opMoveBefore(this.destination);
 
       this.view.modal.close();
     });
@@ -36,7 +36,7 @@ export default class MoveController extends Controller {
 
   after() {
     AddonService.generate(this.target, (generator) => {
-      generator.moveAfter(this.destination);
+      generator.opMoveAfter(this.destination);
 
       this.view.modal.close();
     });
@@ -44,7 +44,7 @@ export default class MoveController extends Controller {
 
   prepend() {
     AddonService.generate(this.target, (generator) => {
-      generator.movePrepend(this.destination);
+      generator.opMovePrepend(this.destination);
 
       this.view.modal.close();
     });
@@ -52,7 +52,7 @@ export default class MoveController extends Controller {
 
   append() {
     AddonService.generate(this.target, (generator) => {
-      generator.moveAppend(this.destination);
+      generator.opMoveAppend(this.destination);
 
       this.view.modal.close();
     });

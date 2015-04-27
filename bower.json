@@ -8,7 +8,6 @@
   ],
   "dependencies": {
     "fxos-mvc": "fxos/mvc",
-    "addon-generator": "fxos/addon-generator",
     "gaia-dom-tree": "gaia-components/gaia-dom-tree",
     "gaia-dialog": "gaia-components/gaia-dialog",
     "gaia-css-inspector": "gaia-components/gaia-css-inspector",
@@ -23,7 +22,10 @@
     "gaia-button": "gaia-components/gaia-button",
     "gaia-switch": "gaia-components/gaia-switch",
     "gesture": "fxos/gesture",
-    "js-beautify": "~1.5.5"
+    "js-beautify": "~1.5.5",
+    "jszip": "~2.5.0",
+    "observe-shim": "~0.4.2",
+    "observe-utils": "~0.3.2"
   },
   "resolutions": {
     "font-fit": "~0.3.0"

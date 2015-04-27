@@ -23,11 +23,11 @@ export default class EditController extends Controller {
   save() {
     AddonService.generate(this.target, (generator) => {
       if (this.changes.innerHTML) {
-        generator.innerHTML(this.changes.innerHTML);
+        generator.opInnerHTML(this.changes.innerHTML);
       }
 
       if (this.changes.properties) {
-        generator.setProperties(this.changes.properties);
+        generator.opSetProperties(this.changes.properties);
       }
 
       this.close();
