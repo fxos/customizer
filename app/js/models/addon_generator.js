@@ -109,6 +109,14 @@ else {
     );
   }
 
+  opScript(script) {
+    this.operations.push(
+`/*=AddonGenerator::innerHTML*/
+${script}
+/*==*/`
+    );
+  }
+
   opRemove() {
     this.operations.push(
 `/*=AddonGenerator::remove*/

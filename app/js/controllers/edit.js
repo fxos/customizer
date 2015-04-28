@@ -26,6 +26,10 @@ export default class EditController extends Controller {
         generator.opInnerHTML(this.changes.innerHTML);
       }
 
+      if (this.changes.script) {
+        generator.opScript(this.changes.script);
+      }
+
       if (this.changes.properties) {
         generator.opSetProperties(this.changes.properties);
       }

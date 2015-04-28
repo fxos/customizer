@@ -5,12 +5,6 @@
 var editViewTemplate =
 `<gaia-modal>
   <style scoped>
-    gaia-tabs {
-      position: absolute !important;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-    }
     .gaia-modal {
       background: var(--background, #fff);
       display: none;
@@ -27,9 +21,8 @@ var editViewTemplate =
       box-sizing: padding-box;
       display: none;
       position: absolute;
-      padding: 10px;
-      top: 50px;
-      bottom: 46px;
+      top: 96px;
+      bottom: 0;
       left: 0;
       width: 100%;
       height: auto;
@@ -38,6 +31,7 @@ var editViewTemplate =
       display: block;
     }
     textarea {
+      border: none;
       font-family: Consolas,Monaco,"Andale Mono",monospace;
       width: 100%;
       height: 100%;
@@ -46,32 +40,40 @@ var editViewTemplate =
     input {
       -moz-user-select: text !important;
     }
+    gaia-property-inspector {
+      --background: #000;
+      --header-background: #000;
+    }
+    textarea,
+    gaia-tabs,
+    .tab-pane {
+      background: #000;
+      color: #fff;
+    }
   </style>
   <gaia-header>
-    <button data-action="cancel">Cancel</button>
+    <button data-action="cancel" data-icon="close"></button>
     <h1>Edit</h1>
     <button data-action="save">Save</button>
   </gaia-header>
+  <gaia-tabs selected="0">
+    <a href="#">HTML</a>
+    <a href="#">Script</a>
+    <a href="#">Attributes</a>
+    <a href="#">Properties</a>
+  </gaia-tabs>
   <section class="tab-pane active" data-id="html">
     <textarea></textarea>
   </section>
+  <section class="tab-pane" data-id="script">
+    <textarea></textarea>
+  </section>
   <section class="tab-pane" data-id="attributes">
-    <h3>Attributes</h3>
     <gaia-property-inspector root-property="attributes" data-textarea="textarea"></gaia-property-inspector>
   </section>
   <section class="tab-pane" data-id="properties">
-    <h3>Properties</h3>
     <gaia-property-inspector data-textarea="textarea"></gaia-property-inspector>
   </section>
-  <section class="tab-pane" data-id="events">
-    <h3>Events</h3>
-  </section>
-  <gaia-tabs selected="0">
-    <a href="#">HTML</a>
-    <a href="#">Attributes</a>
-    <a href="#">Properties</a>
-    <a href="#">Events</a>
-  </gaia-tabs>
 </gaia-modal>`;
 
 export default class EditView extends View {
@@ -91,6 +93,7 @@ export default class EditView extends View {
     this.tabs   = this.$('gaia-tabs');
 
     this.htmlTextarea = this.$('section[data-id="html"] > textarea');
+    this.scriptTextarea = this.$('section[data-id="script"] > textarea');
     this.attributeInspector = this.$('section[data-id="attributes"] > gaia-property-inspector');
     this.propertyInspector = this.$('section[data-id="properties"] > gaia-property-inspector');
 
@@ -116,6 +119,10 @@ export default class EditView extends View {
 
     this.htmlTextarea.addEventListener('keyup', (evt) => {
       this.controller.changes.innerHTML = this.htmlTextarea.value;
+    });
+
+    this.scriptTextarea.addEventListener('keyup', (evt) => {
+      this.controller.changes.script = this.scriptTextarea.value;
     });
 
     this.on('save', 'gaia-property-inspector', (evt) => {
@@ -152,6 +159,21 @@ export default class EditView extends View {
     });
 
     this.htmlTextarea.value = html;
+    this.scriptTextarea.value =
+`/**
+ * You can edit a script to be inserted
+ * in the generated add-on here.
+ *
+ * Globals:
+ *   selector [String]
+ *   el       [HTMLElement]
+ *   mo       [MutationObserver]
+ */
+
+ //el.addEventListener('click', function(evt) {
+ //  alert('Clicked!');
+ //});
+`;
 
     this.attributeInspector.set(clonedTarget);
     this.propertyInspector.set(clonedTarget);
