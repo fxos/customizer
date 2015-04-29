@@ -25,7 +25,8 @@
     "js-beautify": "~1.5.5",
     "jszip": "~2.5.0",
     "observe-shim": "~0.4.2",
-    "observe-utils": "~0.3.2"
+    "observe-utils": "~0.3.2",
+    "esprima": "~2.0.0"
   },
   "resolutions": {
     "font-fit": "~0.3.0"

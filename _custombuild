@@ -64,7 +64,8 @@ var components = gulp.src([
   APP_ROOT + 'components/gaia-list/gaia-list.js',
   APP_ROOT + 'components/gaia-button/gaia-button.js',
   APP_ROOT + 'components/gaia-switch/gaia-switch.js',
-  APP_ROOT + 'components/jszip/dist/jszip.js'
+  APP_ROOT + 'components/jszip/dist/jszip.js',
+  APP_ROOT + 'components/esprima/esprima.js'
 ])
 .pipe(concat('components-concat.js'))
 
