@@ -1,5 +1,6 @@
 /* global View */
 
+/* global esprima */
 /* global html_beautify */
 
 var editViewTemplate =
@@ -30,12 +31,6 @@ var editViewTemplate =
     .tab-pane.active {
       display: block;
     }
-    textarea {
-      border: none;
-      font-family: Consolas,Monaco,"Andale Mono",monospace;
-      width: 100%;
-      height: 100%;
-    }
     textarea,
     input {
       -moz-user-select: text !important;
@@ -50,6 +45,30 @@ var editViewTemplate =
       background: #000;
       color: #fff;
     }
+    fxos-code-editor {
+      width: 100%;
+      height: 100%;
+    }
+    .errors {
+      background: #820000;
+      color: #fff;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 20px;
+      overflow: hidden;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      pointer-events: none;
+    }
+    .errors.active {
+      opacity: 1;
+    }
+    .errors.active ~ fxos-code-editor {
+      height: calc(100% - 20px);
+    }
   </style>
   <gaia-header>
     <button data-action="cancel" data-icon="close"></button>
@@ -63,10 +82,11 @@ var editViewTemplate =
     <a href="#">Properties</a>
   </gaia-tabs>
   <section class="tab-pane active" data-id="html">
-    <textarea></textarea>
+    <fxos-code-editor></fxos-code-editor>
   </section>
   <section class="tab-pane" data-id="script">
-    <textarea></textarea>
+    <div class="errors"></div>
+    <fxos-code-editor></fxos-code-editor>
   </section>
   <section class="tab-pane" data-id="attributes">
     <gaia-property-inspector root-property="attributes" data-textarea="textarea"></gaia-property-inspector>
@@ -92,10 +112,12 @@ export default class EditView extends View {
     this.header = this.$('gaia-header');
     this.tabs   = this.$('gaia-tabs');
 
-    this.htmlTextarea = this.$('section[data-id="html"] > textarea');
-    this.scriptTextarea = this.$('section[data-id="script"] > textarea');
+    this.htmlCodeEditor = this.$('section[data-id="html"] > fxos-code-editor');
+    this.scriptCodeEditor = this.$('section[data-id="script"] > fxos-code-editor');
     this.attributeInspector = this.$('section[data-id="attributes"] > gaia-property-inspector');
     this.propertyInspector = this.$('section[data-id="properties"] > gaia-property-inspector');
+
+    this.scriptErrors = this.$('section[data-id="script"] > .errors');
 
     this.tabPanes = [].slice.apply(this.$$('.tab-pane'));
 
@@ -117,12 +139,15 @@ export default class EditView extends View {
       });
     });
 
-    this.htmlTextarea.addEventListener('keyup', (evt) => {
-      this.controller.changes.innerHTML = this.htmlTextarea.value;
+    this.htmlCodeEditor.addEventListener('change', (evt) => {
+      this.controller.changes.innerHTML = this.htmlCodeEditor.value;
     });
 
-    this.scriptTextarea.addEventListener('keyup', (evt) => {
-      this.controller.changes.script = this.scriptTextarea.value;
+    this.scriptCodeEditor.addEventListener('change', (evt) => {
+      this.controller.changes.script = this.scriptCodeEditor.value;
+
+      clearTimeout(this.validateScriptTimeout);
+      this.validateScriptTimeout = setTimeout(this.validateScript.bind(this), 1000);
     });
 
     this.on('save', 'gaia-property-inspector', (evt) => {
@@ -158,8 +183,8 @@ export default class EditView extends View {
       indent_size: 2
     });
 
-    this.htmlTextarea.value = html;
-    this.scriptTextarea.value =
+    this.htmlCodeEditor.value = html;
+    this.scriptCodeEditor.value =
 `/**
  * You can edit a script to be inserted
  * in the generated add-on here.
@@ -177,5 +202,30 @@ export default class EditView extends View {
 
     this.attributeInspector.set(clonedTarget);
     this.propertyInspector.set(clonedTarget);
+  }
+
+  validateScript() {
+    var error;
+
+    try {
+      var syntax = esprima.parse(this.controller.changes.script);
+      if (syntax.errors && syntax.errors.length > 0) {
+        error = syntax.errors[0];
+      }
+    }
+
+    catch (e) {
+      error = e;
+    }
+
+    if (error) {
+      this.scriptErrors.textContent = error.message;
+      this.scriptErrors.classList.add('active');
+    }
+
+    else {
+      this.scriptErrors.textContent = '';
+      this.scriptErrors.classList.remove('active');
+    }
   }
 }
