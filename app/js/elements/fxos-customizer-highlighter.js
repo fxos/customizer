@@ -14,8 +14,27 @@ var shadowHTML =
   outline: 1px solid #00caf2;
   opacity: 0.75;
 }
+.label {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-bottom-right-radius: 2px;
+  color: #fff;
+  font-family: 'FiraSans';
+  font-size: 10px;
+  line-height: 1.2em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  position: absolute;
+  padding: 0 2px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+}
 </style>
-<div class="overlay"></div>`;
+<div class="overlay">
+  <div class="label"></div>
+</div>`;
 
 var proto = Object.create(HTMLElement.prototype);
 
@@ -23,6 +42,7 @@ proto.createdCallback = function() {
   this.shadow = this.createShadowRoot();
   this.shadow.innerHTML = shadowHTML;
   this.overlay = this.shadow.querySelector('.overlay');
+  this.label = this.shadow.querySelector('.label');
 };
 
 proto.highlight = function(element) {
@@ -42,6 +62,12 @@ proto.highlight = function(element) {
     this.overlay.style.width   = rect.width + 'px';
     this.overlay.style.height  = rect.height + 'px';
     this.overlay.style.display = 'block';
+
+    // Set the label to properly identify the element.
+    this.label.textContent = element.tagName;
+    if (element.id) {
+      this.label.textContent += '#' + element.id;
+    }
 
     // And try to move the element so that it is on screen
     element.scrollIntoView({behavior: 'smooth'});
