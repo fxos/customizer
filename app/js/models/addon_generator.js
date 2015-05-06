@@ -45,6 +45,7 @@ var mo = new MutationObserver(function() {
   if (newEl !== el) {
     el = newEl;
     setTimeout(exec, 1);
+    mo.disconnect();
   }
 });
 mo.observe(document.documentElement, {
@@ -147,50 +148,107 @@ el.${name} = ${JSON.stringify(value)};
     }
   }
 
-  opMoveAppend(target) {
+  opCopyAppend(destination) {
     this.operations.push(
-`/*=AddonGenerator::moveAppend*/
-var target = document.querySelector('${getSelector(target)}');
-if (target) {
-  target.appendChild(el);
+`/*=AddonGenerator::copyAppend*/
+var destination = document.querySelector('${getSelector(destination)}');
+var template = document.createElement('template');
+template.innerHTML = \`${this.target.outerHTML.replace(/\`/g, '\\\`')}\`;
+if (destination) {
+  destination.appendChild(template.content);
 }
 /*==*/`
     );
   }
 
-  opMovePrepend(target) {
+  opCopyPrepend(destination) {
     this.operations.push(
-`/*=AddonGenerator::movePrepend*/
-var target = document.querySelector('${getSelector(target)}');
-if (target) {
-  target.insertBefore(el, target.firstChild);
+`/*=AddonGenerator::copyPrepend*/
+var destination = document.querySelector('${getSelector(destination)}');
+var template = document.createElement('template');
+template.innerHTML = \`${this.target.outerHTML.replace(/\`/g, '\\\`')}\`;
+if (destination) {
+  destination.insertBefore(template.content, destination.firstChild);
 }
 /*==*/`
     );
   }
 
-  opMoveAfter(target) {
+  opCopyAfter(destination) {
     this.operations.push(
-`/*=AddonGenerator::moveAfter*/
-var target = document.querySelector('${getSelector(target)}');
-if (target && target.parentNode) {
-  if (target.parentNode.lastChild === target) {
-    target.parentNode.appendChild(el);
+`/*=AddonGenerator::copyAfter*/
+var destination = document.querySelector('${getSelector(destination)}');
+var template = document.createElement('template');
+template.innerHTML = \`${this.target.outerHTML.replace(/\`/g, '\\\`')}\`;
+if (destination && destination.parentNode) {
+  if (destination.parentNode.lastChild === destination) {
+    destination.parentNode.appendChild(template.content);
   }
   else {
-    target.parentNode.insertBefore(el, target.nextSibling);
+    destination.parentNode.insertBefore(template.content, destination.nextSibling);
   }
 }
 /*==*/`
     );
   }
 
-  opMoveBefore(target) {
+  opCopyBefore(destination) {
+    this.operations.push(
+`/*=AddonGenerator::copyBefore*/
+var destination = document.querySelector('${getSelector(destination)}');
+var template = document.createElement('template');
+template.innerHTML = \`${this.target.outerHTML.replace(/\`/g, '\\\`')}\`;
+if (destination && destination.parentNode) {
+  destination.parentNode.insertBefore(template.content, destination);
+}
+/*==*/`
+    );
+  }
+
+  opMoveAppend(destination) {
+    this.operations.push(
+`/*=AddonGenerator::moveAppend*/
+var destination = document.querySelector('${getSelector(destination)}');
+if (destination) {
+  destination.appendChild(el);
+}
+/*==*/`
+    );
+  }
+
+  opMovePrepend(destination) {
+    this.operations.push(
+`/*=AddonGenerator::movePrepend*/
+var destination = document.querySelector('${getSelector(destination)}');
+if (destination) {
+  destination.insertBefore(el, destination.firstChild);
+}
+/*==*/`
+    );
+  }
+
+  opMoveAfter(destination) {
+    this.operations.push(
+`/*=AddonGenerator::moveAfter*/
+var destination = document.querySelector('${getSelector(destination)}');
+if (destination && destination.parentNode) {
+  if (destination.parentNode.lastChild === destination) {
+    destination.parentNode.appendChild(el);
+  }
+  else {
+    destination.parentNode.insertBefore(el, destination.nextSibling);
+  }
+}
+/*==*/`
+    );
+  }
+
+  opMoveBefore(destination) {
     this.operations.push(
 `/*=AddonGenerator::moveBefore*/
-var target = document.querySelector('${getSelector(target)}');
-if (target && target.parentNode) {
-  target.parentNode.insertBefore(el, target);
+var destination = document.querySelector('${getSelector(destination)}');
+if (destination && destination.parentNode) {
+  destination.parentNode.insertBefore(el, destination);
 }
 /*==*/`
     );

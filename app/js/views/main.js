@@ -178,7 +178,7 @@ export default class MainView extends View {
     this.childViews.appendChild(this.settingsView.el);
     this.childViews.appendChild(this.viewSourceView.el);
     this.childViews.appendChild(this.appendChildView.el);
-    this.childViews.appendChild(this.moveView.el);
+    this.childViews.appendChild(this.copyMoveView.el);
 
     // Hide this view from the DOM tree.
     this.customizer.gaiaDomTree.filter = '#' + this.el.id;
