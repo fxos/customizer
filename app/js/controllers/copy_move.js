@@ -2,7 +2,7 @@
 
 /* global AddonService */
 
-export default class MoveController extends Controller {
+export default class CopyMoveController extends Controller {
   constructor(options) {
     super(options);
   }
@@ -26,34 +26,49 @@ export default class MoveController extends Controller {
     this.view.dialog.open();
   }
 
+  /**
+   * Sets the mode to either 'Copy' or 'Move'.
+   */
+  setMode(mode) {
+    this.mode = mode;
+  }
+
   before() {
     AddonService.generate(this.target, (generator) => {
-      generator.opMoveBefore(this.destination);
+      var op = generator['op' + this.mode + 'Before'];
+      op.call(generator, this.destination);
 
+      this.view.dialog.close();
       this.view.modal.close();
     });
   }
 
   after() {
     AddonService.generate(this.target, (generator) => {
-      generator.opMoveAfter(this.destination);
+      var op = generator['op' + this.mode + 'After'];
+      op.call(generator, this.destination);
 
+      this.view.dialog.close();
       this.view.modal.close();
     });
   }
 
   prepend() {
     AddonService.generate(this.target, (generator) => {
-      generator.opMovePrepend(this.destination);
+      var op = generator['op' + this.mode + 'Prepend'];
+      op.call(generator, this.destination);
 
+      this.view.dialog.close();
       this.view.modal.close();
     });
   }
 
   append() {
     AddonService.generate(this.target, (generator) => {
-      generator.opMoveAppend(this.destination);
+      var op = generator['op' + this.mode + 'Append'];
+      op.call(generator, this.destination);
 
+      this.view.dialog.close();
       this.view.modal.close();
     });
   }

@@ -2,10 +2,10 @@
 
 var actionMenuViewTemplate =
 `<gaia-dialog>
-  <button type="button" data-action="viewsource">View Source</button>
+  <button type="button" data-action="viewSource">View Source</button>
   <button type="button" data-action="edit">Edit</button>
   <button type="button" data-action="remove">Remove</button>
-  <button type="button" data-action="move">Move</button>
+  <button type="button" data-action="copyOrMove">Copy/Move</button>
   <button type="button" data-action="append">Append Child</button>
   <button type="button" data-action="cancel">Cancel</button>
 </gaia-dialog>`;
@@ -23,7 +23,7 @@ export default class ActionMenuView extends View {
     super(controller);
 
     this.dialog = this.$('gaia-dialog');
-    this.viewSourceButton = this.$('button[data-action=viewsource]');
+    this.viewSourceButton = this.$('button[data-action="viewSource"]');
 
     this.on('click', 'button', (evt) => {
       var action = this.controller[evt.target.dataset.action];

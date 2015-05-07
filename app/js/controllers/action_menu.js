@@ -34,12 +34,12 @@ export default class ActionMenuController extends Controller {
     });
   }
 
-  viewsource() {
+  viewSource() {
     this.viewSourceController.open(this.target);
   }
 
-  move() {
-    this.moveController.open(this.target);
+  copyOrMove() {
+    this.copyMoveController.open(this.target);
   }
 
   append() {

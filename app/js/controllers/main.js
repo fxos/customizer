@@ -3,7 +3,7 @@
 /*global ActionMenuView*/
 /*global SettingsView*/
 /*global AppendChildView*/
-/*global MoveView*/
+/*global CopyMoveView*/
 /*global MainView*/
 
 /*global EditController*/
@@ -11,7 +11,7 @@
 /*global ActionMenuController*/
 /*global SettingsController*/
 /*global AppendChildController*/
-/*global MoveController*/
+/*global CopyMoveController*/
 
 /*global Controller*/
 /*global Gesture*/
@@ -67,14 +67,14 @@ export default class MainController extends Controller {
       var settingsView = new SettingsView();
       var viewSourceView = new ViewSourceView();
       var appendChildView = new AppendChildView();
-      var moveView = new MoveView();
+      var copyMoveView = new CopyMoveView();
       var mainView = new MainView({
         editView: editView,
         actionMenuView: actionMenuView,
         settingsView: settingsView,
         viewSourceView: viewSourceView,
         appendChildView: appendChildView,
-        moveView: moveView
+        copyMoveView: copyMoveView
       });
 
       var editController = new EditController({
@@ -89,8 +89,8 @@ export default class MainController extends Controller {
         view: appendChildView
       });
 
-      var moveController = new MoveController({
-        view: moveView
+      var copyMoveController = new CopyMoveController({
+        view: copyMoveView
       });
 
       var actionMenuController = new ActionMenuController({
@@ -98,7 +98,7 @@ export default class MainController extends Controller {
         editController: editController,
         viewSourceController: viewSourceController,
         appendChildController: appendChildController,
-        moveController: moveController
+        copyMoveController: copyMoveController
       });
 
       var settingsController = new SettingsController({
@@ -116,7 +116,7 @@ export default class MainController extends Controller {
       actionMenuController.mainController = this;
       settingsController.mainController = this;
       appendChildController.mainController = this;
-      moveController.mainController = this;
+      copyMoveController.mainController = this;
 
       console.log('Lazy-initialized modules');
       resolve();
