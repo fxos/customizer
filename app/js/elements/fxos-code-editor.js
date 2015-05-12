@@ -11,15 +11,16 @@ var template =
     height: 100%;
   }
   .line-numbers {
-    background: #6363ce;
+    background: #95368c;
     color: #fff;
     font-family: Consolas,Monaco,"Andale Mono",monospace;
     font-size: 14px;
     line-height: 1.2em;
     position: absolute;
+    padding: 0 2px;
     top: 0;
     left: 0;
-    width: 32px;
+    width: 28px;
     height: 100%;
     overflow: hidden;
   }
@@ -88,6 +89,10 @@ function updateLineNumbers(element) {
   var html = '';
 
   var lines = element.value.split('\n').length;
+  if (lines === element.lineNumbers.childElementCount) {
+    return;
+  }
+
   for (var i = 1; i <= lines; i++) {
     html += '<div>' + i + '</div>';
   }

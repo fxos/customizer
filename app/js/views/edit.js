@@ -46,11 +46,12 @@ var editViewTemplate =
       color: #fff;
     }
     fxos-code-editor {
+      display: block;
       width: 100%;
       height: 100%;
     }
     .errors {
-      background: #820000;
+      background: #e51e1e;
       color: #fff;
       position: absolute;
       bottom: 0;
@@ -66,7 +67,7 @@ var editViewTemplate =
     .errors.active {
       opacity: 1;
     }
-    .errors.active ~ fxos-code-editor {
+    .errors.active + fxos-code-editor {
       height: calc(100% - 20px);
     }
   </style>
@@ -121,15 +122,15 @@ export default class EditView extends View {
 
     this.tabPanes = [].slice.apply(this.$$('.tab-pane'));
 
-    this.on('click', 'button[data-action="cancel"]', (evt) => {
+    this.on('click', 'button[data-action="cancel"]', () => {
       this.controller.close();
     });
 
-    this.on('click', 'button[data-action="save"]', (evt) => {
+    this.on('click', 'button[data-action="save"]', () => {
       this.controller.save();
     });
 
-    this.tabs.addEventListener('change', (evt) => {
+    this.tabs.addEventListener('change', () => {
       this.tabPanes.forEach((tabPane, index) => {
         if (index === this.tabs.selected) {
           tabPane.classList.add('active');
@@ -139,15 +140,24 @@ export default class EditView extends View {
       });
     });
 
-    this.htmlCodeEditor.addEventListener('change', (evt) => {
+    this.htmlCodeEditor.addEventListener('change', () => {
       this.controller.changes.innerHTML = this.htmlCodeEditor.value;
     });
 
-    this.scriptCodeEditor.addEventListener('change', (evt) => {
+    this.scriptCodeEditor.addEventListener('change', () => {
       this.controller.changes.script = this.scriptCodeEditor.value;
 
       clearTimeout(this.validateScriptTimeout);
-      this.validateScriptTimeout = setTimeout(this.validateScript.bind(this), 1000);
+      this.validateScriptTimeout = setTimeout(this.validateScript.bind(this), 2000);
+    });
+
+    this.scriptCodeEditor.addEventListener('touchstart', () => {
+      clearTimeout(this.validateScriptTimeout);
+    });
+
+    this.scriptCodeEditor.addEventListener('touchend', () => {
+      clearTimeout(this.validateScriptTimeout);
+      this.validateScriptTimeout = setTimeout(this.validateScript.bind(this), 2000);
     });
 
     this.on('save', 'gaia-property-inspector', (evt) => {
