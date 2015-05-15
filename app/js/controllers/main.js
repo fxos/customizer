@@ -20,7 +20,14 @@ export default class MainController extends Controller {
   constructor(options) {
     super(options);
 
+    this._checkOpenFromLauncher();
     this._waitToBeOpened();
+
+    window.addEventListener('visibilitychange', () => {
+      if (!document.hidden) {
+        this._checkOpenFromLauncher();
+      }
+    });
   }
 
   get openGesture() {
@@ -129,8 +136,42 @@ export default class MainController extends Controller {
   // directly, you'll end up with more than one gesture detector listening
   // at a time.
   _waitToBeOpened() {
-    Gesture.detect(this.openGesture)
-      .then(() => this._lazyLoadModules())
+    Gesture.detect(this.openGesture).then(() => this.open());
+  }
+
+  _waitToBeClosed() {
+    Gesture.detect(this.closeGesture).then(() => this.close());
+  }
+
+  _checkOpenFromLauncher() {
+    var requestXHR = new XMLHttpRequest();
+    requestXHR.open('GET', 'http://localhost:3215/request', true);
+    requestXHR.onload = () => {
+      if (requestXHR.responseText !== this.manifestURL) {
+        return;
+      }
+
+      this.open();
+
+      var confirmXHR = new XMLHttpRequest();
+      confirmXHR.open('GET', 'http://localhost:3215/confirm?url=' + this.manifestURL, true);
+
+      console.log('Sending HTTP request confirmation to Customizer Launcher');
+      confirmXHR.send();
+    };
+
+    console.log('Sending HTTP request check to Customizer Launcher');
+    requestXHR.send();
+  }
+
+  open() {
+    if (this._isOpen) {
+      return;
+    }
+
+    this._isOpen = true;
+
+    this._lazyLoadModules()
       .then(() => this.view.open())
       .then(() => {
         this.view.customizer.setRootNode(document.documentElement);
@@ -138,9 +179,13 @@ export default class MainController extends Controller {
       });
   }
 
-  _waitToBeClosed() {
-    Gesture.detect(this.closeGesture)
-      .then(() => this.view.close())
-      .then(() => this._waitToBeOpened());
+  close() {
+    if (!this._isOpen) {
+      return;
+    }
+
+    this.view.close().then(() => this._waitToBeOpened());
+
+    this._isOpen = false;
   }
 }
