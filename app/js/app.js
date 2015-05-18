@@ -15,7 +15,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     console.log(`[Customizer] Injecting into ${manifestURL}`);
-    boot();
+    boot(manifestURL);
   };
   request.onerror = function() {
     console.error('[Customizer] An error occurred getting the manifestURL');
@@ -72,10 +72,12 @@ gaia-modal {
     document.head.appendChild(style);
   }
 
-  function boot() {
-    var mainController = new MainController();
-    console.log('Initialized MainController', mainController);
+  function boot(manifestURL) {
+    var mainController = new MainController({
+      manifestURL: manifestURL
+    });
 
+    console.log('Initialized MainController', mainController);
     styleHack();
   }
 });
