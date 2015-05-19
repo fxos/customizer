@@ -28,14 +28,16 @@ export default class MainController extends Controller {
         this._checkOpenFromLauncher();
       }
     });
+
+    console.log('[Customizer] Initialized MainController', this);
   }
 
   get openGesture() {
     return {
       type: 'swipe',    // Swipe:
       numFingers: 2,    // with two fingers,
-      startRegion: {    // from bottom 20% of the screen,
-        x0: 0, y0: 0.8, x1: 1, y1: 1
+      startRegion: {    // from bottom 30% of the screen (10% for SHB),
+        x0: 0, y0: 0.8, x1: 1, y1: 1.1
       },
       endRegion: {      // up into the top 75% of the screen,
         x0: 0, y0: 0, x1: 1, y1: 0.75
@@ -125,7 +127,7 @@ export default class MainController extends Controller {
       appendChildController.mainController = this;
       copyMoveController.mainController = this;
 
-      console.log('Lazy-initialized modules');
+      console.log('[Customizer] Lazy-initialized modules');
       resolve();
     });
 
