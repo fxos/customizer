@@ -1,9 +1,11 @@
 /*global MainController*/
+/*global TouchForwarderController*/
 
 const BLOCKED_APPS = [
-  'app://system.gaiamobile.org/manifest.webapp',
   'app://keyboard.gaiamobile.org/manifest.webapp'
 ];
+
+const SYSTEM_APP = 'app://system.gaiamobile.org/manifest.webapp';
 
 window.addEventListener('DOMContentLoaded', () => {
   var request = navigator.mozApps.getSelf();
@@ -73,11 +75,14 @@ gaia-modal {
   }
 
   function boot(manifestURL) {
-    var mainController = new MainController({
+    if (manifestURL === SYSTEM_APP) {
+      return new TouchForwarderController();
+    }
+
+    styleHack();
+
+    return new MainController({
       manifestURL: manifestURL
     });
-
-    console.log('Initialized MainController', mainController);
-    styleHack();
   }
 });
