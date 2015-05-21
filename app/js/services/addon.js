@@ -2,6 +2,8 @@
 
 /* global AddonGenerator */
 
+const GENERATED_ADDON_COUNT_KEY = '__CUSTOMIZER__generatedAddonCount';
+
 var AddonService = {};
 
 AddonService.getAddons = function(host) {
@@ -48,7 +50,8 @@ AddonService.getAddon = function(manifestURL) {
 AddonService.getGenerator = function(target) {
   return new Promise((resolve, reject) => {
     this.getAddons(window.location.host).then((addons) => {
-      var name = window.prompt('Enter a name for this add-on', `Addon ${addons.length + 1}`);
+      var number = parseInt(localStorage.getItem(GENERATED_ADDON_COUNT_KEY), 10) || 0;
+      var name = window.prompt('Enter a name for this add-on', `Addon ${number + 1}`);
       if (!name) {
         reject();
         return;
@@ -89,7 +92,12 @@ AddonService.install = function(blob) {
 
     activity.onsuccess = () => {
       this.getAddon(activity.result.manifestURL)
-        .then(addon => resolve(addon))
+        .then(addon => {
+          var number = parseInt(localStorage.getItem(GENERATED_ADDON_COUNT_KEY), 10) || 0;
+          localStorage.setItem(GENERATED_ADDON_COUNT_KEY, number + 1);
+
+          resolve(addon);
+        })
         .catch((error) => {
           console.error('Unable to get the addon after importing', error);
           reject(error);
