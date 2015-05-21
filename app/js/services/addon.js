@@ -1,3 +1,5 @@
+/* global MozActivity */
+
 /* global AddonGenerator */
 
 var AddonService = {};
@@ -78,37 +80,25 @@ AddonService.generate = function(target, callback) {
 
 AddonService.install = function(blob) {
   return new Promise((resolve, reject) => {
-    // Import the addon using the tempfile.
-    navigator.mozApps.mgmt.import(blob)
-      .then((addon) => {
-
-        // Enable the addon by default.
-        navigator.mozApps.mgmt.setEnabled(addon, true);
-        resolve(addon);
-      })
-      .catch((error) => {
-        console.error('Unable to install the addon', error);
-        reject(error);
-      });
-  });
-};
-
-AddonService.uninstall = function(origin) {
-  return new Promise((resolve, reject) => {
-    this.getAddons().then((addons) => {
-      var addon = addons.find(addon => addon.origin === origin);
-      if (!addon) {
-        reject();
-        return;
+    var activity = new MozActivity({
+      name: 'import-app',
+      data: {
+        blob: blob
       }
+    });
 
-      var request = navigator.mozApps.mgmt.uninstall(addon);
-      request.onsuccess = function() {
-        resolve(request);
-      };
-      request.onerror = function() {
-        reject(request);
-      };
-    }).catch(reject);
+    activity.onsuccess = () => {
+      this.getAddon(activity.result.manifestURL)
+        .then(addon => resolve(addon))
+        .catch((error) => {
+          console.error('Unable to get the addon after importing', error);
+          reject(error);
+        });
+    };
+
+    activity.onerror = (error) => {
+      console.error('Unable to install the addon', error);
+      reject(error);
+    };
   });
 };
