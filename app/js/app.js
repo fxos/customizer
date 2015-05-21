@@ -58,11 +58,6 @@ gaia-dialog {
 gaia-modal {
   z-index: 10000001 !important;
   background: white;
-}
-
-.settings gaia-list p,
-.settings gaia-list i {
-  color: #aaa;
 }`;
     document.head.appendChild(style);
   }

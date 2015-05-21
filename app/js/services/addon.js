@@ -29,20 +29,6 @@ AddonService.getAddons = function(host) {
   });
 };
 
-AddonService.getAddon = function(manifestURL) {
-  return new Promise((resolve, reject) => {
-    this.getAddons().then((addons) => {
-      var addon = addons.find(addon => addon.manifestURL === manifestURL);
-      if (!addon) {
-        reject();
-        return;
-      }
-
-      resolve(addon);
-    }).catch(reject);
-  });
-};
-
 AddonService.getGenerator = function(target) {
   return new Promise((resolve, reject) => {
     this.getAddons(window.location.host).then((addons) => {
