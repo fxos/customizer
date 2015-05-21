@@ -60,15 +60,8 @@ gaia-modal {
   background: white;
 }
 
-.settings gaia-list gaia-button {
-  /* XXX/drs: Why do we have to make this !important? It's very specific. */
-  margin: 0 0 0 auto !important;
-
-  --button-background: red;
-  text-align: center;
-}
-
-.settings gaia-list .addon-time {
+.settings gaia-list p,
+.settings gaia-list i {
   color: #aaa;
 }`;
     document.head.appendChild(style);

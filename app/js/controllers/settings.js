@@ -5,21 +5,39 @@
 export default class SettingsController extends Controller {
   constructor(options) {
     super(options);
+
+    this.merging = false;
+
+    this._refreshAddons = this._refreshAddons.bind(this);
   }
 
   open() {
     this.view.modal.open();
 
-    AddonService.getAddons(window.location.host).then((addons) => {
-      this.view.setAddons(addons);
+    this._refreshAddons();
+
+    ['install', 'uninstall', 'enabledstatechange'].forEach((e) => {
+      navigator.mozApps.mgmt.addEventListener(e, this._refreshAddons);
     });
   }
 
   close() {
     this.view.modal.close();
+
+    ['install', 'uninstall', 'enabledstatechange'].forEach((e) => {
+      navigator.mozApps.mgmt.removeEventListener(e, this._refreshAddons);
+    });
+
+    this.merging = false;
   }
 
-  addons() {
+  toggleMerging() {
+    this.merging = !this.merging;
+
+    this.view.setMerging(this.merging);
+  }
+
+  addonManager() {
     var activity = new window.MozActivity({
       name: 'configure',
       data: {
@@ -29,27 +47,32 @@ export default class SettingsController extends Controller {
     });
 
     activity.onerror = (e) => {
-      console.error('Error opening Settings Add-ons panel', e);
+      console.error('Error opening "Settings > Add-ons" panel', e);
     };
   }
 
-  uninstall(addon) {
-    AddonService.uninstall(addon.origin).then(() => {
-      AddonService.getAddons(window.location.host).then((addons) => {
-        this.view.setAddons(addons);
-      });
+  showAddon(manifestURL) {
+    var activity = new window.MozActivity({
+      name: 'configure',
+      data: {
+        target: 'device',
+        section: 'addon-details',
+        options: {
+          manifestURL: manifestURL
+        }
+      }
     });
+
+    activity.onerror = (e) => {
+      this._refreshAddons();
+
+      console.error('Error opening "Settings > Add-on Details" panel', e);
+    };
   }
 
-  enableAddon(addon) {
-    AddonService.getAddon(addon.origin).then((addon) => {
-      navigator.mozApps.mgmt.setEnabled(addon, true);
-    });
-  }
-
-  disableAddon(addon) {
-    AddonService.getAddon(addon.origin).then((addon) => {
-      navigator.mozApps.mgmt.setEnabled(addon, false);
+  _refreshAddons() {
+    AddonService.getAddons(window.location.host).then((addons) => {
+      this.view.setAddons(addons);
     });
   }
 }

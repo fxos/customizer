@@ -29,10 +29,10 @@ AddonService.getAddons = function(host) {
   });
 };
 
-AddonService.getAddon = function(origin) {
+AddonService.getAddon = function(manifestURL) {
   return new Promise((resolve, reject) => {
     this.getAddons().then((addons) => {
-      var addon = addons.find(addon => addon.origin === origin);
+      var addon = addons.find(addon => addon.manifestURL === manifestURL);
       if (!addon) {
         reject();
         return;
@@ -45,18 +45,20 @@ AddonService.getAddon = function(origin) {
 
 AddonService.getGenerator = function(target) {
   return new Promise((resolve, reject) => {
-    var name = window.prompt('Enter a name for this add-on', 'Addon ' + new Date().toISOString());
-    if (!name) {
-      reject();
-      return;
-    }
+    this.getAddons(window.location.host).then((addons) => {
+      var name = window.prompt('Enter a name for this add-on', `Addon ${addons.length + 1}`);
+      if (!name) {
+        reject();
+        return;
+      }
 
-    var generator = new AddonGenerator({
-      target: target,
-      name: name
-    });
+      var generator = new AddonGenerator({
+        target: target,
+        name: name
+      });
 
-    resolve(generator);
+      resolve(generator);
+    }).catch(reject);
   });
 };
 
