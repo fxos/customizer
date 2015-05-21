@@ -175,7 +175,6 @@ export default class MainView extends View {
     // childViews container, so that we can add and remove them all at once.
     this.childViews.appendChild(this.actionMenuView.el);
     this.childViews.appendChild(this.editView.el);
-    this.childViews.appendChild(this.settingsView.el);
     this.childViews.appendChild(this.viewSourceView.el);
     this.childViews.appendChild(this.appendChildView.el);
     this.childViews.appendChild(this.copyMoveView.el);
@@ -183,12 +182,7 @@ export default class MainView extends View {
     // Hide this view from the DOM tree.
     this.customizer.gaiaDomTree.filter = '#' + this.el.id;
 
-    this.on('menu', 'fxos-customizer', (evt) => {
-      this.customizer.unwatchChanges();
-      this.controller.settingsController.open();
-
-      setTimeout(this.customizer.watchChanges.bind(this.customizer), 1000);
-    });
+    this.on('menu', 'fxos-customizer', () => this.controller.openAddonManager());
 
     this.on('action', 'fxos-customizer', (evt) => {
       this.customizer.unwatchChanges();

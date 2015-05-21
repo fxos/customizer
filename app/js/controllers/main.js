@@ -1,7 +1,8 @@
+/*global MozActivity*/
+
 /*global EditView*/
 /*global ViewSourceView*/
 /*global ActionMenuView*/
-/*global SettingsView*/
 /*global AppendChildView*/
 /*global CopyMoveView*/
 /*global MainView*/
@@ -9,7 +10,6 @@
 /*global EditController*/
 /*global ViewSourceController*/
 /*global ActionMenuController*/
-/*global SettingsController*/
 /*global AppendChildController*/
 /*global CopyMoveController*/
 
@@ -73,14 +73,12 @@ export default class MainController extends Controller {
 
       var editView = new EditView();
       var actionMenuView = new ActionMenuView();
-      var settingsView = new SettingsView();
       var viewSourceView = new ViewSourceView();
       var appendChildView = new AppendChildView();
       var copyMoveView = new CopyMoveView();
       var mainView = new MainView({
         editView: editView,
         actionMenuView: actionMenuView,
-        settingsView: settingsView,
         viewSourceView: viewSourceView,
         appendChildView: appendChildView,
         copyMoveView: copyMoveView
@@ -110,20 +108,14 @@ export default class MainController extends Controller {
         copyMoveController: copyMoveController
       });
 
-      var settingsController = new SettingsController({
-        view: settingsView
-      });
-
       this.view = mainView;
       mainView.init(this);
 
       this.actionMenuController = actionMenuController;
-      this.settingsController = settingsController;
 
       editController.mainController = this;
       viewSourceController.mainController = this;
       actionMenuController.mainController = this;
-      settingsController.mainController = this;
       appendChildController.mainController = this;
       copyMoveController.mainController = this;
 
@@ -189,5 +181,22 @@ export default class MainController extends Controller {
     this.view.close().then(() => this._waitToBeOpened());
 
     this._isOpen = false;
+  }
+
+  openAddonManager() {
+    var activity = new MozActivity({
+      name: 'configure',
+      data: {
+        target: 'device',
+        section: 'addons',
+        options: {
+          manifestURL: this.manifestURL
+        }
+      }
+    });
+
+    activity.onerror = (e) => {
+      console.error('Error opening "Settings > Add-ons" panel', e);
+    };
   }
 }
