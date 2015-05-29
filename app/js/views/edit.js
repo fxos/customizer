@@ -35,10 +35,6 @@ var editViewTemplate =
     input {
       -moz-user-select: text !important;
     }
-    gaia-property-inspector {
-      --background: #000;
-      --header-background: #000;
-    }
     textarea,
     gaia-tabs,
     .tab-pane {
@@ -79,7 +75,6 @@ var editViewTemplate =
   <gaia-tabs selected="0">
     <a href="#">HTML</a>
     <a href="#">Script</a>
-    <a href="#">Attributes</a>
     <a href="#">Properties</a>
   </gaia-tabs>
   <section class="tab-pane active" data-id="html">
@@ -89,11 +84,8 @@ var editViewTemplate =
     <div class="errors"></div>
     <fxos-code-editor></fxos-code-editor>
   </section>
-  <section class="tab-pane" data-id="attributes">
-    <gaia-property-inspector root-property="attributes" data-textarea="textarea"></gaia-property-inspector>
-  </section>
   <section class="tab-pane" data-id="properties">
-    <gaia-property-inspector data-textarea="textarea"></gaia-property-inspector>
+    <fxos-inspector></fxos-inspector>
   </section>
 </gaia-modal>`;
 
@@ -115,8 +107,7 @@ export default class EditView extends View {
 
     this.htmlCodeEditor = this.$('section[data-id="html"] > fxos-code-editor');
     this.scriptCodeEditor = this.$('section[data-id="script"] > fxos-code-editor');
-    this.attributeInspector = this.$('section[data-id="attributes"] > gaia-property-inspector');
-    this.propertyInspector = this.$('section[data-id="properties"] > gaia-property-inspector');
+    this.propertyInspector = this.$('section[data-id="properties"] > fxos-inspector');
 
     this.scriptErrors = this.$('section[data-id="script"] > .errors');
 
@@ -160,14 +151,25 @@ export default class EditView extends View {
       this.validateScriptTimeout = setTimeout(this.validateScript.bind(this), 2000);
     });
 
-    this.on('save', 'gaia-property-inspector', (evt) => {
-      var keyPath = [];
-      var parts = evt.detail.path.substr(1).split('/');
-      parts.forEach((part) => keyPath.push(part));
-      keyPath = keyPath.join('.');
+    this.propertyInspector.addEventListener('createattribute', (evt) => {
+      var detail = JSON.parse(evt.detail);
+
+      this.controller.changes.createAttributes = this.controller.changes.createAttributes || {};
+      this.controller.changes.createAttributes[detail.expression] = detail.name;
+    });
+
+    this.propertyInspector.addEventListener('removeattribute', (evt) => {
+      var detail = JSON.parse(evt.detail);
+
+      this.controller.changes.removeAttributes = this.controller.changes.removeAttributes || {};
+      this.controller.changes.removeAttributes[detail.expression] = detail.name;
+    });
+
+    this.propertyInspector.addEventListener('save', (evt) => {
+      var detail = JSON.parse(evt.detail);
 
       this.controller.changes.properties = this.controller.changes.properties || {};
-      this.controller.changes.properties[keyPath] = evt.detail.newValue;
+      this.controller.changes.properties[detail.expression] = detail.value;
     });
 
     this.el.addEventListener('contextmenu', (evt) => {
@@ -205,13 +207,12 @@ export default class EditView extends View {
  *   mo       [MutationObserver]
  */
 
- //el.addEventListener('click', function(evt) {
- //  alert('Clicked!');
- //});
+//el.addEventListener('click', function(evt) {
+//  alert('Clicked!');
+//});
 `;
 
-    this.attributeInspector.set(clonedTarget);
-    this.propertyInspector.set(clonedTarget);
+    this.propertyInspector.setRootTarget(clonedTarget);
   }
 
   validateScript() {

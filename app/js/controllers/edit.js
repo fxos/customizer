@@ -30,6 +30,14 @@ export default class EditController extends Controller {
         generator.opScript(this.changes.script);
       }
 
+      if (this.changes.createAttributes) {
+        generator.opCreateAttributes(this.changes.createAttributes);
+      }
+
+      if (this.changes.removeAttributes) {
+        generator.opRemoveAttributes(this.changes.removeAttributes);
+      }
+
       if (this.changes.properties) {
         generator.opSetProperties(this.changes.properties);
       }
