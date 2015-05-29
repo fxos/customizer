@@ -48,7 +48,9 @@ var template =
   }
 </style>
 <div class="container">
-  <div class="line-numbers"></div>
+  <div class="line-numbers">
+    <div>1</div>
+  </div>
   <textarea wrap="off"></textarea>
 </div>`;
 
@@ -80,7 +82,6 @@ Object.defineProperty(proto, 'value', {
 
   set: function(value) {
     this.textarea.value = value;
-    this.dispatchEvent(new CustomEvent('change'));
     updateLineNumbers(this);
   }
 });

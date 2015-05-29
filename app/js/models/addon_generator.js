@@ -126,25 +126,21 @@ el.parentNode.removeChild(el);
     );
   }
 
-  opSetAttribute(name, value) {
-    this.operations.push(
-`/*=AddonGenerator::setAttribute*/
-el.setAttribute('${name}', '${value}');
-/*==*/`
-    );
+  opCreateAttributes(attributes) {
+    for (var expression in attributes) {
+      this.createAttributeHelper(expression, attributes[expression]);
+    }
   }
 
-  opSetProperty(name, value) {
-    this.operations.push(
-`/*=AddonGenerator::setProperty*/
-el.${name} = ${JSON.stringify(value)};
-/*==*/`
-    );
+  opRemoveAttributes(attributes) {
+    for (var expression in attributes) {
+      this.removeAttributeHelper(expression, attributes[expression]);
+    }
   }
 
   opSetProperties(properties) {
-    for (var name in properties) {
-      this.setProperty(name, properties[name]);
+    for (var expression in properties) {
+      this.setPropertyHelper(expression, properties[expression]);
     }
   }
 
@@ -253,6 +249,36 @@ if (destination && destination.parentNode) {
 /*==*/`
     );
   }
+
+  createAttributeHelper(expression, name) {
+    var assignment = (expression[0] === '[') ? `el${expression}` : `el.${expression}`;
+
+    this.operations.push(
+`/*=AddonGenerator::createAttribute*/
+${assignment}.setNamedItem(document.createAttribute(${JSON.stringify(name)}));
+/*==*/`
+    );
+  }
+
+  removeAttributeHelper(expression, name) {
+    var assignment = (expression[0] === '[') ? `el${expression}` : `el.${expression}`;
+
+    this.operations.push(
+`/*=AddonGenerator::removeAttribute*/
+${assignment}.removeNamedItem(${JSON.stringify(name)});
+/*==*/`
+    );
+  }
+
+  setPropertyHelper(expression, value) {
+    var assignment = (expression[0] === '[') ? `el${expression}` : `el.${expression}`;
+
+    this.operations.push(
+`/*=AddonGenerator::setProperty*/
+${assignment} = ${JSON.stringify(value)};
+/*==*/`
+    );
+  }
 }
 
 function getSelector(element) {
@@ -277,14 +303,6 @@ function getSpecificSelector(element) {
 
   Array.prototype.forEach.call(element.classList, (item) => {
     selector += '.' + item;
-  });
-
-  Array.prototype.forEach.call(element.attributes, (attr) => {
-    if (attr.nodeName.toLowerCase() === 'class') {
-      return;
-    }
-
-    selector += '[' + attr.nodeName + '="' + attr.nodeValue + '"]';
   });
 
   return selector;
