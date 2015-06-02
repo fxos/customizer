@@ -14,10 +14,16 @@ gaia-header {
   border-bottom: solid white 1px;
 }
 pre {
+  background: #000;
+  color: #fff;
+  font-family: Consolas,Monaco,"Andale Mono",monospace;
+  font-size: 14px;
+  line-height: 1.2em;
+  position: absolute;
+  top: 50px;
   left: 0;
-  top: 40px;
   width: 100%;
-  height: calc(100% - 40px);
+  height: calc(100% - 50px);
   overflow: scroll;
   padding: 5px;
 }

@@ -26,7 +26,6 @@ var template =
     text-transform: none;
     text-rendering: optimizeLegibility;
     font-size: 30px;
-    -webkit-font-smoothing: antialiased;
   }
   [flex] {
     display: flex;
