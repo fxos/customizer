@@ -5,8 +5,7 @@ var proto = Object.create(HTMLElement.prototype);
 
 var template =
 `<style>
-[data-icon]:before,
-.ligature-icons {
+[data-icon]:before {
   font-family: "gaia-icons";
   content: attr(data-icon);
   display: inline-block;
@@ -16,28 +15,32 @@ var template =
   text-transform: none;
   text-rendering: optimizeLegibility;
   font-size: 30px;
-  -webkit-font-smoothing: antialiased;
 }
-
+[data-customizer-icon]:before {
+  font-family: "customizer-icons";
+  content: attr(data-customizer-icon);
+  display: inline-block;
+  font-weight: 500;
+  font-style: normal;
+  text-decoration: inherit;
+  text-transform: none;
+  text-rendering: optimizeLegibility;
+  font-size: 30px;
+}
 gaia-dom-tree {
   width: 100%;
-  height: 100%;
+  height: calc(100% - 46px);
 }
-
 .pin {
   position: absolute;
   top: 0;
   right: 0;
   margin: 1rem !important;
-
   opacity: 1;
-
   transition: opacity 0.5s ease-in-out;
 }
-
 .pin.scrolling {
   pointer-events: none;
-
   opacity: 0;
 }
 </style>
@@ -45,10 +48,13 @@ gaia-dom-tree {
   <i data-icon="settings"></i>
 </gaia-button>
 <gaia-dom-tree></gaia-dom-tree>
-<gaia-css-inspector></gaia-css-inspector>
-<gaia-modal>
-  <p>lorem ipsum...</p>
-</gaia-modal>`;
+<gaia-toolbar>
+  <button data-customizer-icon="edit" data-action="edit" disabled></button>
+  <button data-customizer-icon="copy" data-action="copyOrMove" disabled></button>
+  <button data-customizer-icon="append" data-action="append" disabled></button>
+  <button data-customizer-icon="remove" data-action="remove" disabled></button>
+  <button data-customizer-icon="source" data-action="viewSource" disabled></button>
+</gaia-toolbar>`;
 
 proto.createdCallback = function() {
   this.shadow = this.createShadowRoot();
@@ -56,15 +62,14 @@ proto.createdCallback = function() {
 
   this.settingsButton = this.shadow.querySelector('[data-action="settings"]');
   this.gaiaDomTree = this.shadow.querySelector('gaia-dom-tree');
-  this.gaiaCssInspector = this.shadow.querySelector('gaia-css-inspector');
-  this.gaiaModal = this.shadow.querySelector('gaia-modal');
+  this.gaiaToolbar = this.shadow.querySelector('gaia-toolbar');
 
   this.settingsButton.addEventListener(
     'click', this._handleMenuAction.bind(this));
   this.gaiaDomTree.addEventListener(
     'click', this._handleSelected.bind(this));
-  this.gaiaDomTree.addEventListener(
-    'longpressed', this._handleLongPressed.bind(this));
+  this.gaiaToolbar.addEventListener(
+    'click', this._handleAction.bind(this));
 
   this._watchScrolling();
 
@@ -160,7 +165,6 @@ proto.select = function(node) {
 proto._handleMenuAction = function(e) {
   var action = e.target.dataset.action;
   if (action) {
-    console.log(action);
     this.dispatchEvent(new CustomEvent('menu', {
       detail: action
     }));
@@ -175,18 +179,24 @@ proto._handleSelected = function(e) {
     return;
   }
 
-  this._selected = (selectedNode.nodeType === Node.TEXT_NODE) ?
+  var selected = this._selected = (selectedNode.nodeType === Node.TEXT_NODE) ?
     selectedNode.parentNode : selectedNode;
+
+  [].forEach.call(this.gaiaToolbar.querySelectorAll('button'), (button) => {
+    button.disabled = !selected;
+  });
+
+  this.gaiaToolbar.querySelector('[data-action="viewSource"]').disabled =
+    (selected.tagName !== 'SCRIPT' || !selected.hasAttribute('src')) &&
+    (selected.tagName !== 'LINK' || !selected.hasAttribute('href'));
 
   this.dispatchEvent(new CustomEvent('selected', {
     detail: this._selected
   }));
 };
 
-proto._handleLongPressed = function(e) {
-  this._handleSelected(e);
-
-  this.dispatchEvent(new CustomEvent('action', {
+proto._handleAction = function(e) {
+  this.dispatchEvent(new CustomEvent('action:' + e.target.dataset.action, {
     detail: this._selected
   }));
 };

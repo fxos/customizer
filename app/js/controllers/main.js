@@ -2,14 +2,12 @@
 
 /*global EditView*/
 /*global ViewSourceView*/
-/*global ActionMenuView*/
 /*global AppendChildView*/
 /*global CopyMoveView*/
 /*global MainView*/
 
 /*global EditController*/
 /*global ViewSourceController*/
-/*global ActionMenuController*/
 /*global AppendChildController*/
 /*global CopyMoveController*/
 
@@ -72,52 +70,39 @@ export default class MainController extends Controller {
       eval.call(window, source);
 
       var editView = new EditView();
-      var actionMenuView = new ActionMenuView();
       var viewSourceView = new ViewSourceView();
       var appendChildView = new AppendChildView();
       var copyMoveView = new CopyMoveView();
       var mainView = new MainView({
         editView: editView,
-        actionMenuView: actionMenuView,
         viewSourceView: viewSourceView,
         appendChildView: appendChildView,
         copyMoveView: copyMoveView
       });
 
-      var editController = new EditController({
+      this.editController = new EditController({
         view: editView
       });
 
-      var viewSourceController = new ViewSourceController({
+      this.viewSourceController = new ViewSourceController({
         view: viewSourceView
       });
 
-      var appendChildController = new AppendChildController({
+      this.appendChildController = new AppendChildController({
         view: appendChildView
       });
 
-      var copyMoveController = new CopyMoveController({
+      this.copyMoveController = new CopyMoveController({
         view: copyMoveView
-      });
-
-      var actionMenuController = new ActionMenuController({
-        view: actionMenuView,
-        editController: editController,
-        viewSourceController: viewSourceController,
-        appendChildController: appendChildController,
-        copyMoveController: copyMoveController
       });
 
       this.view = mainView;
       mainView.init(this);
 
-      this.actionMenuController = actionMenuController;
-
-      editController.mainController = this;
-      viewSourceController.mainController = this;
-      actionMenuController.mainController = this;
-      appendChildController.mainController = this;
-      copyMoveController.mainController = this;
+      this.editController.mainController = this;
+      this.viewSourceController.mainController = this;
+      this.appendChildController.mainController = this;
+      this.copyMoveController.mainController = this;
 
       console.log('[Customizer] Lazy-initialized modules');
       resolve();

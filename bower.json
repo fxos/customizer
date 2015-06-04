@@ -10,17 +10,14 @@
     "fxos-mvc": "fxos/mvc",
     "gaia-dom-tree": "gaia-components/gaia-dom-tree",
     "gaia-dialog": "gaia-components/gaia-dialog",
-    "gaia-css-inspector": "gaia-components/gaia-css-inspector",
     "gaia-modal": "gaia-components/gaia-modal",
     "gaia-tabs": "gaia-components/gaia-tabs",
     "gaia-header": "gaia-components/gaia-header",
     "gaia-theme": "gaia-components/gaia-theme",
-    "gaia-property-inspector": "gaia-components/gaia-property-inspector",
     "gaia-text-input": "gaia-components/gaia-text-input",
-    "gaia-sub-header": "gaia-components/gaia-sub-header",
     "gaia-list": "gaia-components/gaia-list",
     "gaia-button": "gaia-components/gaia-button",
-    "gaia-switch": "gaia-components/gaia-switch",
+    "gaia-toolbar": "gaia-components/gaia-toolbar#master",
     "gesture": "fxos/gesture",
     "js-beautify": "~1.5.5",
     "jszip": "~2.5.0",
@@ -29,6 +26,6 @@
     "esprima": "~2.0.0"
   },
   "resolutions": {
-    "font-fit": "~0.3.0"
+    "gaia-component": "^0.3.6"
   }
 }

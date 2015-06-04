@@ -1,5 +1,7 @@
 /* global View */
 
+/* global AddonService */
+
 var mainViewTemplate =
 `<style scoped>
   .fxos-customizer-main-view {
@@ -173,7 +175,6 @@ export default class MainView extends View {
 
     // We put all of the other view elements that the app needs into the
     // childViews container, so that we can add and remove them all at once.
-    this.childViews.appendChild(this.actionMenuView.el);
     this.childViews.appendChild(this.editView.el);
     this.childViews.appendChild(this.viewSourceView.el);
     this.childViews.appendChild(this.appendChildView.el);
@@ -184,11 +185,26 @@ export default class MainView extends View {
 
     this.on('menu', 'fxos-customizer', () => this.controller.openAddonManager());
 
-    this.on('action', 'fxos-customizer', (evt) => {
-      this.customizer.unwatchChanges();
-      this.controller.actionMenuController.open(evt.detail);
+    this.on('action:edit', 'fxos-customizer', (evt) => {
+      this.controller.editController.open(evt.detail);
+    });
 
-      setTimeout(this.customizer.watchChanges.bind(this.customizer), 1000);
+    this.on('action:copyOrMove', 'fxos-customizer', (evt) => {
+      this.controller.copyMoveController.open(evt.detail);
+    });
+
+    this.on('action:append', 'fxos-customizer', (evt) => {
+      this.controller.appendChildController.open(evt.detail);
+    });
+
+    this.on('action:remove', 'fxos-customizer', (evt) => {
+      AddonService.generate(evt.detail, (generator) => {
+        generator.opRemove();
+      });
+    });
+
+    this.on('action:viewSource', 'fxos-customizer', (evt) => {
+      this.controller.viewSourceController.open(evt.detail);
     });
 
     this.on('selected', 'fxos-customizer', (evt) => {
