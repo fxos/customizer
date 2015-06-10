@@ -42,14 +42,18 @@ function initialize() {
   };
 
   function boot(manifestURL) {
+    window.__customizer__ = {};
+
     document.documentElement.dataset.customizerInit = true;
 
     if (manifestURL === SYSTEM_APP) {
-      return new TouchForwarderController();
+      window.__customizer__.touchForwarderController = new TouchForwarderController();
+      return;
     }
 
-    return new MainController({
-      manifestURL: manifestURL
+    window.__customizer__.mainController = new MainController({
+      manifestURL: manifestURL,
+      lazyLoadModules: true
     });
   }
 }

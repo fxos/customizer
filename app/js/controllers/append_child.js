@@ -7,6 +7,12 @@ export default class AppendChildController extends Controller {
     super(options);
   }
 
+  teardown() {
+    this.view = null;
+
+    this.target = null;
+  }
+
   open(target) {
     this.target = target;
 

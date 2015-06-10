@@ -7,6 +7,13 @@ export default class EditController extends Controller {
     super(options);
   }
 
+  teardown() {
+    this.view = null;
+
+    this.target = null;
+    this.changes = null;
+  }
+
   open(target) {
     this.target = target;
 

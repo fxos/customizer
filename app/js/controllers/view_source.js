@@ -5,6 +5,12 @@ export default class ViewSourceController extends Controller {
     super(options);
   }
 
+  teardown() {
+    this.view = null;
+
+    this.target = null;
+  }
+
   open(target) {
     console.log('view source controller open');
     this.target = target;
