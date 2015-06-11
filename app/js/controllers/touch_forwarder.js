@@ -76,7 +76,7 @@ function unsynthesizeEvent(e) {
 
     identifiers.push(t.identifier);
     xs.push(t.pageX);
-    ys.push(t.pageY);
+    ys.push(t.pageY - 50); // Shift Y position up to remain in-bounds
     rxs.push(t.radiusX);
     rys.push(t.radiusY);
     rs.push(t.rotationAngle);
