@@ -51,9 +51,9 @@ gaia-dom-tree {
 <gaia-toolbar>
   <button data-customizer-icon="edit" data-action="edit" disabled></button>
   <button data-customizer-icon="copy" data-action="copyOrMove" disabled></button>
-  <button data-customizer-icon="append" data-action="append" disabled></button>
-  <button data-customizer-icon="remove" data-action="remove" disabled></button>
+  <button data-icon="add" data-action="append" disabled></button>
   <button data-customizer-icon="source" data-action="viewSource" disabled></button>
+  <button data-icon="delete" data-action="remove" disabled></button>
 </gaia-toolbar>`;
 
 proto.createdCallback = function() {
@@ -90,13 +90,39 @@ proto.setRootNode = function(rootNode) {
     this._root = null;
   }
 
-  // If we've got a new root node, set that one up
-  if (rootNode) {
-    this._root = rootNode;
-    rootNode.addEventListener('click', this._rootNodeClickHandler);
-    this.gaiaDomTree.setRoot(rootNode);
-    this.gaiaDomTree.render();
-    this.watchChanges();
+  if (!rootNode) {
+    return;
+  }
+
+  // Set up the new root node
+  this._root = rootNode;
+  rootNode.addEventListener('click', this._rootNodeClickHandler);
+  this.gaiaDomTree.setRoot(rootNode);
+  this.gaiaDomTree.render();
+  this.watchChanges();
+
+  // Pre-expand the root node
+  var rootTreeNode = this.gaiaDomTree.treeMap.get(rootNode);
+  if (rootTreeNode) {
+    this.gaiaDomTree.expandNode(rootTreeNode);
+  }
+
+  var head = rootNode.querySelector('head');
+  var body = rootNode.querySelector('body');
+  if (!head || !body) {
+    return;
+  }
+
+  // Pre-expand the <head> node
+  var headTreeNode = this.gaiaDomTree.treeMap.get(head);
+  if (headTreeNode) {
+    this.gaiaDomTree.expandNode(headTreeNode);
+  }
+
+  // Pre-expand the <body> node
+  var bodyTreeNode = this.gaiaDomTree.treeMap.get(body);
+  if (bodyTreeNode) {
+    this.gaiaDomTree.expandNode(bodyTreeNode);
   }
 };
 
