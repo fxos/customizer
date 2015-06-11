@@ -4,7 +4,7 @@
 var proto = Object.create(HTMLElement.prototype);
 
 var template =
-`<style>
+`<style scoped>
 [data-icon]:before {
   font-family: "gaia-icons";
   content: attr(data-icon);
