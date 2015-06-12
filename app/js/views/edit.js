@@ -68,7 +68,7 @@ var editViewTemplate =
     }
   </style>
   <gaia-header>
-    <button data-action="cancel" data-icon="close"></button>
+    <button aria-hidden="true" data-action="cancel" data-icon="close"></button>
     <h1>Edit</h1>
     <button data-action="save">Save</button>
   </gaia-header>
