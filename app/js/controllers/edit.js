@@ -61,6 +61,7 @@ export default class EditController extends Controller {
         generator.opSetProperties(this.changes.properties);
       }
 
+      this.changes = {};
       this.close();
     });
   }
