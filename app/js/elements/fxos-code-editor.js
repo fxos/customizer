@@ -51,7 +51,13 @@ var template =
   <div class="line-numbers">
     <div>1</div>
   </div>
-  <textarea wrap="off"></textarea>
+  <textarea autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            inputmode="verbatim"
+            x-inputmode="verbatim"
+            spellcheck="false"
+            wrap="off"></textarea>
 </div>`;
 
 proto.createdCallback = function() {
@@ -89,13 +95,15 @@ Object.defineProperty(proto, 'value', {
 function updateLineNumbers(element) {
   var html = '';
 
-  var lines = element.value.split('\n').length;
-  if (lines === element.lineNumbers.childElementCount) {
-    return;
-  }
+  if (element.value.length < 5000) {
+    var lines = element.value.split('\n').length;
+    if (lines === element.lineNumbers.childElementCount) {
+      return;
+    }
 
-  for (var i = 1; i <= lines; i++) {
-    html += '<div>' + i + '</div>';
+    for (var i = 1; i <= lines; i++) {
+      html += '<div>' + i + '</div>';
+    }
   }
 
   element.lineNumbers.innerHTML = html;

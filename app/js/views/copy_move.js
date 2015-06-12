@@ -19,6 +19,7 @@ var copyMoveViewTemplate =
     <button type="button" data-action="after">Insert After</button>
     <button type="button" data-action="prepend">Prepend</button>
     <button type="button" data-action="append">Append</button>
+    <button type="button" on-click="close">Cancel</button>
   </gaia-dialog>
 </gaia-modal>`;
 

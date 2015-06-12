@@ -16,9 +16,9 @@ var proto = Object.create(HTMLElement.prototype);
 
 var template =
 `<style scoped>
-  [data-icon]:before {
-    font-family: "gaia-icons";
-    content: attr(data-icon);
+  [data-customizer-icon]:before {
+    font-family: "customizer-icons";
+    content: attr(data-customizer-icon);
     display: inline-block;
     font-weight: 500;
     font-style: normal;
@@ -59,7 +59,7 @@ var template =
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  gaia-list [data-icon] {
+  gaia-list [data-customizer-icon] {
     position: absolute;
     padding: 1.6em 1em;
     top: 0;
@@ -346,7 +346,7 @@ function renderTargetListItem(target, property) {
   // Append "X" button to remove attributes.
   if (target instanceof window.NamedNodeMap) {
     a.innerHTML +=
-`<i data-icon="close" data-action="remove"></i>`;
+`<i data-customizer-icon="remove" data-action="remove"></i>`;
   }
 
   return a;
@@ -373,7 +373,7 @@ function renderAddAttributeItem() {
   a.href = '#add-attribute';
   a.innerHTML =
 `<h3>Create New Attribute</h3>
-<i data-icon="add"></i>`;
+<i data-customizer-icon="add"></i>`;
 
   return a;
 }

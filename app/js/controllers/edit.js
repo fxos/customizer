@@ -24,7 +24,19 @@ export default class EditController extends Controller {
   }
 
   close() {
-    this.view.close();
+    if (this.changes.innerHTML        ||
+        this.changes.script           ||
+        this.changes.createAttributes ||
+        this.changes.removeAttributes ||
+        this.changes.properties) {
+      if (window.confirm('Are you sure you want to discard your changes?')) {
+        this.view.close();
+      }
+    }
+
+    else {
+      this.view.close();
+    }
   }
 
   save() {

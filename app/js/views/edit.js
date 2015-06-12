@@ -191,11 +191,18 @@ export default class EditView extends View {
 
   setTarget(target) {
     var clonedTarget = target.cloneNode(true);
-    var html = html_beautify(clonedTarget.innerHTML.trim(), {
-      indent_size: 2
-    });
+    var html = clonedTarget.innerHTML.trim();
 
-    this.htmlCodeEditor.value = html;
+    this.htmlCodeEditor.value = 'Loading...';
+
+    setTimeout(() => {
+      html = html_beautify(html, {
+        indent_size: 2
+      });
+
+      this.htmlCodeEditor.value = html;
+    }, 1);
+
     this.scriptCodeEditor.value =
 `/**
  * You can edit a script to be inserted
