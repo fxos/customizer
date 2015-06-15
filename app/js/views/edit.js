@@ -19,7 +19,7 @@ var editViewTemplate =
       display: block;
     }
     .tab-pane {
-      box-sizing: padding-box;
+      box-sizing: border-box;
       display: none;
       position: absolute;
       top: 96px;
