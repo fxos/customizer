@@ -136,23 +136,27 @@ export default class MainController extends Controller {
 
   _checkOpenFromLauncher() {
     var requestXHR = new XMLHttpRequest();
-    requestXHR.open('GET', 'http://localhost:3215/request', true);
-    requestXHR.onload = () => {
-      if (requestXHR.responseText !== this.manifestURL) {
-        return;
-      }
+    try {
+      requestXHR.open('GET', 'http://localhost:3215/request', true);
+      requestXHR.onload = () => {
+        if (requestXHR.responseText !== this.manifestURL) {
+          return;
+        }
 
-      this.open();
+        this.open();
 
-      var confirmXHR = new XMLHttpRequest();
-      confirmXHR.open('GET', 'http://localhost:3215/confirm?url=' + this.manifestURL, true);
+        var confirmXHR = new XMLHttpRequest();
+        confirmXHR.open('GET', 'http://localhost:3215/confirm?url=' + this.manifestURL, true);
 
-      console.log('Sending HTTP request confirmation to Customizer Launcher');
-      confirmXHR.send();
-    };
+        console.log('Sending HTTP request confirmation to Customizer Launcher');
+        confirmXHR.send();
+      };
 
-    console.log('Sending HTTP request check to Customizer Launcher');
-    requestXHR.send();
+      console.log('Sending HTTP request check to Customizer Launcher');
+      requestXHR.send();
+    } catch (e) {
+      console.log('HTTP request failed to Customizer Launcher', e);
+    }
   }
 
   _visibilitychangeHandler() {
